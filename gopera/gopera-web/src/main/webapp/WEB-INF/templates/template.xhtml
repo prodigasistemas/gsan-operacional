@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html">
+	<h:head>
+		<title>GSAN Operacional</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/locales.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/resources/js/jquery/jquery.meiomask.js"></script>
+    	<script type="text/javascript" src="#{request.contextPath}/resources/js/jquery/jquery.mtz.monthpicker.js"></script>		
+		<script type="text/javascript">
+		$(document).ready(function(){
+				$(".menu").mouseover(function(){
+						$(".ui-selectonemenu-panel").hide();
+					});
+			});
+		
+		function redireciona() {
+				window.location.href = "#{usuarioBean.redireciona}";
+			}
+	</script>
+	</h:head>
+	<h:body>
+
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/estilos.css" />
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/novo.css" />
+		<div class="geral">
+			<div class="header">
+				<h:graphicImage value="resources/images/logo-topo.jpg" width="100%" />
+				<div class="versao" align="right">Vers&atilde;o 1.0.26</div>
+			</div>
+
+			<div class="main-menu">
+				<h:form id="formMenu">
+					<p:menubar rendered="#{usuarioBean.usuarioProxy.logado}">
+						<p:submenu label="Cadastro" rendered="#{usuarioBean.usuarioProxy.administrador}">
+							<p:submenu label="#{m.unidade_operacional}">
+								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabBean.iniciar}" ajax="false" />
+								<p:menuitem value="ETA - Esta&ccedil;&atilde;o de Tratamento de &Aacute;gua" action="#{etaBean.iniciar}" ajax="false" />
+								<p:menuitem value="EAT - Esta&ccedil;&atilde;o de &Aacute;gua Tratada" action="#{eeatBean.iniciar}" ajax="false" />
+								<p:menuitem value="RSO - Rela&ccedil;&atilde;o Setor Operacional/Comercial" action="#{rsoBean.iniciar}" ajax="false" />
+								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.grafico_unidades}" action="#{relacaoUnidadesBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Produtos Qu&iacute;micos">
+								<p:menuitem value="Unidade Medida" action="#{unidadeMedidaBean.iniciar}" ajax="false" />
+								<p:menuitem value="Produto Qu&iacute;mico" action="#{produtoBean.iniciar}" ajax="false" />
+								<p:menuitem value="Registro de Consumo" action="#{registroConsumoBean.iniciar}" ajax="false" />
+								<!-- 							<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x Sistema de Abastecimento" action="#{registroConsumoSistemaAbastecimentoBean.iniciar}" ajax="false"/> -->
+								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x ETA" action="#{registroConsumoETABean.iniciar}" ajax="false" />
+								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x EAT" action="#{registroConsumoEATBean.iniciar}" ajax="false" />
+								<p:menuitem value="Tabela de Pre&ccedil;o" action="#{tabelaPrecoBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Energia El&eacute;trica">
+								<p:menuitem value="Unidade Consumidora" action="#{unidadeConsumidoraBean.iniciar}" ajax="false" />
+								<p:menuitem value="Contrato Energia El&eacute;trica" action="#{contratoEnergiaBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Volume de &Aacute;gua">
+								<p:menuitem value="Macro Medidor" action="#{macroMedidorBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:menuitem value="Par&acirc;metros" action="#{parametroBean.iniciar}" ajax="false" />
+						</p:submenu>
+						<p:submenu label="Movimento">
+							<p:submenu label="Produtos Qu&iacute;micos">
+								<p:submenu label="Consumo Produto Qu&iacute;mico">
+									<!--								<p:menuitem value="Sistema de Abastecimento" action="#{consumoProdutoBean.iniciar}" ajax="false"/> -->
+									<p:menuitem value="ETA" action="#{consumoETAProdutoBean.iniciar}" ajax="false" />
+									<p:menuitem value="EAT" action="#{consumoEATProdutoBean.iniciar}" ajax="false" />
+								</p:submenu>
+								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{consumoPendenteBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Energia El&eacute;trica">
+								<p:menuitem value="Importar Arquivo Energia El&eacute;trica" action="#{importarEnergiaBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Horas Trabalhadas">
+								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabHorasBean.iniciar}" ajax="false" />
+								<p:menuitem value="ETA - Esta&ccedil;&atilde;o de Tratamento de &Aacute;gua" action="#{etaHorasBean.iniciar}" ajax="false" />
+								<p:menuitem value="EAT - Esta&ccedil;&atilde;o de &Aacute;gua Tratada" action="#{eeatHorasBean.iniciar}" ajax="false" />
+								<p:menuitem value="RSO - Rela&ccedil;&atilde;o Setor Operacional/Comercial" action="#{rsoHorasBean.iniciar}" ajax="false" />
+								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{horasPendenteBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Volume de &Aacute;gua">
+								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabVolumeBean.iniciar}" ajax="false" />
+								<p:menuitem value="ETA - Esta&ccedil;&atilde;o de Tratamento de &Aacute;gua" action="#{etaVolumeBean.iniciar}" ajax="false" />
+								<p:menuitem value="EAT - Esta&ccedil;&atilde;o de &Aacute;gua Tratada" action="#{eeatVolumeBean.iniciar}" ajax="false" />
+								<p:menuitem value="RSO - Rela&ccedil;&atilde;o Setor Operacional/Comercial" action="#{rsoVolumeBean.iniciar}" ajax="false" />
+								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{volumePendenteBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:submenu label="Tratamento de Esgoto">
+								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteVolumeBean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:menuitem value="An&aacute;lises Laboratoriais" action="#{analiseLaboratorialBean.iniciar}" ajax="false" />
+							<p:menuitem value="Adutoras e Redes de &Aacute;gua" action="#{redeInstaladaBean.iniciar}" ajax="false" />
+						</p:submenu>
+						<p:submenu label="Relat&oacute;rios">
+							<p:submenu label="Cadastro">
+								<p:menuitem value="Unidade Operacional" action="#{relatorioCadastroUOBean.iniciar}" ajax="false" />
+								<p:menuitem value="Produtos Qu&iacute;micos" action="#{relatorioCadastroPQBean.iniciar}" ajax="false" />
+								<p:menuitem value="Energia El&eacute;trica" action="#{relatorioCadastroEEBean.iniciar}" ajax="false" />
+								<p:menuitem value="Macro Medidor" action="#{relatorioCadastroVABean.iniciar}" ajax="false" />
+							</p:submenu>
+							<p:menuitem value="Produtos Qu&iacute;micos" action="#{relatorioGerencialBean.iniciar}" ajax="false" />
+							<p:menuitem value="Energia El&eacute;trica" action="#{relatorioEnergiaEletricaBean.iniciar}" ajax="false" />
+							<!--
+						<p:menuitem value="Horas Trabalhadas" action="#{relatorioHorasBean.iniciar}" ajax="false"/>
+						<p:menuitem value="Volume de &Aacute;gua" action="#{relatorioVolumeBean.iniciar}" ajax="false"/>
+						 -->
+							<p:menuitem value="Tratamento de Esgoto" action="#{relatorioEsgotoBean.iniciar}" ajax="false" />
+							<p:menuitem value="An&aacute;lises Laboratoriais" action="#{relatorioAnaliseLaboratorialBean.iniciar}" ajax="false" />
+							<p:menuitem value="Adutoras e Redes de &Aacute;gua" action="#{relatorioRedeInstaladaBean.iniciar}" ajax="false" />
+							<p:menuitem value="Produ&ccedil;&atilde;o e Distribui&ccedil;&atilde;o" action="#{relatorioProducaoBean.iniciar}" ajax="false" />
+						</p:submenu>
+						<p:submenu label="Gr&aacute;ficos">
+							<p:menuitem value="Energia El&eacute;trica" action="#{graficoEnergiaEletricaBean.iniciar}" ajax="false" />
+						</p:submenu>
+						<p:submenu label="Indicadores">
+							<p:menuitem value="USAG" action="#{indicadorBean.iniciarUSAG}" ajax="false" />
+							<p:menuitem value="USRP" action="#{indicadorBean.iniciarUSRP}" ajax="false" />
+							<p:menuitem value="BIG DO" action="#{indicadorBean.iniciarBIGDO}" ajax="false" />
+							<p:menuitem value="Gera&ccedil;&atilde;o Indicadores" action="#{indicadorGeracaoBean.iniciar}" ajax="false" />
+						</p:submenu>
+						<p:menuitem value="Sair" label="Sair" onclick="dlgSair.show()" />
+					</p:menubar>
+				</h:form>
+			</div>
+			<div class="container">
+				<ui:insert name="centro" />
+			</div>
+			<div class="footer">
+				<ui:fragment rendered="#{usuarioBean.usuarioProxy.logado}">
+					<span>Usu&aacute;rio:</span>
+					<span>#{usuarioBean.usuarioProxy.nome}</span>
+					<span>Perfil:</span>
+					<span>#{usuarioBean.usuarioProxy.perfil}</span>
+					<span>Unidade Organizacional:</span>
+					<span>#{usuarioBean.usuarioProxy.unidadeOrganizacional}</span>
+					<span>Refer&ecirc;ncia:</span>
+					<span>#{usuarioBean.usuarioProxy.referencia.toString().substring(4,6)}/#{usuarioBean.usuarioProxy.referencia.toString().substring(0,4)}</span>
+				</ui:fragment>
+			</div>
+		</div>
+	</h:body>
+
+	<p:dialog widgetVar="dlgSair" resizable="false">
+		<h:form id="formLogout">
+			<h:panelGrid columns="2" style="margin-bottom:10px">
+				<h:outputLabel value="Deseja realmente sair do sistema?" />
+			</h:panelGrid>
+			<p:commandButton id="respostaSim" value="Sim" action="#{usuarioBean.logout}" oncomplete="dlgSair.hide(); redireciona();" />
+			<p:commandButton id="respostaNao" value="N&atilde;o" oncomplete="dlgSair.hide();" />
+		</h:form>
+	</p:dialog>
+
+</f:view>
+</html>

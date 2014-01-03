@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+<br />
+<h:form id="form" prependId="true">
+<p:messages showDeteil="false" autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Movimento </td>
+		<td class="pagina"> &raquo; Adutoras e Redes de Água</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{redeInstaladaBean.excluir}" update=":formConsulta" oncomplete="cd.hide()">
+		<f:setPropertyActionListener value="#{var}" target="#{redeInstaladaBean.registro}" />
+	</p:commandButton>					
+	<p:commandButton value="Não" onclick="cd.hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta" prependId="false">
+	<p:panel rendered="#{redeInstaladaBean.visualizando}">
+		<p:dataTable var="var" id="tabela" value="#{redeInstaladaBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+		  	<p:column headerText="Opções" width="90" style="text-align:left">
+		  		<f:facet name="header">
+					<h:outputText class="tabela" value="Opções"/>
+				</f:facet>
+				<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{redeInstaladaBean.consultar}" update=":formCadastro,:formConsulta">
+					<f:setPropertyActionListener value="#{var}" target="#{redeInstaladaBean.registro}" />
+				</p:commandButton>
+				<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{redeInstaladaBean.alterar}" update=":formCadastro,:formConsulta">
+					<f:setPropertyActionListener value="#{var}" target="#{redeInstaladaBean.registro}" />
+				</p:commandButton>
+				<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="cd.show()">
+					<f:setPropertyActionListener value="#{var}" target="#{redeInstaladaBean.registro}" />
+				</p:commandButton>
+			</p:column>
+			
+			<p:column style="text-align:left" filterBy="#{var.regionalProxy.nome}" headerText="Regional" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Regional" />
+				</f:facet>
+				  <h:outputText value="#{var.regionalProxy.nome}"/>
+			</p:column>
+	
+			<p:column style="text-align:left" filterBy="#{var.unidadeNegocioProxy.nome}" headerText="Unidade de Negócio" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Unidade de Negócio" /> 
+				</f:facet>
+				  <h:outputText value="#{var.unidadeNegocioProxy.nome}"/>
+			</p:column>
+	
+			<p:column style="text-align:left" filterBy="#{var.municipioProxy.nome}" headerText="Município" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Município" /> 
+				</f:facet>
+				  <h:outputText value="#{var.municipioProxy.nome}"/>
+			</p:column>
+	
+			<p:column style="text-align:left" filterBy="#{var.localidadeProxy.nome}" headerText="Localidade" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Localidade" /> 
+				</f:facet>
+				  <h:outputText value="#{var.localidadeProxy.nome}"/>
+			</p:column>
+			
+			<p:column filterBy="#{var.referencia}" styleClass="data" headerText="Data de Referência" filterMatchMode="contains" style="text-align:left">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Data de Referência"/>
+				</f:facet>
+				<h:outputText value="#{var.referencia}">
+					<f:convertDateTime pattern="MM/yyyy"/>
+				</h:outputText>
+			</p:column>	
+		</p:dataTable>
+		
+		<p:column>
+			<p:commandButton value="Novo" action="#{redeInstaladaBean.novo}" update=":formCadastro,:formConsulta"/>
+		</p:column>	
+		<script type="text/javascript">
+			$(function(){
+				$(".data input").setMask('99/9999');
+				})
+		</script>	
+	</p:panel>
+</h:form>
+
+<h:form id="formCadastro">
+<p:panelGrid id="pgrCadastro" rendered="#{!redeInstaladaBean.visualizando}">
+	<p:row>
+		<p:column coslspan="2">
+			<h:panelGrid id="cadastro" columns="2">
+				<h:outputLabel for="regional" value="Regional *"/>
+				<p:selectOneMenu id="regional" value="#{redeInstaladaBean.registro.regionalProxy.codigo}" disabled="#{redeInstaladaBean.confirmando or redeInstaladaBean.editando or redeInstaladaBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+					    <f:selectItems value="#{redeInstaladaBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				         <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="unidadenegocio" value="Unidade de Negócio *" />
+			    <p:selectOneMenu id="unidadenegocio" value="#{redeInstaladaBean.registro.unidadeNegocioProxy.codigo}" disabled="#{redeInstaladaBean.confirmando or redeInstaladaBean.editando or redeInstaladaBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{redeInstaladaBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu> 
+				
+				<h:outputLabel for="municipio" value="Município *" />
+			    <p:selectOneMenu id="municipio" value="#{redeInstaladaBean.registro.municipioProxy.codigo}" disabled="#{redeInstaladaBean.confirmando or redeInstaladaBean.editando or redeInstaladaBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{redeInstaladaBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="localidade" value="Localidade *" />
+			    <p:selectOneMenu id="localidade" value="#{redeInstaladaBean.registro.localidadeProxy.codigo}" disabled="#{redeInstaladaBean.confirmando or redeInstaladaBean.editando or redeInstaladaBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{redeInstaladaBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu>
+
+				<h:outputLabel for="mesreferencia" value="Mês de Referência *"/>
+				<p:calendar value="#{redeInstaladaBean.registro.referencia}" id="mesreferencia" locale="pt" disabled="#{redeInstaladaBean.desabilitaForm or redeInstaladaBean.editando}" showOn="button" pattern="MM/yyyy" required="true" requiredMessage="Mês de Referência, deve ser informado."/>
+
+				<h:outputLabel for="redecadastrada" value="Rede Cadastrada (Km) *"/>
+				<p:inputText style="width: 80px !important;" value="#{redeInstaladaBean.registro.redeCadastrada}" id="redecadastrada" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Cadastrada, deve ser informado."/>
+
+				<h:outputLabel for="redeexistente" value="Rede Existente (Km) *"/>
+				<p:inputText style="width: 80px !important;" value="#{redeInstaladaBean.registro.redeExistente}" id="redeexistente" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Existente, deve ser informado."/>
+				<script type="text/javascript">
+					$(function(){
+						$("input[id*=rede]").setMask("int");				
+						$("input[id*=mes]").setMask("99/9999");
+						});
+				</script>	
+			</h:panelGrid>				
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column>
+				<p:commandButton value="Cadastrar" action="#{redeInstaladaBean.cadastrar}" rendered="#{redeInstaladaBean.cadastrando or redeInstaladaBean.editando}" update="formCadastro"/>
+				<p:commandButton value="Confirmar" action="#{redeInstaladaBean.confirmar}" rendered="#{redeInstaladaBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Cancelar" action="#{redeInstaladaBean.cancelar}" rendered="#{redeInstaladaBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Limpar" rendered="#{redeInstaladaBean.cadastrando}" type="reset"/>
+				<p:commandButton process="@this" value="Voltar" action="#{redeInstaladaBean.voltar}" rendered="#{!redeInstaladaBean.confirmando}" update=":formCadastro,:formConsulta" />
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+</h:form>
+
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

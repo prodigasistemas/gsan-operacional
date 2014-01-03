@@ -1,0 +1,349 @@
+.ui-widget {
+	font-size: 12px !important;
+}
+
+.ui-growl{position:fixed;top:7px;right:40%;width:301px;}
+
+#header{
+	height: 110px;
+}
+
+#main-menu {
+	margin: 0 auto !important;
+	width: 900px !important;
+	border: 2px !important;
+}
+
+div.geral {
+	margin: 0 auto !important;
+	width: 900px !important;
+}
+
+div.menu {
+	margin: 0 auto !important;
+	width: 900px !important;
+	border: 2px !important;
+}
+
+div.versao{
+	font-family: Tahoma !important; font-size: 11px !important; color: #7eaaab !important;
+	margin-bottom: 10px;
+	margin-top: 2px;
+}
+
+.container{
+	margin-bottom: 50px;
+}
+.clear{
+	clear: both;
+}
+
+.footer{
+	color:#fff;
+	display:table;
+	width:900px;
+	position:fixed;
+	bottom:0;
+	z-index: 3;
+	background-color: #ffffff;
+	height: 30px;
+	font-family: Tahoma !important;
+	font-size: 11px !important;
+	text-decoration: none !important;	
+}
+
+.footer span:nth-child(odd){
+	margin-right: 2px;
+	margin-left: 2px;
+	color: #7eaaab !important;
+}
+
+.footer span:nth-child(even){
+	color: #7eaaab !important;
+	font-weight: bold !important;
+}
+
+.texto {
+	background: white;
+	font-family: Tahoma;
+	font-size: 10px;
+	color: #287181;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+td.caminho {
+	font-family: Tahoma !important;
+	font-size: 11px !important;
+	color: #7eaaab !important;
+	text-decoration: none !important;
+}
+
+td.sessao {
+	font-family: Tahoma !important;
+	font-size: 11px !important;
+	color: #7eaaab !important;
+	font-weight: bold !important;
+	text-decoration: underline !important;
+}
+
+td.pagina {
+	font-family: Tahoma !important;
+	font-size: 11px !important;
+	color: #267a85 !important;
+	font-weight: bold !important;
+	text-decoration: none !important;
+}
+
+.tabela {
+	background: #E9EFF3;
+	font-family: Tahoma;
+	font-size: 11px;
+	color: #006D89;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: left;
+}
+
+.ui-state-default {
+	background: white;
+	color: #4B6D89;
+}
+
+/*Alterado 17-10-2012*/
+label {
+	font-family: Tahoma !important;
+	font-size: 11px !important;
+	color: #267a85 !important;
+}
+/*fim*/
+td {
+	background: #FFFFFF !important;
+	font-family: Tahoma !important;
+	font-size: 11px !important;
+	color: gray !important;
+	font-weight: none !important;
+	text-decoration: none !important;
+	text-align: left;
+	border: 0px !important;
+}
+
+.ui-datatable th {
+	background: #E9EFF3 !important;
+	border: 0px !important;
+}
+
+/*Fundo do menu*/
+.ui-menu,.ui-menu .ui-menu-child {
+	background: #D7E4F5
+		url("/GoperaWeb/javax.faces.resource/images/ui-bg_highlight-hard_80_c4c4c4_1x100.png.jsf?ln=primefaces-aristo")
+		top repeat-x !important;
+	background: #D7E4F5 linear-gradient(top, rgba(255, 255, 255, 1.9),
+		rgba(255, 255, 255, 0) ) !important;
+	background: #D7E4F5
+		-webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,
+		0.8) ), to(rgba(255, 255, 255, 0) ) ) !important;
+	background: #D7E4F5 -moz-linear-gradient(top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0) ) !important;
+}
+
+/*Bordar dos div's*/
+.ui-corner-all {
+	-moz-border-radius: 8px !important;
+	-webkit-border-radius: 8px !important;
+	border-radius: 8px !important;
+}
+
+/*Alterado fim 17-10-2012
+*/
+/*Menu*/
+.ui-widget-content a {
+	font-family: Tahoma !important;
+	font-size: 12px !important;
+	color: #287181 !important;
+	font-weight: bold !important;
+	text-decoration: none !important;
+	text-align: left !important;
+}
+
+.ui-widget-content a:hover {
+	color: #ff7700 !important;
+	text-decoration: underline !important;
+	background-color: #CDE1E9 !important;
+}
+
+.ui-widget-content a:active {
+	color: #ff7700 !important;
+	text-decoration: underline !important;
+}
+
+/*Alterar fundo de li do menu*/
+/*
+.ui-menuitem
+{
+	background-color: #FFF !important;
+}
+*/
+
+/*Altera botão
+*/
+/*
+.ui-button
+{
+	background-color: #000000 !important;
+}*/
+/*Alterado fim 17-10-2012
+*/
+.ui-datatable .ui-column-filter {
+	display: block !important;
+	width: 180px !important;
+	margin: 0px !important;
+}
+
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	background: white !important;
+	-moz-box-shadow: inset 0 0px 0px #8f8f8f !important;
+	-webkit-box-shadow: inset 0 0px 0px #8F8F8F !important;
+	box-shadow: inset 0 0px 0px #8F8F8F !important;
+	color: #313131 !important;
+}
+
+.ui-menu-child {
+	top: 24px !important;
+}
+
+
+.ui-menu-list .ui-menu-parent .ui-menu-list .ui-menu-list {
+	top: 0px !important;
+}
+
+/*table {
+	display: table !important;
+	border-collapse: separate !important;
+	border-spacing: 0px !important;
+	border-color: white !important;
+	}*/
+.ui-corner-all /*Borda do dos Div's - menu, corpo e topo*/ {
+	border: 0px !important;
+}
+
+.ui-datatable table {
+	border-collapse: collapse !important;
+	width: 100% !important;
+	border-color: white !important;
+}
+
+.ui-widget-content {
+	border: 0px !important;
+}
+/*Alterado inicio 09-10-2012
+*/
+/*Caixa de texto
+*/
+.ui-widget input {
+	border: 1px solid #287181 !important;
+	font-family: Arial, sans-serif !important;
+	font-weight: normal !important;
+	border-radius: 0px !important;
+	/*definimos a largura do box*/
+	width: 250px;
+	/* definimos a altura do box */
+	height: 20px !important;
+}
+/*Caixa de texto*/
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	border: 1px solid #287181 !important;
+	font-family: Arial, sans-serif !important;
+	font-weight: normal !important;
+	border-radius: 0px !important;
+	/* definimos a altura do box */
+	height: 15px !important;
+	/*Alterado fim 09-10-2012
+*/
+}
+
+#form .sigla {
+	width: 30px !important; /*Comprimento de sigla*/
+}
+
+#form .valor {
+	width: 80px !important; 
+}
+
+#form .calendario
+{
+	width: 40px !important;
+}
+
+/*Posição do icone no botão*/
+.ui-button-icon-only .ui-icon {
+	left: 50% !important;
+	margin-left: -8px !important;
+}
+
+/* 20-10-2012 */
+
+/*Icone do 'Visualizar'*/
+.imagemVisualizar {
+	width: 18px !important;
+	height: 20px !important;
+	background-image: url(busca.png) !important;	
+	background-repeat: no-repeat !important;
+	border: 0px !important;
+
+}
+
+/*Icone do 'Editar'*/
+.imagemEditar {
+	width: 18px !important;
+	height: 20px !important;
+	background-image: url(edita.png) !important;
+	background-repeat: no-repeat !important;
+	border: 0px !important;
+
+}
+
+/*Icone do 'Excluir'*/
+.imagemExcluir {
+	width: 18px !important;
+	height: 20px !important;
+	background-image: url(exclui.png) !important;
+	background-repeat: no-repeat !important;
+	border: 0px !important;
+	
+
+}
+
+/*Botões*/
+
+/*Botões ao passar o cursor em cima (hover)*/
+.ui-state-hover {
+	-moz-box-shadow: 0px 0px 1px #FFF, inset 0px 1px 0px #fff !important;
+	-webkit-box-shadow: 0px 0px 8px #FFF, inset 0px 1px 0px #fff !important;
+	box-shadow: 0px 0px 1px #FFF, inset 0px 1px 0px #fff !important;
+}
+
+.ui-widget-header {
+border: 1px solid #FFF !important;
+background: #FFF url("/GoperaWeb/javax.faces.resource/images/ui-bg_highlight-soft_100_c4c4c4_1x100.png.jsf?ln=primefaces-aristo") 50% 50% repeat-x !important;
+background: #FFF linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)) !important;
+background: #FFF -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.8)), to(rgba(255, 255, 255, 0))) !important;
+background: #FFF -moz-linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)) !important;
+text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7) !important;
+
+font-family: Tahoma !important;
+font-size: 11px !important;
+color: #267A85 !important;
+font-weight: normal !important;
+}
+
+/*Corrigindo o bug do campo select*/
+div.ui-selectonemenu label.ui-selectonemenu-label {
+	border-radius: 8px 8px 8px 8px !important;
+}
+
+.ui-widget input.hasDatepicker {
+	width: 120px;
+}

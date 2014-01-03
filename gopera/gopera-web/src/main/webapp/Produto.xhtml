@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+<h:form id="form" prependId="true">
+<br />
+<p:messages showDetail="false" autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Cadastro </td>
+		<td class="pagina"> &raquo; Produtos Químicos</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{produtoBean.excluir}" update=":formConsulta" oncomplete="cd.hide()">
+		<f:setPropertyActionListener value="#{var}" target="#{produtoBean.registro}" />
+	</p:commandButton>					
+	<p:commandButton value="Não" onclick="cd.hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta">
+	<p:panel rendered="#{produtoBean.visualizando}">
+	 <p:dataTable var="var" value="#{produtoBean.lista}" filteredValue="#{produtoBean.filtro}" widgetVar="produto" paginator="true" rows="10" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+		<p:column headerText="Opções" width="90" style="text-align:left">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="Opções"/>
+			</f:facet>
+			<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{produtoBean.consultar}" update=":formCadastro,:formConsulta">
+				<f:setPropertyActionListener value="#{var}" target="#{produtoBean.registro}" />
+			</p:commandButton>
+			<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{produtoBean.alterar}" update=":formCadastro,:formConsulta">
+				<f:setPropertyActionListener value="#{var}" target="#{produtoBean.registro}" />
+			</p:commandButton>
+			<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="cd.show()">
+				<f:setPropertyActionListener value="#{var}" target="#{produtoBean.registro}" />
+			</p:commandButton>
+		</p:column>  
+	  	<p:column headerText="Codigo" style="text-align:left">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="Código"/>
+			</f:facet>
+			<h:outputText value="#{var.codigo}" />
+		</p:column>
+		<p:column filterBy="#{var.descricao}" headerText="Descricao" filterMatchMode="contains" style="text-align:left">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="Descrição"/>
+			</f:facet>
+		  	<h:outputText value="#{var.descricao}" />
+		</p:column>
+		<p:column filterBy="#{var.unidadeMedidaProduto.sigla}" headerText="Sigla" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 40px; min-width: 40px;">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="Sigla"/>
+			</f:facet>
+			<h:outputText value="#{var.unidadeMedidaProduto.sigla}" />
+		</p:column>
+	</p:dataTable>
+	<p:column>
+		<p:commandButton value="Novo" action="#{produtoBean.novo}" update=":formCadastro,:formConsulta"/>
+	</p:column>
+	</p:panel>
+</h:form>
+<h:form id="formCadastro" prependId="true">
+	<p:panelGrid id="pgrCadastro" rendered="#{!produtoBean.visualizando}">
+	<p:row>
+		<p:column style="text-align:left">
+			<h:outputLabel for="descricao" value="Descrição do Produto *"/>
+		</p:column>
+		<p:column style="text-align:left">
+			<h:outputLabel for="sigla" value="Unidade de Medida *" />
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+			<p:inputText value="#{produtoBean.registro.descricao}" id="descricao" disabled="#{produtoBean.desabilitaForm}" required="true" requiredMessage="Descrição do Produto, deve ser informado."/>
+		</p:column>
+		<p:column>
+			<p:selectOneMenu id="sigla" value="#{produtoBean.registro.unidadeMedidaProduto.codigo}" converter="selectOneConverter" effect="fade" disabled="#{produtoBean.desabilitaForm}" >
+	         	<f:selectItems value="#{produtoBean.unidadeMedidas}" var="unidade" itemLabel="#{unidade.sigla}" itemValue="#{unidade.codigo}"/>  
+    		</p:selectOneMenu>
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+			<p:commandButton value="Cadastrar" action="#{produtoBean.cadastrar}" rendered="#{produtoBean.cadastrando or produtoBean.editando}" update="formCadastro"/>
+			<p:commandButton value="Confirmar" action="#{produtoBean.confirmar}" rendered="#{produtoBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Cancelar" action="#{produtoBean.cancelar}" rendered="#{produtoBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Limpar" rendered="#{produtoBean.cadastrando}" type="reset"/>
+			<p:commandButton process="@this" value="Voltar" action="#{produtoBean.voltar}" rendered="#{!produtoBean.confirmando}" update=":formCadastro,:formConsulta" />
+		</p:column>
+	</p:row>
+	</p:panelGrid>
+</h:form>
+</div>		
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

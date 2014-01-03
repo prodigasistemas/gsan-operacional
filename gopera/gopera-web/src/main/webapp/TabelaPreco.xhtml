@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="centro">
+		<h:head>
+			<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		</h:head>
+		<h:body>
+			<div class="geral">
+				<h:form id="form" prependId="true">
+					<br />
+					<p:messages showDetail="true" autoUpdate="true" id="msg" />
+				</h:form>
+				<table>
+					<tr>
+						<td class="caminho">#{m.voce_esta_aqui}:</td>
+						<td class="sessao">#{m.cadastro}</td>
+						<td class="pagina">&raquo; #{m.tabela_precos}</td>
+					</tr>
+				</table>
+				<p:confirmDialog id="confirmDialog" message="Deseja realmente excluir este registro?" appendToBody="true" header="Excluir registro" severity="alert"
+					widgetVar="confirmation">
+					<h:form id="dlg">
+						<p:commandButton immediate="true" update=":formConsulta" id="confirm" value="sim" action="#{tabelaPrecoBean.excluir}" oncomplete="confirmation.hide()" />
+						<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button" />
+					</h:form>
+				</p:confirmDialog>
+				<h:form id="formConsulta">
+					<p:panel rendered="#{tabelaPrecoBean.visualizando}">
+						<p:dataTable id="dataTable" var="var" value="#{tabelaPrecoBean.lista}" filteredValue="#{tabelaPrecoBean.filtro}" widgetVar="linha" paginator="true"
+							rows="10" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport}    {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+			 {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+
+							<p:column headerText="#{m.opcoes}" width="90" style="text-align:left">
+								<f:facet name="header">
+									<h:outputText class="tabela" value="#{m.opcoes}" />
+								</f:facet>
+								<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{tabelaPrecoBean.consultar}" update=":formCadastro,:formConsulta">
+									<f:setPropertyActionListener value="#{var}" target="#{tabelaPrecoBean.registro}" />
+								</p:commandButton>
+								<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{tabelaPrecoBean.alterar}" update=":formCadastro,:formConsulta">
+									<f:setPropertyActionListener value="#{var}" target="#{tabelaPrecoBean.registro}" />
+								</p:commandButton>
+								<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" oncomplete="confirmation.show()">
+									<f:setPropertyActionListener value="#{var}" target="#{tabelaPrecoBean.registro}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column style="text-align:left" styleClass="data" filterBy="#{tabelaPrecoBean.filtroData(var.dataVigencia,'dd/MM/yyyy')}" headerText="Data Vigência"
+								filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
+								<f:facet name="header">
+									<h:outputText class="tabela" value="Data Vigência" />
+								</f:facet>
+								<h:outputText value="#{var.dataVigencia}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+						<p:column>
+							<p:commandButton value="Novo" action="#{tabelaPrecoBean.novo}" update=":formCadastro,:formConsulta" />
+						</p:column>
+					</p:panel>
+					<script type="text/javascript">
+		$(function(){
+			$(".data input").setMask('date');
+			})
+	</script>
+				</h:form>
+				<h:form id="formCadastro">
+					<h:panelGrid id="cadastro" columns="2" rendered="#{!tabelaPrecoBean.visualizando}">
+						<h:outputLabel for="datavigencia" value="Data Vigência *" />
+						<p:calendar styleClass="valor" value="#{tabelaPrecoBean.registro.dataVigencia}" id="datavigencia" disabled="#{tabelaPrecoBean.desabilitaForm}"
+							showOn="button" pattern="dd/MM/yyyy" required="true" requiredMessage="Data de Vigência, deve ser informado." />
+					</h:panelGrid>
+
+					<p:panel id="produtos" rendered="#{!tabelaPrecoBean.visualizando}">
+						<p:dataTable rowIndexVar="index" var="var" value="#{tabelaPrecoBean.listaProdutos}" emptyMessage="Nenhum Produto foi encontrado.">
+							<p:column headerText="Produto" style="text-align:left">
+								<h:outputText value="#{var.produto.descricao}" />
+							</p:column>
+							<p:column headerText="Preço de Custo" style="text-align:center">
+								<p:inputText styleClass="valor" value="#{var.precoAux}" disabled="#{tabelaPrecoBean.desabilitaForm}" id="Valor" size="8" maxlength="8" required="true"
+									requiredMessage="Preço de Custo do Produto, deve ser informado." />
+							</p:column>
+							<p:column headerText="Unidade" style="text-align:center">
+								<h:outputText value="#{var.produto.unidadeMedidaProduto.sigla}" />
+							</p:column>
+						</p:dataTable>
+						<p:commandButton value="Cadastrar" action="#{tabelaPrecoBean.cadastrar}" rendered="#{tabelaPrecoBean.cadastrando or tabelaPrecoBean.editando}"
+							update="formCadastro" />
+						<p:commandButton value="Confirmar" action="#{tabelaPrecoBean.confirmar}" rendered="#{tabelaPrecoBean.confirmando}" update="formCadastro" />
+						<p:commandButton value="Cancelar" action="#{tabelaPrecoBean.cancelar}" rendered="#{tabelaPrecoBean.confirmando}" update="formCadastro" />
+						<p:commandButton value="Limpar" rendered="#{tabelaPrecoBean.cadastrando}" type="reset" />
+						<p:commandButton process="@this" value="Voltar" action="#{tabelaPrecoBean.voltar}" rendered="#{!tabelaPrecoBean.confirmando}"
+							update=":formCadastro,:formConsulta" />
+					</p:panel>
+					<script type="text/javascript">
+		$(function(){
+			$("input[id*=Valor]").setMask("decimal");				
+			});
+	</script>
+				</h:form>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

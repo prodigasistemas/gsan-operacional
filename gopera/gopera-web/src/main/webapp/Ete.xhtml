@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+<br />
+<h:form id="form" prependId="true">
+<p:messages autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Cadastro </td>
+		<td class="pagina"> &raquo; ETE - Estação de Tratamento de Esgoto</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{eteBean.excluir}" update=":formConsulta" oncomplete="cd.hide()">
+		<f:setPropertyActionListener value="#{var}" target="#{eteBean.registro}" />
+	</p:commandButton>					
+	<p:commandButton value="Não" onclick="cd.hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta" prependId="false">
+<p:panel rendered="#{eteBean.visualizando}">
+	<p:dataTable var="var" id="tabela" value="#{eteBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+	  	<p:column headerText="Opções" width="90" style="text-align:left">
+	  		<f:facet name="header">
+				<h:outputText class="tabela" value="Opções"/>
+			</f:facet>
+			<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{eteBean.consultar}" ajax="false">
+				<f:setPropertyActionListener value="#{var}" target="#{eteBean.registro}" />
+			</p:commandButton>
+			<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{eteBean.alterar}" ajax="false">
+				<f:setPropertyActionListener value="#{var}" target="#{eteBean.registro}" />
+			</p:commandButton>
+			<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="cd.show()">
+				<f:setPropertyActionListener value="#{var}" target="#{eteBean.registro}" />
+			</p:commandButton>
+		</p:column>
+		<p:column filterBy="#{var.descricao}" headerText="ETE" filterMatchMode="contains" style="text-align:left">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="ETE"/>
+			</f:facet>
+			<h:outputText value="#{var.descricao}" />
+		</p:column>					
+	</p:dataTable>
+	<p:column>
+		<p:commandButton value="Novo" action="#{eteBean.novo}" update=":formCadastro,:formConsulta"/>
+	</p:column>
+	</p:panel>
+</h:form>
+
+<h:form id="formCadastro">
+<p:panelGrid id="pgrCadastro" rendered="#{!eteBean.visualizando}">
+	<p:row>
+		<p:column coslspan="2">
+			<h:panelGrid id="cadastro" columns="2">
+				<h:outputLabel for="regional" value="Regional *"/>
+				<p:selectOneMenu id="regional" value="#{eteBean.registro.regionalProxy.codigo}" disabled="#{eteBean.confirmando or eteBean.editando or eteBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+					    <f:selectItems value="#{eteBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				         <p:ajax update="unidadenegocio" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="unidadenegocio" value="Unidade de Negócio *" />
+			    <p:selectOneMenu id="unidadenegocio" value="#{eteBean.registro.unidadeNegocioProxy.codigo}" disabled="#{eteBean.confirmando or eteBean.editando or eteBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{eteBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="municipio" event="change" />  
+			    </p:selectOneMenu> 
+				
+				<h:outputLabel for="municipio" value="Município *" />
+			    <p:selectOneMenu id="municipio" value="#{eteBean.registro.municipioProxy.codigo}" disabled="#{eteBean.confirmando or eteBean.editando or eteBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{eteBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="localidade" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="localidade" value="Localidade *" />
+			    <p:selectOneMenu id="localidade" value="#{eteBean.registro.localidadeProxy.codigo}" disabled="#{eteBean.confirmando or eteBean.editando or eteBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{eteBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+			    </p:selectOneMenu>
+
+				<h:outputLabel for="ete" value="Nome da ETE *"/>
+				<p:inputText value="#{eteBean.registro.descricao}" id="descricao" maxlength="50" disabled="#{eteBean.desabilitaForm}" required="true" requiredMessage="Descrição da ETE, deve ser informado."/>
+			</h:panelGrid>			
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+			<p:commandButton value="Cadastrar" action="#{eteBean.cadastrar}" rendered="#{eteBean.cadastrando or eteBean.editando}" update="formCadastro"/>
+			<p:commandButton value="Confirmar" action="#{eteBean.confirmar}" rendered="#{eteBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Cancelar" action="#{eteBean.cancelar}" rendered="#{eteBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Limpar" rendered="#{eteBean.cadastrando}" type="reset" />
+			<p:commandButton process="@this" value="Voltar" action="#{eteBean.voltar}" rendered="#{!eteBean.confirmando}" update=":formCadastro,:formConsulta"/>
+		</p:column>
+	</p:row>
+</p:panelGrid>
+</h:form>
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<f:metadata>
+			<f:viewParam name="key" value="#{usuarioBean.key}" />
+			<f:viewParam name="usuario" value="#{usuarioBean.codigo}" />
+		</f:metadata>    	
+    </head>
+    <body>
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+            <ui:define name="centro">
+            <div class="geral">
+            	<p:messages showDetail="true" autoUpdate="true" id="msg" />
+            </div>
+            </ui:define>
+    </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+<ui:define name="centro"> 
+<div class='geral'>
+<br/>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Gráfico </td>
+		<td class="pagina"> &raquo; Energia Elétrica</td>
+	</tr>
+</table>
+<h:form id="form" prependId="true">
+	<p:messages showDetail="false" autoUpdate="true" id="msg" />
+	<h:panelGrid id="cadastro" columns="2">
+	
+		<h:outputLabel for="regional" value="Regional: *"/>
+		<p:selectOneMenu id="regional" value="#{graficoEnergiaEletricaBean.codigoRegional}" effect="fade" converter="selectOneConverter" required="true" requiredMessage="Regional é Obrigatória">
+			    <f:selectItems value="#{graficoEnergiaEletricaBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		         <p:ajax update="unidadenegocio, municipio, localidade" event="change" />  
+	    </p:selectOneMenu>
+		
+		<h:outputLabel for="unidadenegocio" value="Unidade de Negócio: *" />
+	    <p:selectOneMenu id="unidadenegocio" value="#{graficoEnergiaEletricaBean.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter"  required="true" requiredMessage="Unidade de Negócio é Obrigatória">
+		        <f:selectItems value="#{graficoEnergiaEletricaBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		        <p:ajax update="municipio, localidade" event="change" />  
+	    </p:selectOneMenu> 
+		
+		<h:outputLabel for="municipio" value="Município: *" />
+	    <p:selectOneMenu id="municipio" value="#{graficoEnergiaEletricaBean.codigoMunicipio}" effect="fade" converter="selectOneConverter"  required="true" requiredMessage="Município é Obrigatório" >
+		        <f:selectItems value="#{graficoEnergiaEletricaBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		        <p:ajax update="localidade" event="change" />  
+	    </p:selectOneMenu>
+		
+		<h:outputLabel for="localidade" value="Localidade: " />
+	    <p:selectOneMenu id="localidade" value="#{graficoEnergiaEletricaBean.codigoLocalidade}" effect="fade" converter="selectOneConverter"  >
+		        <f:selectItems value="#{graficoEnergiaEletricaBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+	    </p:selectOneMenu>
+	
+		<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
+		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória"/>
+
+		<h:outputLabel for="referenciaFinal" value="Referência Final: *"/>
+		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória"/>
+
+
+		<h:outputLabel for="tipoRelatorio" value="Tipo Gráfico: " />
+        <p:selectOneMenu id="tipoRelatorio" value="#{graficoEnergiaEletricaBean.tipoRelatorio}">
+	         <f:selectItems value="#{graficoEnergiaEletricaBean.listaRelatorio}"/>
+        </p:selectOneMenu>
+
+		<p:commandButton value="Exibir" action="#{graficoEnergiaEletricaBean.exibir}" update="form"/>
+	</h:panelGrid>
+	<script type="text/javascript">
+		$(function(){
+			options = {
+				    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+				};	
+			$("input[id*=referencia]").monthpicker(options);
+			});
+	</script>	
+	
+	<p:pieChart id="custom" value="#{graficoEnergiaEletricaBean.pieModelo}" legendPosition="e" fill="false" showDataLabels="true" animate="true" zoom="true" 
+                title="#{graficoEnergiaEletricaBean.titulo}" style="width:800px;height:400px" sliceMargin="5" diameter="250" rendered="#{graficoEnergiaEletricaBean.exibePie}"/>
+	<p:barChart id="basic" value="#{graficoEnergiaEletricaBean.barModelo}" legendPosition="ne"  
+            title="#{graficoEnergiaEletricaBean.titulo}" style="height:400px" rendered="#{graficoEnergiaEletricaBean.exibeBar}"/>
+	<p:lineChart id="category" value="#{graficoEnergiaEletricaBean.lineModelo}" legendPosition="ne"  
+    		 title="#{graficoEnergiaEletricaBean.titulo}" minY="0" style="height:800px" animate="true" zoom="true" rendered="#{graficoEnergiaEletricaBean.exibeLine}"/>                                  
+</h:form>
+</div>
+</ui:define>
+</ui:composition>
+</html>

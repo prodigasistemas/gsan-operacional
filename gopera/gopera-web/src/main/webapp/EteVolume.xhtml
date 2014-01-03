@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+<br />
+<h:form id="form" prependId="true">
+<p:messages showDeteil="false" autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Movimento </td>
+		<td class="pagina"> &raquo; Tratamento de Esgoto</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{eteVolumeBean.excluir}" update=":formConsulta" oncomplete="cd.hide()">
+		<f:setPropertyActionListener value="#{var}" target="#{eteVolumeBean.registro}" />
+	</p:commandButton>					
+	<p:commandButton value="Não" onclick="cd.hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta" prependId="false">
+	<p:panel rendered="#{eteVolumeBean.visualizando}">
+		<p:dataTable var="var" id="tabela" value="#{eteVolumeBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+		  	<p:column headerText="Opções" width="90" style="text-align:left">
+		  		<f:facet name="header">
+					<h:outputText class="tabela" value="Opções"/>
+				</f:facet>
+				<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{eteVolumeBean.consultar}" update=":formCadastro,:formConsulta">
+					<f:setPropertyActionListener value="#{var}" target="#{eteVolumeBean.registro}" />
+				</p:commandButton>
+				<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{eteVolumeBean.alterar}" update=":formCadastro,:formConsulta">
+					<f:setPropertyActionListener value="#{var}" target="#{eteVolumeBean.registro}" />
+				</p:commandButton>
+				<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="cd.show()">
+					<f:setPropertyActionListener value="#{var}" target="#{eteVolumeBean.registro}" />
+				</p:commandButton>
+			</p:column>
+					
+			<p:column filterBy="#{var.ete.descricao}" headerText="ETE" filterMatchMode="contains" style="text-align:left">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="ETE"/>
+				</f:facet>
+				<h:outputText value="#{var.ete.descricao}" />
+			</p:column>					
+	
+			<p:column filterBy="#{var.referencia}" styleClass="data" headerText="Data de Referência" filterMatchMode="contains" style="text-align:left">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Data de Referência"/>
+				</f:facet>
+				<h:outputText value="#{var.referencia}">
+					<f:convertDateTime pattern="MM/yyyy"/>
+				</h:outputText>
+			</p:column>	
+		</p:dataTable>
+		
+		<p:column>
+			<p:commandButton value="Novo" action="#{eteVolumeBean.novo}" update=":formCadastro,:formConsulta"/>
+		</p:column>	
+		<script type="text/javascript">
+			$(function(){
+				$(".data input").setMask('99/9999');
+				})
+		</script>	
+	</p:panel>
+</h:form>
+
+<h:form id="formCadastro">
+<p:panelGrid id="pgrCadastro" rendered="#{!eteVolumeBean.visualizando}">
+	<p:row>
+		<p:column coslspan="2">
+			<h:panelGrid id="cadastro" columns="2">
+				<h:outputLabel for="regional" value="Regional *"/>
+				<p:selectOneMenu id="regional" value="#{eteVolumeBean.registro.regionalProxy.codigo}" disabled="#{eteVolumeBean.confirmando or eteVolumeBean.editando or eteVolumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+					    <f:selectItems value="#{eteVolumeBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				         <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="unidadenegocio" value="Unidade de Negócio *" />
+			    <p:selectOneMenu id="unidadenegocio" value="#{eteVolumeBean.registro.unidadeNegocioProxy.codigo}" disabled="#{eteVolumeBean.confirmando or eteVolumeBean.editando or eteVolumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{eteVolumeBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu> 
+				
+				<h:outputLabel for="municipio" value="Município *" />
+			    <p:selectOneMenu id="municipio" value="#{eteVolumeBean.registro.municipioProxy.codigo}" disabled="#{eteVolumeBean.confirmando or eteVolumeBean.editando or eteVolumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{eteVolumeBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="localidade" value="Localidade *" />
+			    <p:selectOneMenu id="localidade" value="#{eteVolumeBean.registro.localidadeProxy.codigo}" disabled="#{eteVolumeBean.confirmando or eteVolumeBean.editando or eteVolumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{eteVolumeBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="cadastro" event="change" />  
+			    </p:selectOneMenu>
+	
+				<h:outputLabel for="ete" value="ETE *"/>
+				<p:selectOneMenu id="ete" value="#{eteVolumeBean.registro.ete.codigo}" converter="selectOneConverter" effect="fade" disabled="#{eteVolumeBean.desabilitaForm or eteVolumeBean.editando}" required="true" requiredMessage="ETE deve ser informado.">
+		         	<f:selectItem itemLabel="Selecione" itemValue="" />
+		         	<f:selectItems value="#{eteVolumeBean.listaETE}" var="ete" itemLabel="#{ete.descricao}" itemValue="#{ete.codigo}"/>  
+	    		</p:selectOneMenu>
+
+				<h:outputLabel for="mesreferencia" value="Mês de Referência *"/>
+				<p:calendar value="#{eteVolumeBean.registro.referencia}" id="mesreferencia" locale="pt" disabled="#{eteVolumeBean.desabilitaForm or eteVolumeBean.editando}" showOn="button" pattern="MM/yyyy" required="true" requiredMessage="Mês de Referência, deve ser informado."/>
+
+				<h:outputLabel for="volumecoletado" value="Volume Coletado *"/>
+				<p:inputText style="width: 80px !important;" value="#{eteVolumeBean.volumeColetado}" id="volumecoletado" maxlength="10" disabled="#{eteVolumeBean.desabilitaForm}" required="true" requiredMessage="Volume Coletado, deve ser informado."/>
+
+				<h:outputLabel for="volumetratado" value="Volume Tratado *"/>
+				<p:inputText style="width: 80px !important;" value="#{eteVolumeBean.volumeTratado}" id="volumetratado" maxlength="10" disabled="#{eteVolumeBean.desabilitaForm}" required="true" requiredMessage="Volume Tratado, deve ser informado."/>
+	<script type="text/javascript">
+		$(function(){
+			$("input[id*=volume]").setMask("decimal");				
+			$("input[id*=mes]").setMask("99/9999");
+			});
+	</script>	
+			</h:panelGrid>				
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column>
+				<p:commandButton value="Cadastrar" action="#{eteVolumeBean.cadastrar}" rendered="#{eteVolumeBean.cadastrando or eteVolumeBean.editando}" update="formCadastro"/>
+				<p:commandButton value="Confirmar" action="#{eteVolumeBean.confirmar}" rendered="#{eteVolumeBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Cancelar" action="#{eteVolumeBean.cancelar}" rendered="#{eteVolumeBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Limpar" rendered="#{eteVolumeBean.cadastrando}" type="reset"/>
+				<p:commandButton process="@this" value="Voltar" action="#{eteVolumeBean.voltar}" rendered="#{!eteVolumeBean.confirmando}" update=":formCadastro,:formConsulta" />
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+</h:form>
+
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

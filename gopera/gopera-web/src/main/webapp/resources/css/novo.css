@@ -1,0 +1,38 @@
+.campos_cadastro{
+	margin-bottom: 10px;
+}
+
+.campos_cadastro > div > label{
+	width: 120px;
+	display: inline-block;
+	margin-right: 10px;
+	height: 20px;
+}
+
+.campos_cadastro > div{
+	margin-top: 10px;
+}
+
+.campos_cadastro *{
+	vertical-align: middle;
+}
+
+.tabela_app{
+	width: 100%;
+}
+
+.tabela_header , .tabela_column_header, .tabela_row{
+	background: #E9EFF3;
+	font-family: Tahoma;
+	font-size: 11px;
+	color: #006D89;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+}
+
+.tabela_row{
+	font-weight: normal;
+	background: none;
+	color: #808080;
+}

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cadastroEAB_subMedidor" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74565f47-c618-43c6-b9ed-b3b714e84527">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="2"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cene_id" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[ SELECT cend_dataini, cend_datafim, cend_demandasecoponta, cend_demandasecoforaponta, cend_demandaumidoponta, cend_demandaumidoforaponta
+   FROM operacao.contrato_energia_demanda
+  WHERE cene_id = $P{cene_id}
+  ORDER BY cend_dataini
+]]>
+	</queryString>
+	<field name="cend_dataini" class="java.sql.Date"/>
+	<field name="cend_datafim" class="java.sql.Date"/>
+	<field name="cend_demandasecoponta" class="java.lang.Integer"/>
+	<field name="cend_demandasecoforaponta" class="java.lang.Integer"/>
+	<field name="cend_demandaumidoponta" class="java.lang.Integer"/>
+	<field name="cend_demandaumidoforaponta" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bda865b8-36e6-4f88-b7a7-3ac287eee47f" x="2" y="1" width="369" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período de Faturamento / Demanda Contratada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="590687f0-3caf-47c3-a0f9-977a57e4fa38" x="2" y="20" width="52" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3cbdd51c-5a1b-415e-936d-642761240f5c" x="54" y="20" width="49" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="01fae665-da02-472b-be43-44ef87b697a0" x="103" y="20" width="64" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponta (Kw)]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="47018543-a068-4f38-bdcd-a35abd06e7f7" x="2" y="30" width="369" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="3e4d5c1a-295a-458e-96e2-a6acd1e0e090" x="167" y="20" width="68" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fora da Ponta (Kw)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="246c9e63-48cc-4fac-8cde-06d75e519a95" x="303" y="20" width="68" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fora da Ponta (Kw)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="124bbbac-ae69-4995-b407-fc83b26dfce1" x="239" y="20" width="64" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponta (Kw)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="720f1274-2c0e-4e7d-afd3-a3d93e3e379c" x="103" y="11" width="132" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Seco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fad0c98b-76bb-4efd-8ccf-9547ff37e848" x="239" y="11" width="132" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Úmido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="b4511475-6668-43d0-bf4c-5c034dcb9274" x="2" y="0" width="52" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cend_dataini}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="77425c9d-3e85-4473-91ba-a29bc874fcd7" x="103" y="0" width="64" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cend_demandasecoponta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="5712b9fe-fd4d-4bdb-a855-b37baf5fca47" x="54" y="0" width="49" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cend_datafim}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="7cd3ea8d-636c-489e-8ca9-b65d396088ed" x="167" y="0" width="68" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cend_demandasecoforaponta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="2b169b26-c2cf-4db8-9f66-eca776fe68fb" x="240" y="0" width="64" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cend_demandaumidoponta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="45366038-e47a-4014-89e7-a547e53743d1" x="303" y="0" width="68" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cend_demandaumidoforaponta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

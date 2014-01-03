@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="centro">
+		<h:head>
+			<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/volumeAgua.css" />
+		</h:head>
+		<h:body>
+			<div class="geral">
+				<br />
+				<h:form id="form" prependId="true">
+					<p:messages showDetail="false" autoUpdate="true" id="msg" />
+				</h:form>
+				<table>
+					<tr>
+						<td class="caminho">#{m.voce_esta_aqui}:</td>
+						<td class="sessao">#{m.movimento}</td>
+						<td class="sessao">&raquo; #{m.volume_agua}</td>
+						<td class="pagina">&raquo; #{m.eta} - #{m.estacao_tratamento_agua}</td>
+					</tr>
+				</table>
+
+				<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert" widgetVar="cd">
+					<p:commandButton value="Sim" actionListener="#{etaVolumeBean.excluir}" update=":formConsulta" oncomplete="cd.hide()">
+						<f:setPropertyActionListener value="#{var}" target="#{etaVolumeBean.registro}" />
+					</p:commandButton>
+					<p:commandButton value="Não" onclick="cd.hide();" type="button" />
+				</p:confirmDialog>
+
+				<h:form id="formConsulta" prependId="false">
+					<p:panel rendered="#{etaVolumeBean.visualizando}">
+						<p:dataTable var="var" id="tabelaConsumo" value="#{etaVolumeBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true"
+							paginatorPosition="bottom" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+							<p:column headerText="Opções" width="90" style="text-align:left">
+								<f:facet name="header">
+									<h:outputText class="tabela" value="Opções" />
+								</f:facet>
+								<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{etaVolumeBean.consultar}" update=":formCadastro,:formConsulta">
+									<f:setPropertyActionListener value="#{var}" target="#{etaVolumeBean.registro}" />
+								</p:commandButton>
+								<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{etaVolumeBean.alterar}" update=":formCadastro,:formConsulta">
+									<f:setPropertyActionListener value="#{var}" target="#{etaVolumeBean.registro}" />
+								</p:commandButton>
+								<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="cd.show()">
+									<f:setPropertyActionListener value="#{var}" target="#{etaVolumeBean.registro}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column filterBy="#{var.eta.descricao}" headerText="ETA" filterMatchMode="contains" style="text-align:left">
+								<f:facet name="header">
+									<h:outputText class="tabela" value="ETA" />
+								</f:facet>
+								<h:outputText value="#{var.eta.descricao}" />
+							</p:column>
+
+							<p:column filterBy="#{var.referencia}" styleClass="data" headerText="Data de Referência" filterMatchMode="contains" style="text-align:left">
+								<f:facet name="header">
+									<h:outputText class="tabela" value="Data de Referência" />
+								</f:facet>
+								<h:outputText value="#{var.referencia}">
+									<f:convertDateTime pattern="MM/yyyy" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+
+						<p:column>
+							<p:commandButton value="Novo" action="#{etaVolumeBean.novo}" update=":formCadastro,:formConsulta" />
+						</p:column>
+						<script type="text/javascript">
+			$(function(){
+				$(".data input").setMask('99/9999');
+				})
+		</script>
+					</p:panel>
+				</h:form>
+
+				<h:form id="formCadastro" prependId="false">
+					<p:panel rendered="#{!etaVolumeBean.visualizando}">
+						<div class='campos_cadastro'>
+							<div>
+								<h:outputLabel for="regional" value="Regional *" />
+								<p:selectOneMenu id="regional" value="#{etaVolumeBean.registro.regionalProxy.codigo}"
+									disabled="#{etaVolumeBean.confirmando or etaVolumeBean.editando or etaVolumeBean.desabilitaForm}" effect="fade" required="true"
+									requiredMessage="Regional, deve ser informado.">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{etaVolumeBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}" />
+									<p:ajax update="unidadenegocio" event="change" />
+								</p:selectOneMenu>
+							</div>
+							<div>
+								<h:outputLabel for="unidadenegocio" value="Unidade de Negócio *" />
+								<p:selectOneMenu id="unidadenegocio" value="#{etaVolumeBean.registro.unidadeNegocioProxy.codigo}"
+									disabled="#{etaVolumeBean.confirmando or etaVolumeBean.editando or etaVolumeBean.desabilitaForm}" effect="fade" required="true"
+									requiredMessage="Unidade de Negócio, deve ser informado.">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{etaVolumeBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}" />
+									<p:ajax update="municipio" event="change" />
+								</p:selectOneMenu>
+							</div>
+							<div>
+								<h:outputLabel for="municipio" value="Município *" />
+								<p:selectOneMenu id="municipio" value="#{etaVolumeBean.registro.municipioProxy.codigo}"
+									disabled="#{etaVolumeBean.confirmando or etaVolumeBean.editando or etaVolumeBean.desabilitaForm}" effect="fade" required="true"
+									requiredMessage="Município, deve ser informado.">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{etaVolumeBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}" />
+									<p:ajax update="localidade" event="change" />
+								</p:selectOneMenu>
+							</div>
+							<div>
+								<h:outputLabel for="localidade" value="Localidade *" />
+								<p:selectOneMenu id="localidade" value="#{etaVolumeBean.registro.localidadeProxy.codigo}"
+									disabled="#{etaVolumeBean.confirmando or etaVolumeBean.editando or etaVolumeBean.desabilitaForm}" effect="fade" required="true"
+									requiredMessage="Localidade, deve ser informado.">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{etaVolumeBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}" />
+									<p:ajax update="eta" event="change" />
+								</p:selectOneMenu>
+							</div>
+
+							<div>
+								<h:outputLabel for="eta" value="ETA *" />
+								<p:selectOneMenu id="eta" value="#{etaVolumeBean.registro.eta.codigo}" converter="selectOneConverter" effect="fade"
+									disabled="#{etaVolumeBean.desabilitaForm or etaVolumeBean.editando}" required="true" requiredMessage="ETA deve ser informado.">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{etaVolumeBean.listaETA}" var="eta" itemLabel="#{eta.descricao}" itemValue="#{eta.codigo}" />
+									<p:ajax listener="#{etaVolumeBean.carregarMedidor}" update="formCadastro" event="change" />
+								</p:selectOneMenu>
+							</div>
+
+							<div>
+								<h:outputLabel for="mesreferencia" value="Mês de Referência *" />
+								<p:calendar value="#{etaVolumeBean.registro.referencia}" id="mesreferencia" locale="pt"
+									disabled="#{etaVolumeBean.desabilitaForm or etaVolumeBean.editando}" showOn="button" pattern="MM/yyyy" required="true"
+									requiredMessage="Mês de Referência, deve ser informado." />
+							</div>
+
+							<div>
+								<h:outputLabel for="datahoramedicao" value="Data/Hora Medição *" />
+								<p:calendar value="#{etaVolumeBean.registro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{etaVolumeBean.desabilitaForm}"
+									showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medição, deve ser informado." />
+							</div>
+
+							<div>
+								<h:outputLabel for="estimado" value="Valor Estimado *" />
+								<p:selectOneMenu id="estimado" value="#{etaVolumeBean.registro.estimado}" effect="fade" disabled="#{etaVolumeBean.desabilitaForm}" required="true"
+									requiredMessage="Estimativa, deve ser informada.">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItem itemLabel="SIM" itemValue="true" />
+									<f:selectItem itemLabel="NÃO" itemValue="false" />
+								</p:selectOneMenu>
+							</div>
+							<div>
+								<h:outputLabel for="volume" value="Volume" />
+								<p:inputText style="width: 80px !important;" value="#{etaVolumeBean.volumeAux}" id="volume" maxlength="10" disabled="#{etaVolumeBean.desabilitaForm}" />
+							</div>
+						</div>
+
+						<div>
+							<p:dataTable var="var" id="tabelaMedidorSaida" value="#{etaVolumeBean.registro.volumeSaida}" paginator="false" paginatorPosition="bottom" rows="10"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Nenhum Registro Encontrado">
+								<f:facet name="header">  
+			            Medidor de Saída 
+			        </f:facet>
+								<p:column headerText="Medidor de Saída" style="text-align:left">
+									<f:facet name="header">
+										<h:outputText class="tabela" value="Medidor de Saída" />
+									</f:facet>
+									<h:outputText value="#{var.medidorSaida.identificadorLeitura}" />
+								</p:column>
+								<p:column headerText="Tipo de Medição" style="text-align:left">
+									<f:facet name="header">
+										<h:outputText class="tabela" value="Tipo de Medição" />
+									</f:facet>
+									<h:outputText value="Vazão" rendered="#{var.medidorSaida.tipoMedicao == 1}" />
+									<h:outputText value="Pressão" rendered="#{var.medidorSaida.tipoMedicao == 2}" />
+									<h:outputText value="Nível" rendered="#{var.medidorSaida.tipoMedicao == 3}" />
+								</p:column>
+								<p:column headerText="Medição" style="text-align:left">
+									<f:facet name="header">
+										<h:outputText class="tabela" value="Medição" />
+									</f:facet>
+									<p:inputText style="width: 80px !important;" value="#{var.valorMedicaoSaidaAux}" id="vazao" maxlength="10" disabled="#{etaVolumeBean.desabilitaForm}"
+										required="true" requiredMessage="Valor da Medição de Saída, deve ser informado." />
+								</p:column>
+							</p:dataTable>
+						</div>
+
+						<div>
+							<p:dataTable var="var" id="tabelaVolume" value="#{etaVolumeBean.registro.volumeEntrada}" paginator="false" paginatorPosition="bottom" rows="10"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Nenhum Registro Encontrado">
+								<f:facet name="header">  
+		            Medidor de Entrada 
+		        </f:facet>
+								<p:column headerText="Medidor de Entrada" style="text-align:left">
+									<f:facet name="header">
+										<h:outputText class="tabela" value="Medidor de Entrada" />
+									</f:facet>
+									<h:outputText value="#{var.medidorEntrada.identificadorLeitura}" />
+								</p:column>
+								<p:column headerText="Tipo de Medição" style="text-align:left">
+									<f:facet name="header">
+										<h:outputText class="tabela" value="Tipo de Medição" />
+									</f:facet>
+									<h:outputText value="Vazão" rendered="#{var.medidorEntrada.tipoMedicao == 1}" />
+									<h:outputText value="Pressão" rendered="#{var.medidorEntrada.tipoMedicao == 2}" />
+									<h:outputText value="Nível" rendered="#{var.medidorEntrada.tipoMedicao == 3}" />
+								</p:column>
+								<p:column headerText="Medição" style="text-align:left">
+									<f:facet name="header">
+										<h:outputText class="tabela" value="Medição" />
+									</f:facet>
+									<p:inputText style="width: 80px !important;" value="#{var.valorMedicaoEntradaAux}" id="vazao" maxlength="10" disabled="#{etaVolumeBean.desabilitaForm}"
+										required="true" requiredMessage="Valor da Medição de Entrada, deve ser informado." />
+								</p:column>
+							</p:dataTable>
+						</div>
+
+						<div class='observacoes'>
+							<h:outputLabel value="#{m.observacoes}" />
+							<h:inputTextarea value="#{etaVolumeBean.registro.observacoes}" validatorMessage="#{m.erro_observacoes_excedem_255}" disabled="#{etaVolumeBean.desabilitaForm}">
+								<f:validateLength maximum="255" />
+							</h:inputTextarea>
+						</div>
+
+						<div>
+							<p:commandButton value="Cadastrar" action="#{etaVolumeBean.cadastrar}" rendered="#{etaVolumeBean.cadastrando or etaVolumeBean.editando}"
+								update="formCadastro" />
+							<p:commandButton value="Confirmar" action="#{etaVolumeBean.confirmar}" rendered="#{etaVolumeBean.confirmando}" update="formCadastro" />
+							<p:commandButton value="Cancelar" action="#{etaVolumeBean.cancelar}" rendered="#{etaVolumeBean.confirmando}" update="formCadastro" />
+							<p:commandButton value="Limpar" rendered="#{etaVolumeBean.cadastrando}" type="reset" />
+							<p:commandButton process="@this" value="Voltar" action="#{etaVolumeBean.voltar}" rendered="#{!etaVolumeBean.confirmando}"
+								update=":formCadastro,:formConsulta" />
+						</div>
+						<script type="text/javascript">
+		$(function(){
+			$("input[id*=volume]").setMask("decimal");
+			$("input[id*=vazao]").setMask("decimal");				
+			$("input[id*=datahora]").setMask("39/19/2099\s29:59");
+			$("input[id*=mes]").setMask("99/9999");
+			});
+	</script>
+					</p:panel>
+
+				</h:form>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

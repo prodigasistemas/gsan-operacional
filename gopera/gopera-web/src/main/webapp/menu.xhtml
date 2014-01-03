@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formMenu">
+		<p:menubar>
+			<p:submenu label="Cadastro">
+				<p:menuitem value="Unidade Medida"  url="/TbUnidade.jsf" />
+				<p:menuitem value="Produtos Quimicos"  url="/Produto.jsf" />
+				<p:menuitem value="Registro de Consumo"  url="TBUnidade.xhtml" />
+				<p:menuitem value="Registro de Consumo Unidade Produção"  url="TBUnidade.xhtml" />
+			</p:submenu>
+			<p:submenu label="Movimento">
+				<p:menuitem value="Consumo Produto Quimico" ajax="false" />
+			</p:submenu>
+			<p:submenu label="Relatórios">
+				<p:menuitem value="Consumo Gerencial" ajax="false" />
+				<p:menuitem value="Consumo Macro Região" ajax="false" />
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+
+
+</html>

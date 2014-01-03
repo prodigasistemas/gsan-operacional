@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="analiseLaboratorial" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3660eaed-39bb-41aa-a6d9-0cad4defb975">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="503"/>
+	<property name="ireport.y" value="93"/>
+	<parameter name="dataInicial" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="dataFinal" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="nomeUsuario" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exibirRegional" class="java.lang.Boolean"/>
+	<parameter name="exibirUnidadeNegocio" class="java.lang.Boolean"/>
+	<parameter name="exibirMunicipio" class="java.lang.Boolean"/>
+	<parameter name="exibirLocalidade" class="java.lang.Boolean"/>
+	<parameter name="exibirUnidadeOperacional" class="java.lang.Boolean"/>
+	<parameter name="logoRelatorio" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\GSANOperacional\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nomeRelatorio" class="java.lang.String"/>
+	<parameter name="filtro" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="uneg_nmunidadenegocio" class="java.lang.String"/>
+	<field name="muni_nmmunicipio" class="java.lang.String"/>
+	<field name="loca_nmlocalidade" class="java.lang.String"/>
+	<field name="anac_referencia" class="java.util.Date"/>
+	<field name="anac_analisada" class="java.lang.Integer"/>
+	<field name="anac_conformidade" class="java.lang.Integer"/>
+	<field name="greg_nmregional" class="java.lang.String"/>
+	<field name="greg_id" class="java.lang.String"/>
+	<field name="uneg_id" class="java.lang.String"/>
+	<field name="muni_id" class="java.lang.String"/>
+	<field name="loca_id" class="java.lang.String"/>
+	<variable name="Soma_Localidade_Coletado" class="java.lang.Double" resetType="Group" resetGroup="Localidade" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_analisada}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Municipio_Coletado" class="java.lang.Double" resetType="Group" resetGroup="Municipio" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_analisada}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Unidade_Coletado" class="java.lang.Double" resetType="Group" resetGroup="UnidadeNegocio" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_analisada}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Regional_Coletado" class="java.lang.Double" resetType="Group" resetGroup="Regional" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_analisada}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Localidade_Tratado" class="java.lang.Double" resetType="Group" resetGroup="Localidade" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_conformidade}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Municipio_Tratado" class="java.lang.Double" resetType="Group" resetGroup="Municipio" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_conformidade}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Unidade_Tratado" class="java.lang.Double" resetType="Group" resetGroup="UnidadeNegocio" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_conformidade}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Regional_Tratado" class="java.lang.Double" resetType="Group" resetGroup="Regional" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_conformidade}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Total_Analisada" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_analisada}]]></variableExpression>
+	</variable>
+	<variable name="Soma_Total_Conformidade" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{anac_conformidade}]]></variableExpression>
+	</variable>
+	<group name="Regional">
+		<groupExpression><![CDATA[$F{greg_id}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirRegional}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="d19642ce-b821-4118-98c4-5d5f41f12e69" x="0" y="0" width="70" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Gerência Regional:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="8d42d58e-69e0-49f3-9a54-5e1103ad3222" x="89" y="0" width="100" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{greg_nmregional}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirRegional}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="0" y="0" width="89" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Gerência Regional:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="1c3b08aa-9e51-467e-9aa7-d8228dbe6277" x="89" y="0" width="100" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{greg_nmregional}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="7dfaf83d-44d6-4076-b350-0e3cb5f0f53c" x="463" y="0" width="76" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Regional_Tratado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="57b97fac-6193-425b-bf1e-09ecd2a9ce27" x="377" y="0" width="77" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Regional_Coletado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="UnidadeNegocio">
+		<groupExpression><![CDATA[$F{uneg_id}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirUnidadeNegocio}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="12" y="0" width="76" height="11"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unidade de Negócio:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="ac8e6d47-065b-48aa-a816-41b359629456" x="100" y="0" width="111" height="11"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{uneg_nmunidadenegocio}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirUnidadeNegocio}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="6" y="0" width="94" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Unidade de Negócio:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="eb03fa57-df12-47eb-a2a9-78658ebd16ab" x="100" y="1" width="111" height="11"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{uneg_nmunidadenegocio}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="b3cb0985-cbb4-46a4-8a44-db9443d2bb52" x="463" y="1" width="76" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Unidade_Tratado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="b5d0fff8-6114-425b-bb94-0e1485ae967a" x="377" y="1" width="77" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Unidade_Coletado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Municipio">
+		<groupExpression><![CDATA[$F{muni_id}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirMunicipio}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="59" y="0" width="45" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Município:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="51156e7d-d2d2-47d1-a951-3a9685c29340" x="112" y="0" width="90" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{muni_nmmunicipio}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirMunicipio}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="48" y="0" width="56" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Município:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="27ede04e-d860-4366-8081-17785a585ad9" x="112" y="0" width="111" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{muni_nmmunicipio}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="9319cd13-dc89-488d-9680-adc850a1cd32" x="463" y="0" width="76" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Municipio_Tratado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="4f75bbb5-68e3-43fa-881c-7cea604e6892" x="377" y="0" width="77" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Municipio_Coletado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Localidade">
+		<groupExpression><![CDATA[$F{loca_id}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirLocalidade}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="65" y="0" width="47" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Localidade:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="7aee1ae4-9406-46ac-9b9f-cc282f297691" x="123" y="0" width="100" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{loca_nmlocalidade}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirLocalidade}]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="48" y="0" width="64" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Localidade:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="a3748133-7805-4ff6-bf75-af7f1d311b03" x="123" y="0" width="100" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{loca_nmlocalidade}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="d73d6c8d-d19d-463f-ace0-00c1c8581a2c" x="463" y="0" width="76" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Localidade_Tratado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#0" isBlankWhenNull="true">
+					<reportElement uuid="d7ba02ce-671b-46bf-acc3-ab6475b032d0" x="377" y="0" width="77" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Soma_Localidade_Coletado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="65">
+			<image>
+				<reportElement uuid="53ec021a-7caf-4d6b-891b-4ba7c0ef12cc" x="0" y="1" width="553" height="63"/>
+				<imageExpression><![CDATA[$P{logoRelatorio}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="50" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="c6e4fbce-7fd0-4ede-b147-7177cf1cecae" x="0" y="63" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9d7b4e41-5b32-4987-8138-48a637318762" x="422" y="52" width="31" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ebab8c36-0470-4967-8f70-4b4d47c94826" x="499" y="52" width="8" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<textField pattern="MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="6b0a6740-9341-45b7-829a-f6a820a19346" x="454" y="52" width="45" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="fcf0d5df-d618-499c-9334-1070d8442f6c" x="507" y="52" width="43" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="127563d9-f017-4471-b030-c10224228285" x="184" y="1" width="345" height="15" forecolor="#2D6B82"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSANPA - Companhia de Saneamento do Estado do Pará]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="184bc7ad-1985-4432-b934-b9730e62416c" x="184" y="16" width="345" height="15" forecolor="#2D6B82"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeRelatorio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="26d6af45-381e-4c08-99a5-5c00cf3474fc" x="0" y="52" width="422" height="10"/>
+				<textElement textAlignment="Left">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{filtro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ba4be65f-0707-4a09-8b57-23ee6d00926f" x="377" y="0" width="77" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amostra Analisada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2673493f-494e-4828-991a-77fce34d8aeb" x="454" y="0" width="99" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amostra em Conformidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c0a86305-2d28-402c-b289-f085da81247e" x="325" y="0" width="52" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Referência]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="#0" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="377" y="0" width="77" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anac_analisada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="c595b651-1b25-4e74-934d-26bb0f51970f" x="325" y="0" width="52" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anac_referencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0" isBlankWhenNull="true">
+				<reportElement uuid="c4dc1ef3-1fc9-40e7-8754-6f6fb023a3c2" x="463" y="0" width="76" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anac_conformidade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ba508e74-25fd-4bfb-af8d-a975fc6c2ae2" x="453" y="1" width="68" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="6eedf9d8-13d5-462c-b03c-5b4a55200461" x="521" y="1" width="34" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c22f666c-275a-4d03-9be5-a27fa97128ef" x="237" y="1" width="38" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba2fdd24-a675-46f9-b01a-310384b21675" x="3" y="1" width="29" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="f7ec67d3-5dd1-43a1-8a56-c425fd2d8fd0" x="268" y="1" width="66" height="9"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2386a4dd-4ce6-4954-82af-0e5bfe88ab8d" x="33" y="1" width="100" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeUsuario}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="12">
+			<textField pattern="#0" isBlankWhenNull="true">
+				<reportElement uuid="7603e6a8-4995-4a11-9c85-b41e9238feeb" x="463" y="0" width="76" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Soma_Total_Conformidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8d713e7d-e7f7-49e3-afd8-598369c0ef56" x="0" y="0" width="89" height="12"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Geral:]]></text>
+			</staticText>
+			<textField pattern="#0" isBlankWhenNull="true">
+				<reportElement uuid="f5e47dc8-2c53-4d58-b0d6-c603ec1cfe5c" x="377" y="0" width="77" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Soma_Total_Analisada}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
