@@ -315,7 +315,7 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 		for (String key : dadosRelatorio.keySet()) {
 			String valor = dadosRelatorio.getString(key);
 			String[] labels = valor.split(";");
-			mapDados.put(labels[1].trim(), new DadoRelatorio(labels[1].trim(), labels[0].trim()));
+			mapDados.put(labels[1].trim(), new DadoRelatorio(labels[1].trim(), labels[0].trim(), labels[2].trim()));
 		}
 		VerificaTipoRelatorio();
 	}
@@ -524,6 +524,7 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 		case 4: // ANALISE ENERGIA ELETRICA
 			infos.setPrimeiroDiaReferenciaInicial(primeiroDiaMes(referenciaInicial));
 			infos.setPrimeiroDiaReferenciaFinal(primeiroDiaMes(referenciaFinal));
+			infos.setUltimoDiaReferenciaFinal(ultimoDiaMes(referenciaFinal));
 			infos.setCodigoRegional(codigoRegional);
 			infos.setCodigoUnidadeNegocio(codigoUnidadeNegocio);
 			infos.setCodigoMunicipio(codigoMunicipio);

@@ -8,6 +8,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import br.gov.pa.cosanpa.gopera.util.DateUtil;
+import br.gov.pa.cosanpa.gopera.util.Mes;
 
 public class TesteIntervaloNumeralMeses {
 
@@ -35,7 +36,7 @@ public class TesteIntervaloNumeralMeses {
 		builder.append(", ");
 		builder.append("Mes [numeral=4, nome=Abril, nomeCurto=ABR]");
 		builder.append("]");
-		assertEquals(builder.toString(), util.numeralMesesPeriodo(dataInicial, dataFinal).toString());
+		assertEquals(builder.toString(), util.mesesPeriodo(dataInicial, dataFinal).toString());
 	}
 
 	@Test
@@ -74,7 +75,7 @@ public class TesteIntervaloNumeralMeses {
 		builder.append(", ");
 		builder.append("Mes [numeral=12, nome=Dezembro, nomeCurto=DEZ]");
 		builder.append("]");
-		assertEquals(builder.toString(), util.numeralMesesPeriodo(dataInicial, dataFinal).toString());
+		assertEquals(builder.toString(), util.mesesPeriodo(dataInicial, dataFinal).toString());
 	}
 
 	@Test
@@ -115,6 +116,29 @@ public class TesteIntervaloNumeralMeses {
 		builder.append("Mes [numeral=1, nome=Janeiro, nomeCurto=JAN]");
 		builder.append("]");
 		
-		assertEquals(builder.toString(), util.numeralMesesPeriodo(dataInicial, dataFinal).toString());
+		assertEquals(builder.toString(), util.mesesPeriodo(dataInicial, dataFinal).toString());
+	}
+	
+	@Test
+	public void testJaneiro2013Abril2013() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(2013, 00, 01);
+		Date dataInicial = cal.getTime();
+		cal.set(2013, 03, 01);
+		Date dataFinal = cal.getTime();
+		
+		DateUtil util = new DateUtil();
+		StringBuilder builder = new StringBuilder();
+		builder.append("01/2013");
+		builder.append("02/2013");
+		builder.append("03/2013");
+		builder.append("04/2013");
+		
+		StringBuilder meses = new StringBuilder();
+		for (Mes mes: util.mesesPeriodo(dataInicial, dataFinal)){
+			meses.append(mes.getMesAno());
+		}
+		
+		assertEquals(builder.toString(), meses.toString());
 	}
 }

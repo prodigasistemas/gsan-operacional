@@ -52,7 +52,7 @@ public class GeraPlanilhaUCNaoCadastradaCommand extends AbstractCommandGeraPlani
 				if (relatorioExcel.getRelatorioEnergiaEletrica().get(j).getCodigoUC() == null) {
 					throw new UnidadeConsumidoraNaoRelacionada();
 				}
-				addInteiro(sheet, 0, i, Double.parseDouble(relatorioExcel.getRelatorioEnergiaEletrica().get(j).getCodigoUC().toString()));
+				addInteiro(sheet, 0, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getCodigoUC());
 				// Segunda coluna
 				addLabel(sheet, 1, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getNomeUC());
 				// Terceira coluna

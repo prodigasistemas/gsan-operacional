@@ -82,7 +82,7 @@ public class ReportConsultService {
 			ResultSet result = statement.executeQuery(builder.toString());
 			
 			DateUtil util = new DateUtil();
-			List<Mes> meses = util.numeralMesesPeriodo(dataIni, dataFim);
+			List<Mes> meses = util.mesesPeriodo(dataIni, dataFim);
 			
 			while(result.next()){
 				TotalProdutoQuimicoMensal total = resumos.get(result.getString(1));

@@ -3,11 +3,6 @@ package br.gov.pa.cosanpa.gopera.command;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import javax.ejb.EJB;
-
-import br.gov.pa.cosanpa.gopera.fachada.IRelatorioEnergiaEletrica;
-import br.gov.pa.cosanpa.gopera.model.RelatorioExcel;
-import br.gov.pa.cosanpa.gopera.util.WebBundle;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
@@ -19,6 +14,9 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
+import br.gov.pa.cosanpa.gopera.fachada.IRelatorioEnergiaEletrica;
+import br.gov.pa.cosanpa.gopera.model.RelatorioExcel;
+import br.gov.pa.cosanpa.gopera.util.WebBundle;
 
 public abstract class AbstractCommandGeraPlanilha {
 
@@ -116,9 +114,9 @@ public abstract class AbstractCommandGeraPlanilha {
 		planilha.addCell(numero);
 	}
 
-	protected void addInteiro(WritableSheet planilha, int coluna, int linha, Double num) throws WriteException {
+	protected void addInteiro(WritableSheet planilha, int coluna, int linha, Integer num) throws WriteException {
 		if (num == null)
-			num = 0.0;
+			num = 0;
 		jxl.write.Number numero;
 		numero = new jxl.write.Number(coluna, linha, num, wcfInteiro);
 		planilha.addCell(numero);
