@@ -48,25 +48,6 @@ public class WebUtil {
 		}
 	}
 	
-	public Date primeiroDiaMes(String referencia){
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, Integer.parseInt(referencia.substring(3,7)));
-		c.set(Calendar.MONTH, Integer.parseInt(referencia.substring(0,2)) -1);
-		c.set(Calendar.DAY_OF_MONTH, 1);
-		return c.getTime();
-	}
-	
-	public Date ultimoDiaMes(String referencia){
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, Integer.parseInt(referencia.substring(3,7)));
-		c.set(Calendar.MONTH, Integer.parseInt(referencia.substring(0,2)) -1);
-		c.set(Calendar.DAY_OF_MONTH, 1);
-		
-		c.add(Calendar.MONTH, 1);
-		c.add(Calendar.DAY_OF_MONTH, -1);
-		return c.getTime();
-	}
-	
 	public List<String> mesesPeriodoEmNome(Date dataInicial, Date dataFinal){
 		List<String> meses = new LinkedList<String>();
 		Locale locale = new Locale("pt", "BR");

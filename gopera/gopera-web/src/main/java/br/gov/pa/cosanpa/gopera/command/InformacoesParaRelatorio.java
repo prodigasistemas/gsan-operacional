@@ -16,8 +16,6 @@ public class InformacoesParaRelatorio {
 
 	private Date primeiroDiaReferenciaFinal;
 	
-	private Date ultimoDiaReferenciaFinal;
-	
 	private Integer codigoRegional;
 	
 	private Integer codigoUnidadeNegocio;
@@ -60,14 +58,6 @@ public class InformacoesParaRelatorio {
 
 	public void setPrimeiroDiaReferenciaFinal(Date primeiroDiaReferenciaFinal) {
 		this.primeiroDiaReferenciaFinal = primeiroDiaReferenciaFinal;
-	}
-	
-	public Date getUltimoDiaReferenciaFinal() {
-		return ultimoDiaReferenciaFinal;
-	}
-
-	public void setUltimoDiaReferenciaFinal(Date ultimoDiaReferenciaFinal) {
-		this.ultimoDiaReferenciaFinal = ultimoDiaReferenciaFinal;
 	}
 
 	public Integer getCodigoRegional() {

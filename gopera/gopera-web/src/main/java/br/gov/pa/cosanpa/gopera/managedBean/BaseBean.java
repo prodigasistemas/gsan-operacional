@@ -22,7 +22,6 @@ import br.gov.pa.cosanpa.gopera.fachada.IGeneric;
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 import br.gov.pa.cosanpa.gopera.model.UsuarioProxy;
 import br.gov.pa.cosanpa.gopera.util.WebBundle;
-import br.gov.pa.cosanpa.gopera.util.WebUtil;
 
 public abstract class BaseBean<T> {
 	@EJB
@@ -318,13 +317,13 @@ public abstract class BaseBean<T> {
 	}
 	
 	public Date primeiroDiaMes(String referencia){
-		return (new WebUtil()).primeiroDiaMes(referencia);
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, Integer.parseInt(referencia.substring(3,7)));
+		c.set(Calendar.MONTH, Integer.parseInt(referencia.substring(0,2)) -1);
+		c.set(Calendar.DAY_OF_MONTH, 1);
+		return c.getTime();
 	}
 	
-	public Date ultimoDiaMes(String referencia){
-		return (new WebUtil()).ultimoDiaMes(referencia);
-	}
-
 	public boolean validaReferencia(Date datLancamento){
 		try{
 			String bloqueiaDataRetroativa = fachadaProxy.getParametroSistema(8);

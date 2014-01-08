@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import br.gov.pa.cosanpa.gopera.model.DadosRelatorioEnergiaEletrica;
 import br.gov.pa.cosanpa.gopera.model.EnergiaAnalise;
 import br.gov.pa.cosanpa.gopera.model.EnergiaEletricaDados;
 import br.gov.pa.cosanpa.gopera.model.RelatorioEnergiaEletrica;
@@ -15,7 +14,7 @@ import br.gov.pa.cosanpa.gopera.model.RelatorioEnergiaEletrica;
 public interface IRelatorioEnergiaEletrica {
 	public List<EnergiaEletricaDados> getEnergiaEletricaDados(Date dataReferencia) throws Exception;
 	public List<RelatorioEnergiaEletrica> getEnergiaEletricaAnalise(Date dataReferenciaInicial, Date dataReferenciaFinal, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
-	public  List<DadosRelatorioEnergiaEletrica> analiseEnergiaEletrica(Date dataReferenciaInicial, Date dataReferenciaFinal, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
+	public String queryEnergiaEletricaAnalise(Date dataReferenciaInicial, Date dataReferenciaFinal, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
 	public List<List> getMesesPeriodo(String query) throws Exception;
 	public List<List> getUCs(String query) throws Exception;
 	public List<List> getDados(String query, String mes, String uc) throws Exception;

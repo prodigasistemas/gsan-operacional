@@ -358,7 +358,7 @@ public class RelatorioProdutoQuimicoEJB implements IRelatorioProdutoQuimico {
 		
 		Integer intColConsumo;
 		
-		List<Mes> mesesIntervalo = (new DateUtil()).mesesPeriodo(dataInicial, dataFinal);
+		List<Mes> mesesIntervalo = (new DateUtil()).numeralMesesPeriodo(dataInicial, dataFinal);
 		
 		for (List colunas : valores) {
 			RelatorioGerencial relatorioGerencial = new RelatorioGerencial();

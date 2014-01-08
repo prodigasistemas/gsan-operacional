@@ -3,21 +3,16 @@ package br.gov.pa.cosanpa.gopera.util;
 import java.io.Serializable;
 
 public class DadoRelatorio implements Comparable<DadoRelatorio>, Serializable{
-	private static final long serialVersionUID = 6785874933205212275L;
-
 	private String indice;
 	
 	private String label;
 	
-	private String nome;
-	
 	public DadoRelatorio() {
 	}
 	
-	public DadoRelatorio(String indice, String label, String nome) {
+	public DadoRelatorio(String indice, String label) {
 		this.indice = indice;
 		this.label = label;
-		this.nome = nome;
 	}
 
 	public String getIndice() {
@@ -34,14 +29,6 @@ public class DadoRelatorio implements Comparable<DadoRelatorio>, Serializable{
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	@Override

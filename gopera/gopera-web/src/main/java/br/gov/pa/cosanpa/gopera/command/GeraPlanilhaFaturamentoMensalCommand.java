@@ -43,14 +43,14 @@ public class GeraPlanilhaFaturamentoMensalCommand extends AbstractCommandGeraPla
 			for (i = 0; i < this.energiaEletricaDados.size(); i++) {
 				j = i + 2;
 				this.addLabel(sheet, 0, j, formataData.format(this.energiaEletricaDados.get(i).getDataLeitura()));
-				this.addInteiro(sheet, 1, j, this.energiaEletricaDados.get(i).getCodigoUC());
-				this.addInteiro(sheet, 2, j, Integer.parseInt(this.energiaEletricaDados.get(i).getFatura()));
+				this.addInteiro(sheet, 1, j, Double.parseDouble(this.energiaEletricaDados.get(i).getCodigoUC().toString()));
+				this.addInteiro(sheet, 2, j, Double.parseDouble(this.energiaEletricaDados.get(i).getFatura()));
 				this.addLabelLeft(sheet, 3, j, this.energiaEletricaDados.get(i).getNome());
 				this.addLabelLeft(sheet, 4, j, this.energiaEletricaDados.get(i).getEndereco());
 				this.addLabelLeft(sheet, 5, j, this.energiaEletricaDados.get(i).getBairro());
-				this.addInteiro(sheet, 6, j, Integer.parseInt(this.energiaEletricaDados.get(i).getCep()));
+				this.addInteiro(sheet, 6, j, Double.parseDouble(this.energiaEletricaDados.get(i).getCep()));
 				this.addLabel(sheet, 7, j, this.energiaEletricaDados.get(i).getCodigoGrupo());
-				this.addInteiro(sheet, 8, j, Integer.parseInt(this.energiaEletricaDados.get(i).getCodigoTipo()));
+				this.addInteiro(sheet, 8, j, Double.parseDouble(this.energiaEletricaDados.get(i).getCodigoTipo()));
 				this.addNumeroSD(sheet, 9, j, this.energiaEletricaDados.get(i).getC_Kwh_Cv());
 				this.addNumeroSD(sheet, 10, j, this.energiaEletricaDados.get(i).getC_Kwh_FS());
 				this.addNumeroSD(sheet, 11, j, this.energiaEletricaDados.get(i).getC_Kwh_FU());
@@ -100,7 +100,7 @@ public class GeraPlanilhaFaturamentoMensalCommand extends AbstractCommandGeraPla
 					continue;
 					//throw new UnidadeConsumidoraNaoRelacionada();
 				}
-				this.addInteiro(sheet, 52, j, this.energiaEletricaDados.get(i).getUnidadeConsumidora().getCodigo());
+				this.addInteiro(sheet, 52, j, Double.parseDouble(this.energiaEletricaDados.get(i).getUnidadeConsumidora().getCodigo().toString()));
 				this.addLabel(sheet, 53, j, informacoes.getReferencia());
 				this.addLabel(sheet, 54, j, "COSANPA");
 				// Consumo Kwh

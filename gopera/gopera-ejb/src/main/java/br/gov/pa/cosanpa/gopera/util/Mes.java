@@ -7,8 +7,6 @@ public class Mes {
 	private String nome;
 	
 	private String nomeCurto;
-	
-	private String mesAno;
 
 	public int getNumeral() {
 		return numeral;
@@ -32,14 +30,6 @@ public class Mes {
 
 	public void setNomeCurto(String nomeCurto) {
 		this.nomeCurto = nomeCurto;
-	}
-
-	public String getMesAno() {
-		return mesAno;
-	}
-
-	public void setMesAno(String mesAno) {
-		this.mesAno = mesAno;
 	}
 
 	public String toString() {
