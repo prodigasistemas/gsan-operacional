@@ -6,6 +6,7 @@ import java.text.DecimalFormatSymbols;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
 import jxl.format.VerticalAlignment;
 import jxl.write.Label;
 import jxl.write.NumberFormat;
@@ -27,6 +28,8 @@ public abstract class AbstractCommandGeraPlanilha {
 	private WritableCellFormat wcfLabel;
 	private WritableCellFormat wcfLabelLeft;
 	private WritableCellFormat wcfLabelBold;
+	protected WritableCellFormat fontBoldSimplesC;
+	protected WritableCellFormat fontBoldSimples;
 	
 	protected RelatorioExcel relatorioExcel;
 	protected WritableSheet sheet;
@@ -91,6 +94,18 @@ public abstract class AbstractCommandGeraPlanilha {
 			wcfLabelBold.setWrap(false);
 			wcfLabelBold.setVerticalAlignment(VerticalAlignment.CENTRE);
 			wcfLabelBold.setAlignment(Alignment.CENTRE);
+			
+			WritableFont boldSimples = new WritableFont(WritableFont.TAHOMA, 10, WritableFont.BOLD);
+			fontBoldSimplesC = new WritableCellFormat(boldSimples);
+			fontBoldSimplesC.setVerticalAlignment(VerticalAlignment.CENTRE);
+			fontBoldSimplesC.setAlignment(Alignment.CENTRE);
+			fontBoldSimplesC.setWrap(true);
+
+			fontBoldSimples = new WritableCellFormat(boldSimples);
+			fontBoldSimples.setWrap(false);
+			fontBoldSimples.setAlignment(Alignment.CENTRE);
+			fontBoldSimples.setBackground(Colour.GRAY_25);
+			fontBoldSimples.setBorder(Border.ALL, BorderLineStyle.THIN);
 		} catch (WriteException e) {
 			e.printStackTrace();
 		}

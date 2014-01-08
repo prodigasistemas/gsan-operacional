@@ -40,51 +40,22 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 
 	public void execute(InformacoesParaRelatorio informacoes, IRelatorioEnergiaEletrica fachadaRel) throws Exception {
 		try {
-			WritableFont boldSimples = new WritableFont(WritableFont.TAHOMA, 10, WritableFont.BOLD);
-			WritableCellFormat fontBoldSimplesC = new WritableCellFormat(boldSimples);
-			fontBoldSimplesC.setVerticalAlignment(VerticalAlignment.CENTRE);
-			fontBoldSimplesC.setAlignment(Alignment.CENTRE);
-			fontBoldSimplesC.setWrap(true);
-
-			WritableCellFormat fontBoldSimples = new WritableCellFormat(boldSimples);
-			fontBoldSimples.setWrap(false);
-			fontBoldSimples.setAlignment(Alignment.CENTRE);
-			fontBoldSimples.setBackground(Colour.GRAY_25);
-			fontBoldSimples.setBorder(Border.ALL, BorderLineStyle.THIN);
+			List<Mes> meses = new DateUtil().mesesPeriodo(informacoes.getPrimeiroDiaReferenciaInicial(), informacoes.getPrimeiroDiaReferenciaFinal());
 			
-			// Pega os meses do periodo
-			DateUtil util = new DateUtil();
-			List<Mes> meses = util.mesesPeriodo(informacoes.getPrimeiroDiaReferenciaInicial(), informacoes.getPrimeiroDiaReferenciaFinal());
+			preencheCabecalho(meses);
 			
-			int colMeses = 4;
-			int rowDados;
-			// CABECALHO
-			sheet.setName(bundle.getText("analise_energia_eletrica"));
-
-			sheet.addCell(new Label(0, 0, bundle.getText("diretoria_operacao").toUpperCase() + " \n" + bundle.getText("controle_operacional_reducao_perdas") + " \n"
-					+ bundle.getText("controle_energia"), fontBoldSimplesC));
-			sheet.mergeCells(0, 0, 4 + meses.size(), 0);
-			sheet.addCell(new Label(0, 2, bundle.getText("municipio"), fontBoldSimples));
-
-			// Preencho os meses
-			for (Mes mes : meses) {
-				sheet.addCell(new Label(colMeses++, 2, mes.getMesAno(), fontBoldSimples));
-			}
-			sheet.addCell(new Label(colMeses, 2, "TOTAL", fontBoldSimples));
-			
-			rowDados = 3;
 			List<DadosRelatorioEnergiaEletrica> dados = fachadaRel
 					.analiseEnergiaEletrica(informacoes.getPrimeiroDiaReferenciaInicial(), informacoes.getPrimeiroDiaReferenciaFinal(),
 							informacoes.getCodigoRegional(), informacoes.getCodigoUnidadeNegocio(), informacoes.getCodigoMunicipio(),
 							informacoes.getCodigoLocalidade());
+			
+			int colMeses = 4;
+			int rowDados = 3;
 			int municipio = 0;
 			int localidade = 0;
 			int uc = 0;
 			int mergeMunicipio = 0;
 			int mergeLocalidade = 0;
-			
-			Map<Integer, Map<String, BigDecimal>> totaisMeses = new LinkedHashMap<Integer, Map<String, BigDecimal>>();
-			
 			for(DadosRelatorioEnergiaEletrica item: dados){
 				if (item.getId().getIdMunicipio() != municipio){
 					if (mergeMunicipio != 0)
@@ -106,6 +77,7 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 					
 					for (String info : informacoes.getDadosSelecionados()) {
 						this.addLabel(sheet, 3, rowDados, informacoes.getMapDados().get(info).getLabel());
+						preencheZeros(meses, rowDados);
 						rowDados++;				
 						mergeMunicipio++;
 						mergeLocalidade++;
@@ -114,6 +86,7 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 					if (informacoes.getDadosSelecionados().size() > 1)
 						sheet.mergeCells(2, rowDados - informacoes.getDadosSelecionados().size(), 2, rowDados - 1);
 				}
+				
 				for (Mes mes : meses) {
 					if (item.getId().getMes().equals(mes.getMesAno()))
 						colMeses = 3 + mes.getNumeral();
@@ -124,28 +97,12 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 					Method metodo  = DadosRelatorioEnergiaEletrica.class.getMethod("get" + informacoes.getMapDados().get(dado).getNome());
 					BigDecimal valor = (BigDecimal) metodo.invoke(item);
 					this.addNumero(sheet, colMeses, rowDados - informacoes.getDadosSelecionados().size() + linha, valor.doubleValue());
-					
-					Map<String, BigDecimal> infos = totaisMeses.get(colMeses); 
-					if (infos == null){
-						infos = new LinkedHashMap<String, BigDecimal>();
-						totaisMeses.put(colMeses, infos);
-					}
-					
-					BigDecimal total = infos.get(dado);
-					if (total == null){
-						total = new BigDecimal(0);
-						infos.put(dado, total);
-					}
-					
-					total = total.add(valor);
 				}
 			}
 			sheet.mergeCells(0, rowDados - mergeMunicipio, 0, rowDados - 1);
 			sheet.mergeCells(1, rowDados - mergeLocalidade, 1, rowDados - 1);
 			
 			preencheTotaisUcs(meses, rowDados);
-			
-//			preencheTotaisMeses(totaisMeses, rowDados);
 		} catch (Exception e) {
 			logger.error("Erro na exportacao.", e);
 			throw new Exception("Erro na exportacao", e);
@@ -153,16 +110,31 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 		
 	}
 
-	private void preencheTotaisMeses(Map<Integer, Map<String, BigDecimal>> totaisMeses, int rowDados) throws WriteException, RowsExceededException {
+	private int preencheCabecalho(List<Mes> meses) throws Exception {
+		sheet.setName(bundle.getText("analise_energia_eletrica"));
+		
+		StringBuilder title = new StringBuilder();
+		title.append( bundle.getText("diretoria_operacao").toUpperCase() + " \n")
+		.append(bundle.getText("controle_operacional_reducao_perdas") + " \n")
+		.append(bundle.getText("controle_energia"));
+
+		sheet.addCell(new Label(0, 0, title.toString(), fontBoldSimplesC));
+		sheet.mergeCells(0, 0, 4 + meses.size(), 0);
+		sheet.addCell(new Label(0, 2, bundle.getText("municipio"), fontBoldSimples));
+		
 		int colMeses = 4;
-		for(Integer colunaMes : totaisMeses.keySet()){
-			Map<String, BigDecimal> totaisDados = totaisMeses.get(colunaMes);
-//			this.addLabel(sheet, 3, rowDados, labelDados.get(key));
-			int linha = rowDados;
-			for(BigDecimal total : totaisDados.values()){
-				this.addNumero(sheet, colMeses, linha++, total.doubleValue());
-			}
-			colMeses++;
+
+		for (Mes mes : meses) {
+			sheet.addCell(new Label(colMeses++, 2, mes.getMesAno(), fontBoldSimples));
+		}
+		
+		sheet.addCell(new Label(colMeses, 2, "TOTAL", fontBoldSimples));
+		return colMeses;
+	}
+
+	private void preencheZeros(List<Mes> meses, int rowDados) throws WriteException {
+		for (Mes mes : meses) {
+			this.addNumero(sheet, 3 + mes.getNumeral(), rowDados, 0.0);
 		}
 	}
 
@@ -176,5 +148,4 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 			sheet.addCell(totalFormula);
 		}
 	}
-
 }
