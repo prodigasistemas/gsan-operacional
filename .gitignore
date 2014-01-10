@@ -1,3 +1,5 @@
 target
 RemoteSystemsTempFiles/
+tests/bin/.gitignore
+tests/bin/.project
 .metadata
