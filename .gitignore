@@ -2,4 +2,7 @@ target
 RemoteSystemsTempFiles/
 tests/bin/.gitignore
 tests/bin/.project
+tests/.gitignore
+tests/.project
+tests/bin/tests/DifMillis.class
 .metadata
