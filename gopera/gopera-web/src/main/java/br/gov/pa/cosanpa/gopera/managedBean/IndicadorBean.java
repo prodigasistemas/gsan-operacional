@@ -231,7 +231,9 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 			
 			preencheResumoIndicador(sheet, rowDados, indicador);
 			
-			preencheValoresIndicador(sheet, rowDados++, indicador);
+			preencheValoresIndicador(sheet, rowDados, indicador);
+			
+			rowDados = rowDados + 2;
 		}			
 		//Mesclagem de células horizontais
 		sheet.mergeCells(0, 0, cMeses - 1 , 0); //Cabeçalho
