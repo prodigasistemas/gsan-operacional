@@ -4,5 +4,6 @@ tests/bin/.gitignore
 tests/bin/.project
 tests/.gitignore
 tests/.project
+tests/tests/
 tests/bin/tests/DifMillis.class
 .metadata
