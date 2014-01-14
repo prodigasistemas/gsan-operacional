@@ -2,21 +2,11 @@ package br.gov.pa.cosanpa.gopera.command;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 
 import jxl.biff.CellReferenceHelper;
-import jxl.format.Alignment;
-import jxl.format.Border;
-import jxl.format.BorderLineStyle;
-import jxl.format.Colour;
-import jxl.format.VerticalAlignment;
 import jxl.write.Formula;
 import jxl.write.Label;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
@@ -26,7 +16,6 @@ import org.jboss.logging.Logger;
 import br.gov.pa.cosanpa.gopera.fachada.IRelatorioEnergiaEletrica;
 import br.gov.pa.cosanpa.gopera.model.DadosRelatorioEnergiaEletrica;
 import br.gov.pa.cosanpa.gopera.model.RelatorioExcel;
-import br.gov.pa.cosanpa.gopera.util.DadoRelatorio;
 import br.gov.pa.cosanpa.gopera.util.DateUtil;
 import br.gov.pa.cosanpa.gopera.util.Mes;
 
