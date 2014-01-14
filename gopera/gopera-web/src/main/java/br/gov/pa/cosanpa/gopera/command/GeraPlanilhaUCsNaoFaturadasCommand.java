@@ -47,7 +47,7 @@ public class GeraPlanilhaUCsNaoFaturadasCommand extends AbstractCommandGeraPlani
     			int j = i-3;
     			contador = i;
     			// Primeira coluna
-    		    this.addInteiro(sheet, 0, i, Double.parseDouble(relatorioExcel.getRelatorioEnergiaEletrica().get(j).getCodigoUC().toString()));
+    		    this.addInteiro(sheet, 0, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getCodigoUC());
     		    // Segunda coluna
     		    this.addLabel(sheet, 1, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getNomeUC());
     		    // Terceira coluna

@@ -3,14 +3,10 @@ package br.gov.pa.cosanpa.gopera.command;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import javax.ejb.EJB;
-
-import br.gov.pa.cosanpa.gopera.fachada.IRelatorioEnergiaEletrica;
-import br.gov.pa.cosanpa.gopera.model.RelatorioExcel;
-import br.gov.pa.cosanpa.gopera.util.WebBundle;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
 import jxl.format.VerticalAlignment;
 import jxl.write.Label;
 import jxl.write.NumberFormat;
@@ -19,6 +15,9 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
+import br.gov.pa.cosanpa.gopera.fachada.IRelatorioEnergiaEletrica;
+import br.gov.pa.cosanpa.gopera.model.RelatorioExcel;
+import br.gov.pa.cosanpa.gopera.util.WebBundle;
 
 public abstract class AbstractCommandGeraPlanilha {
 
@@ -29,6 +28,8 @@ public abstract class AbstractCommandGeraPlanilha {
 	private WritableCellFormat wcfLabel;
 	private WritableCellFormat wcfLabelLeft;
 	private WritableCellFormat wcfLabelBold;
+	protected WritableCellFormat fontBoldSimplesC;
+	protected WritableCellFormat fontBoldSimples;
 	
 	protected RelatorioExcel relatorioExcel;
 	protected WritableSheet sheet;
@@ -93,6 +94,18 @@ public abstract class AbstractCommandGeraPlanilha {
 			wcfLabelBold.setWrap(false);
 			wcfLabelBold.setVerticalAlignment(VerticalAlignment.CENTRE);
 			wcfLabelBold.setAlignment(Alignment.CENTRE);
+			
+			WritableFont boldSimples = new WritableFont(WritableFont.TAHOMA, 10, WritableFont.BOLD);
+			fontBoldSimplesC = new WritableCellFormat(boldSimples);
+			fontBoldSimplesC.setVerticalAlignment(VerticalAlignment.CENTRE);
+			fontBoldSimplesC.setAlignment(Alignment.CENTRE);
+			fontBoldSimplesC.setWrap(true);
+
+			fontBoldSimples = new WritableCellFormat(boldSimples);
+			fontBoldSimples.setWrap(false);
+			fontBoldSimples.setAlignment(Alignment.CENTRE);
+			fontBoldSimples.setBackground(Colour.GRAY_25);
+			fontBoldSimples.setBorder(Border.ALL, BorderLineStyle.THIN);
 		} catch (WriteException e) {
 			e.printStackTrace();
 		}
@@ -116,9 +129,9 @@ public abstract class AbstractCommandGeraPlanilha {
 		planilha.addCell(numero);
 	}
 
-	protected void addInteiro(WritableSheet planilha, int coluna, int linha, Double num) throws WriteException {
+	protected void addInteiro(WritableSheet planilha, int coluna, int linha, Integer num) throws WriteException {
 		if (num == null)
-			num = 0.0;
+			num = 0;
 		jxl.write.Number numero;
 		numero = new jxl.write.Number(coluna, linha, num, wcfInteiro);
 		planilha.addCell(numero);
