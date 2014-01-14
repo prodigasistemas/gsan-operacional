@@ -231,7 +231,10 @@ public class RelatorioGerencialBean extends BaseRelatorioBean<RelatorioGerencial
 				exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
 				exporter.setParameter(JExcelApiExporterParameter.IS_IGNORE_GRAPHICS,Boolean.FALSE);
 				exporter.exportReport();
-
+				servletOutputStream.flush();
+				servletOutputStream.close();
+	 	    	FacesContext.getCurrentInstance().responseComplete();
+				
 				break;
 			}
 		} catch (Exception e) {
@@ -239,7 +242,7 @@ public class RelatorioGerencialBean extends BaseRelatorioBean<RelatorioGerencial
 			mostrarMensagemErro(bundle.getText("erro_gerar_relatorio"));
 		}
 
-		return "";
+		return null;
 	}
 
 	public RelatorioGerencial getRegistro() {
