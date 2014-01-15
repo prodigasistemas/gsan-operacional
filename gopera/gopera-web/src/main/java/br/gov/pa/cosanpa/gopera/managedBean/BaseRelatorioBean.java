@@ -33,7 +33,7 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
 
 	public WritableCellFormat wcfNumero;
 	public WritableCellFormat wcfNumeroBorder;
-	public WritableCellFormat wcfNumeroBorderBlue;
+	public WritableCellFormat wcfPercentual;
 	public WritableCellFormat wcfNumeroBold;
 	public WritableCellFormat wcfInteiro;
 	public WritableCellFormat wcfInteiroBold;
@@ -179,12 +179,12 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
 	 		wcfNumeroBorder.setAlignment(Alignment.RIGHT);
 	 		wcfNumeroBorder.setBorder(Border.ALL, BorderLineStyle.THIN);
 	 		
-	 		wcfNumeroBorderBlue = new WritableCellFormat(wf, nfDec6);
-	 		wcfNumeroBorderBlue.setWrap(false);
-	 		wcfNumeroBorderBlue.setVerticalAlignment(VerticalAlignment.CENTRE);
-	 		wcfNumeroBorderBlue.setAlignment(Alignment.RIGHT);
-	 		wcfNumeroBorderBlue.setBackground(Colour.SKY_BLUE);
-	 		wcfNumeroBorderBlue.setBorder(Border.ALL, BorderLineStyle.THIN);
+	 		wcfPercentual = new WritableCellFormat(wf, nf);
+	 		wcfPercentual.setWrap(false);
+	 		wcfPercentual.setVerticalAlignment(VerticalAlignment.CENTRE);
+	 		wcfPercentual.setAlignment(Alignment.RIGHT);
+	 		wcfPercentual.setBackground(Colour.SKY_BLUE);
+	 		wcfPercentual.setBorder(Border.ALL, BorderLineStyle.THIN);
 	 		
 	 		wcfNumeroBold = new WritableCellFormat(wfBold, nf);
 	 		wcfNumeroBold.setWrap(false);

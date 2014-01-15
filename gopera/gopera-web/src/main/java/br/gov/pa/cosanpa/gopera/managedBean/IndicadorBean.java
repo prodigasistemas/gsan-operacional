@@ -11,13 +11,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import jxl.write.NumberFormat;
-import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.jboss.logging.Logger;
 
 import br.gov.pa.cosanpa.gopera.exception.BaseRuntimeException;
@@ -258,7 +255,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 						&& calendar.get(Calendar.MONTH) == calIndicador.get(Calendar.MONTH)){
 					addNumero(sheet, colDados, linha, valor.getIndicador1(),wcfNumeroBorder);
 					addNumero(sheet, colDados++, linha + 1, valor.getIndicador2(),wcfNumeroBorder);
-					addNumero(sheet, colDados, linha, valor.getTotal(), wcfNumeroBorderBlue);
+					addNumero(sheet, colDados, linha, valor.getTotal() * 100, wcfPercentual);
 					colDados++;
 					break;
 				}

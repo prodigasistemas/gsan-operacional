@@ -260,11 +260,11 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 		//Verifica se Total de Utilização Ultrapassa 100%
 		Double dblPerc = Double.parseDouble(percentual.replace(".", "").replace(",", "."));
 		if (dblPerc == 0) {
-			this.mostrarMensagemErro("Percentual de Utilização não pode ser ZERO.");
+			this.mostrarMensagemErro(bundle.getText("erro_percentual_zero"));
 			return false;
 		}
 		if (percAux + dblPerc > 100){
-			this.mostrarMensagemErro("Utilização Total de Unidade Operacionais não pode ultrapassar 100%");
+			this.mostrarMensagemErro(bundle.getText("erro_total_maior_que_100"));
 			return false;
 		}		
 		else
