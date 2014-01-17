@@ -81,14 +81,15 @@
 
 					<p:panel id="produtos" rendered="#{!tabelaPrecoBean.visualizando}">
 						<p:dataTable rowIndexVar="index" var="var" value="#{tabelaPrecoBean.listaProdutos}" emptyMessage="Nenhum Produto foi encontrado.">
-							<p:column headerText="Produto" style="text-align:left">
+							<p:column headerText="#{m.produto}" style="text-align:left">
 								<h:outputText value="#{var.produto.descricao}" />
 							</p:column>
-							<p:column headerText="Preço de Custo" style="text-align:center">
-								<p:inputText styleClass="valor" value="#{var.precoAux}" disabled="#{tabelaPrecoBean.desabilitaForm}" id="Valor" size="8" maxlength="8" required="true"
+							<p:column headerText="#{m.preco_custo}" style="text-align:center">
+								<p:inputText styleClass="valor" value="#{var.precoAux}" disabled="#{tabelaPrecoBean.desabilitaForm}" id="Valor" size="10" maxlength="10" required="true"
 									requiredMessage="Preço de Custo do Produto, deve ser informado." />
 							</p:column>
-							<p:column headerText="Unidade" style="text-align:center">
+							
+							<p:column headerText="#{m.unidade}" style="text-align:center">
 								<h:outputText value="#{var.produto.unidadeMedidaProduto.sigla}" />
 							</p:column>
 						</p:dataTable>
@@ -102,7 +103,7 @@
 					</p:panel>
 					<script type="text/javascript">
 		$(function(){
-			$("input[id*=Valor]").setMask("decimal");				
+			$("input[id*=Valor]").setMask("decimal-six");				
 			});
 	</script>
 				</h:form>

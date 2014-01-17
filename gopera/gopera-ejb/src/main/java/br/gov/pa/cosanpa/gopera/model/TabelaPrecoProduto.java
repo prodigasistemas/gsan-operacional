@@ -42,7 +42,7 @@ public class TabelaPrecoProduto implements Serializable{
 		this.tabelaPreco = tabelaPreco;
 		this.produto = produto;
 		this.preco = preco;
-		DecimalFormat df = new DecimalFormat("#,##0.00");
+		DecimalFormat df = new DecimalFormat("#,##0.000000");
 		this.precoAux = df.format(preco);
 	}
 
