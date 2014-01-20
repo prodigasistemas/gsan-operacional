@@ -10,7 +10,6 @@
 	<parameter name="exibirLocalidade" class="java.lang.Boolean"/>
 	<parameter name="exibirUnidadeOperacional" class="java.lang.Boolean"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
-	<parameter name="exibirFinanceiro" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -27,13 +26,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{produto} + " - " + $F{medida}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[                         $F{produto} + " - " + $F{medida}]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement uuid="0aa2042d-0d5e-4008-a543-8755b617a6fc" x="170" y="0" width="672" height="10"/>
-				<subreportParameter name="exibirFinanceiro">
-					<subreportParameterExpression><![CDATA[$P{exibirFinanceiro}]]></subreportParameterExpression>
-				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{meses})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "consumoProdutoQuimicoMensal_subTotalQuantidades.jasper"]]></subreportExpression>
 			</subreport>

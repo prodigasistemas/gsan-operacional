@@ -8,7 +8,6 @@
 	<parameter name="exibirMunicipio" class="java.lang.Boolean"/>
 	<parameter name="exibirLocalidade" class="java.lang.Boolean"/>
 	<parameter name="exibirUnidadeOperacional" class="java.lang.Boolean"/>
-	<parameter name="exibirFinanceiro" class="java.lang.Boolean"/>
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
@@ -18,13 +17,12 @@
 	</background>
 	<detail>
 		<band height="10" splitType="Stretch">
-			<textField pattern="">
+			<textField pattern="#,##0.00">
 				<reportElement uuid="d3dfc718-637a-45b6-8671-9f1d74f331b7" x="0" y="0" width="50" height="10"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
-				<patternExpression><![CDATA[$P{exibirFinanceiro} == true? "#,##0.000000": "#,##0.00"]]></patternExpression>
 			</textField>
 		</band>
 	</detail>

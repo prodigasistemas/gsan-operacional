@@ -4,20 +4,18 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="quantidadesMensal" class="java.util.List"/>
-	<parameter name="exibirFinanceiro" class="java.lang.Boolean"/>
 	<field name="quantidade" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="10">
-			<textField pattern="" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="71b3d213-2e6b-4e43-9a16-c7060af3f660" x="0" y="0" width="50" height="10"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
-				<patternExpression><![CDATA[$P{exibirFinanceiro} == true? "#,##0.000000": "#,##0.00"]]></patternExpression>
 			</textField>
 		</band>
 	</detail>
