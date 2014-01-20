@@ -203,15 +203,15 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 		switch (tipoRelatorio) {
 		case 1: //Produto Químico
 			//Titulo			
-			addLabel(sheet, 0, 0, "CADASTRO DE PRODUTOS QUÍMICOS", wcfLabelBold);
+			addLabel(sheet, 0, 0, bundle.getText("rel_cad_prd_quimico"), wcfLabelBold);
 			sheet.mergeCells(0, 0, 5, 0);
 			//Filtro
 			addLabel(sheet, 0, 1, filtroRelatorio, wcfLabelLeft);
 			sheet.mergeCells(0, 1, 5, 1);
 			//Dados
-			addLabel(sheet, 0, linha, "Produto Químico", wcfLabelHeader);
+			addLabel(sheet, 0, linha, bundle.getText("produto_quimico"), wcfLabelHeader);
 			sheet.mergeCells(0, linha, 2, linha);
-			addLabel(sheet, 3, linha, "Unidade Medida", wcfLabelHeader);
+			addLabel(sheet, 3, linha, bundle.getText("unidade_medida"), wcfLabelHeader);
 			linha++;
 			while (rs.next()) {
 				addLabel(sheet, 0, linha, rs.getString("prod_nmproduto") , wcfLabelLeft);
@@ -233,7 +233,7 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 				if (id != rs.getInt("regc_id")){
 					addLabel(sheet, 0, linha, "Registro de Consumo:", wcfLabelHeader);
 					addLabel(sheet, 1, linha, rs.getString("regc_nmregistro") , wcfLabelHeader);
-					addLabel(sheet, 2, linha, "Período:", wcfLabelHeader);
+					addLabel(sheet, 2, linha, bundle.getText("periodo") + ":", wcfLabelHeader);
 					addLabel(sheet, 3, linha, formataDataPadrao.format(formataDataSQL.parse(rs.getString("regc_dataini"))) , wcfLabelHeader);
 					addLabel(sheet, 4, linha, "a", wcfLabelHeader);
 					addLabel(sheet, 5, linha, formataDataPadrao.format(formataDataSQL.parse(rs.getString("regc_datafim"))) , wcfLabelHeader);
@@ -271,9 +271,9 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 					addLabel(sheet, 3, linha, rs.getString("loca_nmlocalidade"), wcfLabel);
 					addLabel(sheet, 4, linha, rs.getString("eta_nome"), wcfLabel);
 					linha++;
-					addLabel(sheet, 1, linha, "Registro de Consumo", wcfLabelBold);
-					addLabel(sheet, 3, linha, "Período Inicial", wcfLabelBold);
-					addLabel(sheet, 4, linha, "Período Final", wcfLabelBold);
+					addLabel(sheet, 1, linha, bundle.getText("registro_consumo"), wcfLabelBold);
+					addLabel(sheet, 3, linha, bundle.getText("periodo_inicial"), wcfLabelBold);
+					addLabel(sheet, 4, linha, bundle.getText("periodo_final"), wcfLabelBold);
 					linha++;
 					id = rs.getInt("eta_id");
 				}
@@ -292,11 +292,11 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 			sheet.mergeCells(0, 1, 5, 1);
 			//Dados
 			id = 0;
-			addLabel(sheet, 0, linha, "Gerência Regional", wcfLabelHeader);
-			addLabel(sheet, 1, linha, "Unidade de Negócio", wcfLabelHeader);
-			addLabel(sheet, 2, linha, "Município", wcfLabelHeader);
-			addLabel(sheet, 3, linha, "Localidade", wcfLabelHeader);
-			addLabel(sheet, 4, linha, "EAT", wcfLabelHeader);
+			addLabel(sheet, 0, linha, bundle.getText("gerencia_regional"), wcfLabelHeader);
+			addLabel(sheet, 1, linha, bundle.getText("unidade_negocio"), wcfLabelHeader);
+			addLabel(sheet, 2, linha, bundle.getText("municipio"), wcfLabelHeader);
+			addLabel(sheet, 3, linha, bundle.getText("localidade"), wcfLabelHeader);
+			addLabel(sheet, 4, linha, bundle.getText("eat"), wcfLabelHeader);
 			while (rs.next()) {
 				if (id != rs.getInt("eeat_id")){
 					linha++;
@@ -306,9 +306,9 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 					addLabel(sheet, 3, linha, rs.getString("loca_nmlocalidade"), wcfLabel);
 					addLabel(sheet, 4, linha, rs.getString("eeat_nome"), wcfLabel);
 					linha++;
-					addLabel(sheet, 1, linha, "Registro de Consumo", wcfLabelBold);
-					addLabel(sheet, 3, linha, "Período Inicial", wcfLabelBold);
-					addLabel(sheet, 4, linha, "Período Final", wcfLabelBold);
+					addLabel(sheet, 1, linha, bundle.getText("registro_consumo"), wcfLabelBold);
+					addLabel(sheet, 3, linha, bundle.getText("periodo_inicial"), wcfLabelBold);
+					addLabel(sheet, 4, linha, bundle.getText("periodo_final"), wcfLabelBold);
 					linha++;
 					id = rs.getInt("eeat_id");
 				}
@@ -320,7 +320,7 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 			break;
 		case 5: //Tabela de Preços
 			//Titulo			
-			addLabel(sheet, 0, 0, "CADASTRO DE TABELA DE PREÇOS", wcfLabelBold);
+			addLabel(sheet, 0, 0, bundle.getText("rel_cad_tab_preco"), wcfLabelBold);
 			sheet.mergeCells(0, 0, 5, 0);
 			//Filtro
 			addLabel(sheet, 0, 1, filtroRelatorio, wcfLabelLeft);
@@ -328,11 +328,11 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 			//Dados
 			while (rs.next()) {
 				if (!headerLinha) {
-					addLabel(sheet, 0, linha, "Vigência:", wcfLabelHeader);
+					addLabel(sheet, 0, linha, bundle.getText("vigencia"), wcfLabelHeader);
 					addLabel(sheet, 1, linha, formataDataPadrao.format(formataDataSQL.parse(rs.getString("tabp_vigencia"))) , wcfLabelHeader);
 					linha++;
-					addLabel(sheet, 1, linha, "Produto", wcfLabelBold);
-					addLabel(sheet, 4, linha, "Valor", wcfLabelBold);
+					addLabel(sheet, 1, linha, bundle.getText("produto"), wcfLabelBold);
+					addLabel(sheet, 4, linha, bundle.getText("valor"), wcfLabelBold);
 					linha++;
 					headerLinha = true;
 				}		
