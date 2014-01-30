@@ -44,7 +44,7 @@ public class GeraPlanilhaFaturamentoMensalCommand extends AbstractCommandGeraPla
 				j = i + 2;
 				this.addLabel(sheet, 0, j, formataData.format(this.energiaEletricaDados.get(i).getDataLeitura()));
 				this.addInteiro(sheet, 1, j, this.energiaEletricaDados.get(i).getCodigoUC());
-				this.addInteiro(sheet, 2, j, Integer.parseInt(this.energiaEletricaDados.get(i).getFatura()));
+				this.addLong(sheet, 2, j, Long.parseLong(this.energiaEletricaDados.get(i).getFatura()));
 				this.addLabelLeft(sheet, 3, j, this.energiaEletricaDados.get(i).getNome());
 				this.addLabelLeft(sheet, 4, j, this.energiaEletricaDados.get(i).getEndereco());
 				this.addLabelLeft(sheet, 5, j, this.energiaEletricaDados.get(i).getBairro());

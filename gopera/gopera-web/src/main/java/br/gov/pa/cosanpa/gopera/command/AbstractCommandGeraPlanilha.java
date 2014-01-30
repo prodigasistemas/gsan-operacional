@@ -25,6 +25,7 @@ public abstract class AbstractCommandGeraPlanilha {
 	private WritableCellFormat wcfNumeroSD;
 	protected WritableCellFormat wcfNumeroB;
 	private WritableCellFormat wcfInteiro;
+	private WritableCellFormat wcfLong;
 	private WritableCellFormat wcfLabel;
 	private WritableCellFormat wcfLabelLeft;
 	private WritableCellFormat wcfLabelBold;
@@ -78,6 +79,13 @@ public abstract class AbstractCommandGeraPlanilha {
 			wcfInteiro.setAlignment(Alignment.CENTRE);
 			wcfInteiro.setBorder(Border.ALL, BorderLineStyle.THIN);
 
+			NumberFormat nfLong = new NumberFormat("###############");
+			wcfLong = new WritableCellFormat(wf, nfLong);
+			wcfLong.setWrap(false);
+			wcfLong.setVerticalAlignment(VerticalAlignment.CENTRE);
+			wcfLong.setAlignment(Alignment.CENTRE);
+			wcfLong.setBorder(Border.ALL, BorderLineStyle.THIN);
+			
 			wcfLabel = new WritableCellFormat(wf);
 			wcfLabel.setWrap(false);
 			wcfLabel.setVerticalAlignment(VerticalAlignment.CENTRE);
@@ -134,6 +142,14 @@ public abstract class AbstractCommandGeraPlanilha {
 			num = 0;
 		jxl.write.Number numero;
 		numero = new jxl.write.Number(coluna, linha, num, wcfInteiro);
+		planilha.addCell(numero);
+	}
+
+	protected void addLong(WritableSheet planilha, int coluna, int linha, Long num) throws WriteException {
+		if (num == null)
+			num = 0L;
+		jxl.write.Number numero;
+		numero = new jxl.write.Number(coluna, linha, num, wcfLong);
 		planilha.addCell(numero);
 	}
 
