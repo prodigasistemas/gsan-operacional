@@ -1,5 +1,6 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -202,7 +204,6 @@ public class RelatorioGerencialBean extends BaseRelatorioBean<RelatorioGerencial
 			switch (tipoExportacao) {
 			case 1: // PDF
 				parametros.put("exibirExcel", false);
-
 				jasperPrint = JasperFillManager.fillReport(reportPath, parametros, beanCollectionDataSource);
 				httpServletResponse.addHeader(
 						"Content-disposition",
@@ -222,20 +223,7 @@ public class RelatorioGerencialBean extends BaseRelatorioBean<RelatorioGerencial
 								+ formataData.format(dataFinal) + ".xls");
 				httpServletResponse.setContentType("application/vnd.ms-excel");
 				servletOutputStream = httpServletResponse.getOutputStream();
-
-				JRXlsExporter exporter = new JRXlsExporter();
-				exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-				exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
-				exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, Boolean.TRUE);
-				exporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
-				exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
-				exporter.setParameter(JExcelApiExporterParameter.IS_IGNORE_GRAPHICS,Boolean.FALSE);
-				exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
-				exporter.exportReport();
-				servletOutputStream.flush();
-				servletOutputStream.close();
-	 	    	FacesContext.getCurrentInstance().responseComplete();
-				
+				gerarExcel(servletOutputStream, jasperPrint);
 				break;
 			}
 		} catch (Exception e) {
