@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
@@ -13,8 +14,11 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
@@ -58,10 +62,16 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
 	public WritableCellFormat wcfLabelBoldLeft;
 	public WritableCellFormat wcfLabelBoldLeftBorder;
 	
+	protected Map<String, Object> reportParametros;
+	protected JRDataSource reportDataSource;
+	protected String reportPath = "";
+	protected Integer tipoExportacao;
+
+	
 	@EJB
 	public IProxy fachadaProxy;
 
-	String nomeArquivo;
+	protected String nomeArquivo;
 	File relatorioExcel;
 
 	public void addNumero(WritableSheet planilha, int coluna, int linha, Double num, WritableCellFormat formato) throws WriteException {
@@ -122,30 +132,6 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
      	return;    	 
     }
     
-	protected String downloadFile(String nomeDoArquivoGeradoParaDownload, String caminhoRelativoComNomeEextensao) {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		// Obtem o caminho para o arquivo e efetua a leitura
-		byte[] arquivo = readFile(new File(caminhoRelativoComNomeEextensao));
-		HttpServletResponse response = (HttpServletResponse) context.getResponse();
-		// configura o arquivo que vai voltar para o usuario.
-		response.setHeader("Content-Disposition", "attachment;filename=\"" + nomeDoArquivoGeradoParaDownload + "\"");
-		response.setContentLength(arquivo.length);
-		// isso faz abrir a janelinha de download
-		response.setContentType("application/download");
-		response.setCharacterEncoding("ISO-8859-1");
-		// envia o arquivo de volta
-		try {
-			OutputStream out = response.getOutputStream();
-			out.write(arquivo);
-			out.flush();
-			out.close();
-			FacesContext.getCurrentInstance().responseComplete();
-		} catch (IOException e) {
-			System.out.print("Erro no envio do arquivo");
-			e.printStackTrace();
-		}
-		return "";
-	}      
  	//efetua a leitura do arquivo
  	public static byte[] readFile(File file) {
  		int len = (int) file.length();
@@ -289,6 +275,34 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
  	    	e.printStackTrace();
      	}	
 		return null;
+	}
+	
+	protected void geraRelatorio(HttpServletResponse httpServletResponse) throws Exception{
+		JasperPrint jasperPrint;
+		
+		switch (tipoExportacao) {
+		case 1: //PDF
+			reportParametros.put("exibirExcel", false);
+ 	        jasperPrint = JasperFillManager.fillReport(reportPath, reportParametros, reportDataSource);
+
+			httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + nomeArquivo + ".pdf");
+			httpServletResponse.setContentType("application/pdf");
+
+			ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+		    JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+		    break;
+	 
+		case 2: //EXCEL
+			reportParametros.put("exibirExcel", true);
+			jasperPrint = JasperFillManager.fillReport(reportPath, reportParametros, reportDataSource);
+			
+			httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + nomeArquivo + ".xls");
+			httpServletResponse.setContentType("application/vnd.ms-excel");
+			servletOutputStream = httpServletResponse.getOutputStream();
+			gerarExcel(servletOutputStream, jasperPrint);
+			
+		    break;
+		}	
 	}
 	
 	protected void gerarExcel(ServletOutputStream servletOutputStream, JasperPrint jasperPrint) throws JRException, IOException {

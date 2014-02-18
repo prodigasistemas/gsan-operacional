@@ -3,6 +3,10 @@
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.2" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.3" value="columnHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.4" value="columnFooter"/>
 	<parameter name="nomeUsuario" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="logoRelatorio" class="java.lang.String"/>
 	<parameter name="nomeRelatorio" class="java.lang.String"/>
@@ -40,14 +44,12 @@
 			</image>
 			<line>
 				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="50" width="555" height="1">
-					<printWhenExpression><![CDATA[$P{exibirExcel} == false
-]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{exibirExcel} == false]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
 				<reportElement uuid="c6e4fbce-7fd0-4ede-b147-7177cf1cecae" x="0" y="64" width="555" height="1">
-					<printWhenExpression><![CDATA[$P{exibirExcel} == false
-]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{exibirExcel} == false]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<staticText>
@@ -213,13 +215,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy HH:mm:ss">
-				<reportElement uuid="f7ec67d3-5dd1-43a1-8a56-c425fd2d8fd0" x="270" y="0" width="170" height="10"/>
-				<textElement>
-					<font fontName="Arial" size="6" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Emissão:  "+ new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement uuid="2386a4dd-4ce6-4954-82af-0e5bfe88ab8d" x="0" y="0" width="270" height="10"/>
 				<textElement>
@@ -229,10 +224,23 @@
 			</textField>
 			<line>
 				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="0" width="555" height="1">
-					<printWhenExpression><![CDATA[$P{exibirExcel} == false
-]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{exibirExcel} == false]]></printWhenExpression>
 				</reportElement>
 			</line>
+			<staticText>
+				<reportElement uuid="3246274c-f99a-45b6-a476-4e37abc8e832" x="270" y="0" width="40" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="6d37490a-fc5e-42c8-ac1e-32db7e33afce" x="310" y="0" width="130" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>
