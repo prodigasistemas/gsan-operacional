@@ -30,14 +30,14 @@
 			</staticText>
 			<staticText>
 				<reportElement uuid="590687f0-3caf-47c3-a0f9-977a57e4fa38" x="0" y="20" width="75" height="10"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Período Inicial]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="3cbdd51c-5a1b-415e-936d-642761240f5c" x="75" y="20" width="75" height="10"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Período Final]]></text>
