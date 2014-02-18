@@ -20,6 +20,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.jboss.logging.Logger;
+
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -34,6 +36,7 @@ import br.gov.pa.cosanpa.gopera.util.WebBundle;
 @ManagedBean
 @SessionScoped
 public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencial> {
+	private static Logger logger = Logger.getLogger(RelatorioCadastroEEBean.class);
 
 	@Resource(lookup="java:/gopera")
 	private DataSource	dataSource;
@@ -48,10 +51,6 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 	private Integer tipoRelatorio;
 	private Integer tipoExportacao;
 	private List<SelectItem> listaRelatorio = new ArrayList<SelectItem>();
-	private String nomeRelatorio;
-	private String nomeArquivo;
-	private String reportPath; 
-	private String filtroRelatorio;
 	private UnidadeNegocioProxy unidadeNegocioProxy = new UnidadeNegocioProxy();
 	private MunicipioProxy municipioProxy = new MunicipioProxy();
 	private LocalidadeProxy localidadeProxy = new LocalidadeProxy(); 
@@ -83,25 +82,38 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
     	try{
     		con =  dataSource.getConnection();
     		Statement stm = con.createStatement();
+
+    		String nomeRelatorio = "";
+    		String nomeArquivo = "";
+    		String reportPath = ""; 
     		
     		//VERIFICA FILTRO
-    		filtroRelatorio = "";
+    		StringBuilder filtroRelatorio = new StringBuilder();
 			if (unidadeNegocioProxy.getCodigo() != 0) {
 				sqlFiltro = sqlFiltro + " AND A.uneg_id = " + unidadeNegocioProxy.getCodigo();
-	    		filtroRelatorio = filtroRelatorio + " Und Negócio: " + fachadaProxy.getUnidadeNegocio(this.unidadeNegocioProxy.getCodigo()).getNome();
+	    		filtroRelatorio.append(bundle.getText("unid_negocio"))
+	    		.append(": ")
+	    		.append(fachadaProxy.getUnidadeNegocio(this.unidadeNegocioProxy.getCodigo()).getNome());
 			}
 			if (municipioProxy.getCodigo() != 0) {
 				sqlFiltro = sqlFiltro + " AND A.muni_id = " + municipioProxy.getCodigo();
-	    		filtroRelatorio = filtroRelatorio + " Município: " + fachadaProxy.getMunicipio(this.municipioProxy.getCodigo()).getNome();
+	    		filtroRelatorio.append("  ")
+	    		.append(bundle.getText("municipio"))
+	    		.append(": ")
+	    		.append(fachadaProxy.getMunicipio(this.municipioProxy.getCodigo()).getNome());
+	    		
 			}
 			if (localidadeProxy.getCodigo() != 0) {
 				sqlFiltro = sqlFiltro + " AND A.loca_id = " + localidadeProxy.getCodigo();
-	    		filtroRelatorio = filtroRelatorio + " Localidade: " + fachadaProxy.getLocalidade(this.localidadeProxy.getCodigo()).getNome();
+	    		filtroRelatorio.append("  ")
+	    		.append(bundle.getText("localidade"))
+	    		.append(": ")
+	    		.append(fachadaProxy.getLocalidade(this.localidadeProxy.getCodigo()).getNome());
 			} 
     		
 			switch (tipoRelatorio) {
 			case 1: //Unidade Consumidora
-				nomeRelatorio = "Cadastro de Unidade Consumidora";
+				nomeRelatorio = bundle.getText("rel_cad_unid_consumidora");
 				nomeArquivo = "cadastroUnidadeConsumidora";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
 				sql = "SELECT ucon_id, ucon_uc, ucon_nmconsumidora, B.uneg_nmunidadenegocio, C.muni_nmmunicipio, D.loca_nmlocalidade,"
@@ -115,7 +127,7 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 				    + " ORDER BY uneg_nmunidadenegocio, muni_nmmunicipio, loca_nmlocalidade, ucon_uc";
 				break;
 			case 2: //Contrato de Energia Eletrica
-				nomeRelatorio = "Cadastro de Contrato de Energia Elétrica";
+				nomeRelatorio = bundle.getText("rel_cad_contrato_energia");
 				nomeArquivo = "cadastroContratoEnergiaEletrica";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
 				sql = "SELECT cene_id, cene_nmcontrato, ucon_uc, ucon_nmconsumidora, cene_dataini, cene_datafim, cene_dataassinatura,"
@@ -141,7 +153,7 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 			parametros.put("logoRelatorio", "logoRelatorio.jpg");
 			parametros.put("nomeRelatorio", nomeRelatorio);
 			parametros.put("nomeUsuario", usuarioProxy.getNome());
-			parametros.put("filtro", filtroRelatorio);
+			parametros.put("filtro", filtroRelatorio.toString());
 			parametros.put("REPORT_CONNECTION", con);
 			parametros.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/") + "/");
 			parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
@@ -177,8 +189,8 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 			FacesContext.getCurrentInstance().responseComplete();  
 		}
 		catch (Exception e){
-			e.printStackTrace();
-			mostrarMensagemErro("Erro ao exibir Relatório: " + e.getMessage());
+			logger.error(bundle.getText("erro_gerar_relatorio"), e);
+			mostrarMensagemErro(bundle.getText("erro_gerar_relatorio"));
 		}
 		finally {
 			con.close();
