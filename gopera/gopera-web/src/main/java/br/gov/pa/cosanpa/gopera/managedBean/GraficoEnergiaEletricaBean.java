@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import org.jboss.logging.Logger;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -19,10 +20,12 @@ import br.gov.pa.cosanpa.gopera.model.MunicipioProxy;
 import br.gov.pa.cosanpa.gopera.model.RegionalProxy;
 import br.gov.pa.cosanpa.gopera.model.RelatorioEnergiaEletrica;
 import br.gov.pa.cosanpa.gopera.model.UnidadeNegocioProxy;
+import br.gov.pa.cosanpa.gopera.util.WebBundle;
 
 @ManagedBean
 @SessionScoped
 public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletrica> {
+	private static Logger logger = Logger.getLogger(GraficoEnergiaEletricaBean.class);
 
 	private RelatorioEnergiaEletrica registro = new RelatorioEnergiaEletrica();
 	private List<RelatorioEnergiaEletrica> relatorio = new ArrayList<RelatorioEnergiaEletrica>();	
@@ -51,6 +54,97 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 	@EJB
 	private IProxy fachadaProxy;
 	
+
+	public String iniciar(){
+		if (bundle == null){
+			bundle = new WebBundle();
+		}
+		this.registro = new RelatorioEnergiaEletrica();
+		this.tipoRelatorio = 1;
+		listaRelatorio.clear();
+		SelectItem tipoRel = new SelectItem();  
+		tipoRel.setValue(1);  
+		tipoRel.setLabel(bundle.getText("consumo_kwh"));  
+		listaRelatorio.add(tipoRel);
+		tipoRel = new SelectItem();
+		tipoRel.setValue(2);  
+		tipoRel.setLabel(bundle.getText("total_reais"));
+		listaRelatorio.add(tipoRel);
+		tipoRel = new SelectItem();
+		tipoRel.setValue(3);  
+		tipoRel.setLabel(bundle.getText("ajuste_fator_potencia"));
+		listaRelatorio.add(tipoRel);
+		tipoRel = new SelectItem();
+		tipoRel.setValue(4);  
+		tipoRel.setLabel(bundle.getText("ultrapassagem_kwh"));  
+		listaRelatorio.add(tipoRel);
+		tipoRel = new SelectItem();
+		tipoRel.setValue(5);  
+		tipoRel.setLabel(bundle.getText("ultrapassagem_reais"));  
+		listaRelatorio.add(tipoRel);
+		exibePie = false;
+		exibeBar = false;
+		exibeLine = false;
+		return "GraficoEnergiaEletrica.jsf";
+	}	
+
+    public void exibir(){
+    	try{
+    		 exibePie = false;
+    		 exibeBar = false;
+             titulo = listaRelatorio.get(tipoRelatorio - 1).getLabel();
+        	 relatorio = fachadaRel.getEnergiaEletricaPeriodo(primeiroDiaMes(referenciaInicial),
+        			 	 primeiroDiaMes(referenciaFinal),
+						 this.codigoRegional,
+						 this.codigoUnidadeNegocio,
+						 this.codigoMunicipio,
+						 this.codigoLocalidade);
+
+     		if (relatorio.size() == 0){
+    			mostrarMensagemErro(bundle.getText("erro_nao_existe_retorno_filtro"));
+    			return;
+    		}
+        	 
+             lineModelo = new CartesianChartModel();
+             Integer codigoUC = 0;
+             ChartSeries lineUC = new ChartSeries();; 
+             for (RelatorioEnergiaEletrica rel : relatorio){
+            	 if (!codigoUC.equals(rel.getCodigoUC())){
+            		 if (!codigoUC.equals(0)){
+            			 lineModelo.addSeries(lineUC);
+                		 lineUC = new ChartSeries();
+            		 }
+            		 lineUC.setLabel(rel.getCodigoUC().toString() + " - " + rel.getNomeUC());
+            		 //lineUC.setLabel(rel.getCodigoUC().toString());
+            		 codigoUC = rel.getCodigoUC();
+            	 }
+
+        		 switch (tipoRelatorio) {
+                 case 1: //CONSUMO (KWh)
+                	 lineUC.set(rel.getReferencia(), rel.getConsumoKwh());
+                	 break;
+                 case 2://Valor Total R$
+                	 lineUC.set(rel.getReferencia(), rel.getTotal());
+                	 break;
+                 case 3: //Ajuste Fator Potência 
+                	 lineUC.set(rel.getReferencia(), rel.getAjusteFatorPotencia());
+                	 break;
+                 case 4://Ultrapassagem Kwh
+                	 lineUC.set(rel.getReferencia(),rel.getUltrapassagemKwh());
+                	 break;
+                 case 5://Ultrapassagem R$
+                	 lineUC.set(rel.getReferencia(),rel.getUltrapassagemR$());
+                	 break;
+        		 }
+             }
+             exibeLine = true;
+		}
+		catch (Exception e){
+			logger.error(bundle.getText("erro_gerar_relatorio"), e);
+			mostrarMensagemErro(bundle.getText("erro_gerar_relatorio"));
+		}
+    }
+    
 	public RelatorioEnergiaEletrica getRegistro() {
 		return registro;
 	}
@@ -214,123 +308,4 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	
-	public String iniciar(){
-		this.registro = new RelatorioEnergiaEletrica();
-		this.tipoRelatorio = 1;
-		listaRelatorio.clear();
-		SelectItem tipoRel = new SelectItem();  
-		tipoRel.setValue(1);  
-		tipoRel.setLabel("Consumo Kwh");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(2);  
-		tipoRel.setLabel("Total R$");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(3);  
-		tipoRel.setLabel("Ajuste Fator Potência");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(4);  
-		tipoRel.setLabel("Ultrapassagem Kwh");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(5);  
-		tipoRel.setLabel("Ultrapassagem R$");  
-		listaRelatorio.add(tipoRel);
-		exibePie = false;
-		exibeBar = false;
-		exibeLine = false;
-		return "GraficoEnergiaEletrica.jsf";
-	}	
-
-    public void exibir(){
-    	try{
-    		 exibePie = false;
-    		 exibeBar = false;
-             titulo = listaRelatorio.get(tipoRelatorio - 1).getLabel();
-        	 relatorio = fachadaRel.getEnergiaEletricaPeriodo(primeiroDiaMes(referenciaInicial),
-        			 	 primeiroDiaMes(referenciaFinal),
-						 this.codigoRegional,
-						 this.codigoUnidadeNegocio,
-						 this.codigoMunicipio,
-						 this.codigoLocalidade);
-
-     		if (relatorio.size() == 0){
-    			mostrarMensagemErro(bundle.getText("erro_nao_existe_retorno_filtro"));
-    			return;
-    		}
-        	 
-/*            	 
-                 pieModelo = new PieChartModel();  
-                 for (RelatorioEnergiaEletrica rel : relatorio){
-                	 pieModelo.set(rel.getCodigoUC().toString() + " - " + rel.getNomeUC(), rel.getConsumoKwh());
-                 }
-                 exibePie = true;
-*/                 
-             lineModelo = new CartesianChartModel();
-             Integer codigoUC = 0;
-             ChartSeries lineUC = new ChartSeries();; 
-             for (RelatorioEnergiaEletrica rel : relatorio){
-            	 if (!codigoUC.equals(rel.getCodigoUC())){
-            		 if (!codigoUC.equals(0)){
-            			 lineModelo.addSeries(lineUC);
-                		 lineUC = new ChartSeries();
-            		 }
-            		 lineUC.setLabel(rel.getCodigoUC().toString() + " - " + rel.getNomeUC());
-            		 //lineUC.setLabel(rel.getCodigoUC().toString());
-            		 codigoUC = rel.getCodigoUC();
-            	 }
-
-        		 switch (tipoRelatorio) {
-                 case 1: //CONSUMO (KWh)
-                	 lineUC.set(rel.getReferencia(), rel.getConsumoKwh());
-                	 break;
-                 case 2://Valor Total R$
-                	 lineUC.set(rel.getReferencia(), rel.getTotal());
-                	 break;
-                 case 3: //Ajuste Fator Potência 
-                	 lineUC.set(rel.getReferencia(), rel.getAjusteFatorPotencia());
-                	 break;
-                 case 4://Ultrapassagem Kwh
-                	 lineUC.set(rel.getReferencia(),rel.getUltrapassagemKwh());
-                	 break;
-                 case 5://Ultrapassagem R$
-                	 lineUC.set(rel.getReferencia(),rel.getUltrapassagemR$());
-                	 break;
-        		 }
-             }
-             exibeLine = true;
-/*            	 
-             case 2: //DEMANDA (KW) MEDIDA E FATURADA
-            	 relatorio = fachadaRel.getEnergiaEletricaUC(this.dataReferencia,
-															 0,
-															 this.codigoRegional,
-															 this.codigoUnidadeNegocio,
-															 this.codigoMunicipio,
-															 this.codigoLocalidade);
-            	 barModelo = new CartesianChartModel();  
-            	  
-                 ChartSeries medida = new ChartSeries();
-                 ChartSeries faturada = new ChartSeries();  
-                 medida.setLabel("MEDIDA");
-                 faturada.setLabel("FATURADA");
-
-                 for (RelatorioEnergiaEletrica rel : relatorio){
-                	medida.set(rel.getCodigoUC().toString(), rel.getDemandaMedida());
-                    faturada.set(rel.getCodigoUC().toString(), rel.getDemandaFaturada());
-                 }
-                 
-                 barModelo.addSeries(medida);  
-                 barModelo.addSeries(faturada);
-                 exibeBar = true;
-                 titulo = "Demandas (KW) medida e faturada";
-            	 break;
-*/            	 
-		}
-		catch (Exception e){
-			mostrarMensagemErro("Erro ao exibir Relatório: " + e.getMessage());
-		}
-    }
 }
