@@ -19,6 +19,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.jboss.logging.Logger;
+
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 import br.gov.pa.cosanpa.gopera.model.LocalidadeProxy;
@@ -30,6 +32,7 @@ import br.gov.pa.cosanpa.gopera.model.UnidadeNegocioProxy;
 @ManagedBean
 @SessionScoped
 public class RelatorioAnaliseLaboratorialBean extends BaseRelatorioBean<RelatorioGerencial> {
+	private static Logger logger = Logger.getLogger(RelatorioAnaliseLaboratorialBean.class);
 
 	@Resource(lookup="java:/gopera")
 	private DataSource	dataSource;
@@ -147,8 +150,8 @@ public class RelatorioAnaliseLaboratorialBean extends BaseRelatorioBean<Relatori
 			FacesContext.getCurrentInstance().responseComplete();  
 		}
 		catch (Exception e){
-			e.printStackTrace();
-			mostrarMensagemErro("Erro ao exibir Relatório: " + e.getMessage());
+			logger.error(bundle.getText("erro_gerar_relatorio"), e);
+			mostrarMensagemErro(bundle.getText("erro_gerar_relatorio"));
 		}
 		finally {
 			con.close();
