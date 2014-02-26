@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cadastroContratoEnergiaEletrica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3660eaed-39bb-41aa-a6d9-0cad4defb975">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="41"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="pageHeader"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.2" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.3" value="columnHeader"/>
@@ -30,11 +30,11 @@
 	<field name="cene_frequencia" class="java.lang.Double"/>
 	<field name="cene_perdastransformacao" class="java.lang.Double"/>
 	<field name="cene_potenciainstalada" class="java.lang.Double"/>
-	<field name="cene_horariopontaini" class="java.util.Date"/>
-	<field name="cene_horariopontafim" class="java.util.Date"/>
+	<field name="cene_horariopontaini" class="java.lang.String"/>
+	<field name="cene_horariopontafim" class="java.lang.String"/>
 	<field name="cene_id" class="java.lang.Integer"/>
-	<field name="cene_horarioreservadoini" class="java.util.Date"/>
-	<field name="cene_horarioreservadofim" class="java.util.Date"/>
+	<field name="cene_horarioreservadoini" class="java.lang.String"/>
+	<field name="cene_horarioreservadofim" class="java.lang.String"/>
 	<field name="cene_opcaofaturamento" class="java.lang.String"/>
 	<field name="cene_modalidadetarifaria" class="java.lang.String"/>
 	<field name="cene_agrupadorfatura" class="java.lang.String"/>
@@ -139,7 +139,10 @@
 				<text><![CDATA[Data Assinatura:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="c4ab27a8-7d85-4f20-b03b-56b6bd20d4a5" x="360" y="10" width="195" height="10"/>
+				<reportElement uuid="c4ab27a8-7d85-4f20-b03b-56b6bd20d4a5" x="360" y="10" width="195" height="10">
+					<printWhenExpression><![CDATA[$F{cene_dataassinatura} != null &&
+ ((java.util.Date) $F{cene_dataassinatura}).getTime() > 0]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font fontName="Arial" size="7"/>
 				</textElement>

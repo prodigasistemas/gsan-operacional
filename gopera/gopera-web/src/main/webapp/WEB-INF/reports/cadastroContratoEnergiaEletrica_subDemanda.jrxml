@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cadastroEAB_subMedidor" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74565f47-c618-43c6-b9ed-b3b714e84527">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="2"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="cene_id" class="java.lang.Integer" isForPrompting="false"/>
 	<queryString>
@@ -12,10 +12,10 @@
 	</queryString>
 	<field name="cend_dataini" class="java.sql.Date"/>
 	<field name="cend_datafim" class="java.sql.Date"/>
-	<field name="cend_demandasecoponta" class="java.lang.Integer"/>
-	<field name="cend_demandasecoforaponta" class="java.lang.Integer"/>
-	<field name="cend_demandaumidoponta" class="java.lang.Integer"/>
-	<field name="cend_demandaumidoforaponta" class="java.lang.Integer"/>
+	<field name="cend_demandasecoponta" class="java.lang.String"/>
+	<field name="cend_demandasecoforaponta" class="java.lang.String"/>
+	<field name="cend_demandaumidoponta" class="java.lang.String"/>
+	<field name="cend_demandaumidoforaponta" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -91,42 +91,42 @@
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement uuid="b4511475-6668-43d0-bf4c-5c034dcb9274" x="0" y="0" width="75" height="10"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cend_dataini}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="77425c9d-3e85-4473-91ba-a29bc874fcd7" x="150" y="0" width="75" height="10"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cend_demandasecoponta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement uuid="5712b9fe-fd4d-4bdb-a855-b37baf5fca47" x="75" y="0" width="75" height="10"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cend_datafim}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="7cd3ea8d-636c-489e-8ca9-b65d396088ed" x="225" y="0" width="75" height="10"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cend_demandasecoforaponta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="2b169b26-c2cf-4db8-9f66-eca776fe68fb" x="300" y="0" width="130" height="10"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cend_demandaumidoponta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="45366038-e47a-4014-89e7-a547e53743d1" x="430" y="0" width="125" height="10"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="7"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cend_demandaumidoforaponta}]]></textFieldExpression>
 			</textField>

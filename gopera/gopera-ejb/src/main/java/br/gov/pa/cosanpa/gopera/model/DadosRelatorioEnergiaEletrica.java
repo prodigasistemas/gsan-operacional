@@ -72,4 +72,12 @@ public class DadosRelatorioEnergiaEletrica implements Serializable{
 	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal;
 	}
+
+	public String toString() {
+		return "DadosRelatorioEnergiaEletrica [consumo=" + consumo
+				+ ", ultrapassagemKwh=" + ultrapassagemKwh
+				+ ", ultrapassagemValor=" + ultrapassagemValor
+				+ ", totalFatorPotencia=" + totalFatorPotencia
+				+ ", valorTotal=" + valorTotal + "]";
+	}
 }

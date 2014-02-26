@@ -281,6 +281,7 @@ public class RelatorioEnergiaEletricaEJB implements IRelatorioEnergiaEletrica {
 		return lista; 
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DadosRelatorioEnergiaEletrica> analiseEnergiaEletrica(Date dataReferenciaInicial, Date dataReferenciaFinal, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception {
 		SimpleDateFormat formataData = new SimpleDateFormat("yyyyMMdd");
