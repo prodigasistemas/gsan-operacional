@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="analiseLaboratorial" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3660eaed-39bb-41aa-a6d9-0cad4defb975">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="59"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="pageHeader"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.2" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.3" value="columnHeader"/>
@@ -95,7 +95,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{Soma_Regional_Tratado} + "  " ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{Soma_Regional_Tratado}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#0" isBlankWhenNull="true">
 					<reportElement uuid="57b97fac-6193-425b-bf1e-09ecd2a9ce27" x="370" y="0" width="80" height="10"/>
@@ -136,7 +136,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{Soma_Unidade_Tratado} + "  "]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{Soma_Unidade_Tratado}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#0" isBlankWhenNull="true">
 					<reportElement uuid="b5d0fff8-6114-425b-bb94-0e1485ae967a" x="370" y="0" width="80" height="10"/>
@@ -177,7 +177,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{Soma_Municipio_Tratado} + "  "]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{Soma_Municipio_Tratado}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#0" isBlankWhenNull="true">
 					<reportElement uuid="4f75bbb5-68e3-43fa-881c-7cea604e6892" x="370" y="0" width="80" height="10"/>
@@ -218,7 +218,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{Soma_Localidade_Tratado} + " "]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{Soma_Localidade_Tratado}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#0" isBlankWhenNull="true">
 					<reportElement uuid="d7ba02ce-671b-46bf-acc3-ab6475b032d0" x="370" y="0" width="80" height="10"/>
@@ -342,7 +342,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{anac_conformidade} + "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{anac_conformidade}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -395,7 +395,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{Soma_Total_Conformidade} + " "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{Soma_Total_Conformidade}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="8d713e7d-e7f7-49e3-afd8-598369c0ef56" x="0" y="0" width="370" height="10"/>
