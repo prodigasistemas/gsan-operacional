@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -14,16 +15,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
-import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.format.Alignment;
@@ -38,6 +29,16 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import br.gov.pa.cosanpa.gopera.exception.ArquivoDeRelatorioNaoExiste;
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 
@@ -66,12 +67,12 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
 	protected JRDataSource reportDataSource;
 	protected String reportPath = "";
 	protected Integer tipoExportacao;
+	protected String nomeArquivo;
+	protected String nomeRelatorio = "";
 
-	
 	@EJB
 	public IProxy fachadaProxy;
 
-	protected String nomeArquivo;
 	File relatorioExcel;
 
 	public void addNumero(WritableSheet planilha, int coluna, int linha, Double num, WritableCellFormat formato) throws WriteException {
@@ -277,8 +278,20 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
 		return null;
 	}
 	
-	protected void geraRelatorio(HttpServletResponse httpServletResponse) throws Exception{
+	protected void geraRelatorio(Map<String, Object> parametros) throws Exception{
+		HttpServletResponse httpServletResponse=(HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		
+		httpServletResponse.setCharacterEncoding("ISO-8859-1");
+		
 		JasperPrint jasperPrint;
+		
+		reportParametros = new HashMap<String, Object>();
+		if (parametros != null){
+			reportParametros.putAll(parametros);
+		}
+		reportParametros.put("logoRelatorio", "logoRelatorio.jpg");
+		reportParametros.put("nomeRelatorio", nomeRelatorio);
+		reportParametros.put("nomeUsuario", usuarioProxy.getNome());
 		
 		switch (tipoExportacao) {
 		case 1: //PDF
@@ -302,7 +315,8 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
 			gerarExcel(servletOutputStream, jasperPrint);
 			
 		    break;
-		}	
+		}
+		FacesContext.getCurrentInstance().responseComplete();  
 	}
 	
 	protected void gerarExcel(ServletOutputStream servletOutputStream, JasperPrint jasperPrint) throws JRException, IOException {

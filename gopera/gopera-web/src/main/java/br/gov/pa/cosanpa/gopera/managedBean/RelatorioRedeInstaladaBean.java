@@ -10,18 +10,19 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+
+import net.sf.jasperreports.engine.JRResultSetDataSource;
 
 import org.jboss.logging.Logger;
 
-import net.sf.jasperreports.engine.JRResultSetDataSource;
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 import br.gov.pa.cosanpa.gopera.model.LocalidadeProxy;
 import br.gov.pa.cosanpa.gopera.model.MunicipioProxy;
@@ -105,7 +106,7 @@ public class RelatorioRedeInstaladaBean extends BaseRelatorioBean<RelatorioGeren
 			gc.setTime(primeiroDiaMes(referenciaFinal));
 			String dataFim = formataData.format(gc.getTime());
 			
-			String nomeRelatorio = bundle.getText("rel_adutoras_rede_agua");
+			nomeRelatorio = bundle.getText("rel_adutoras_rede_agua");
 			nomeArquivo = "redeInstalada";
 			reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
 			String sql = "SELECT A.greg_id, greg_nmregional, A.uneg_id, uneg_nmunidadenegocio, A.muni_id, muni_nmmunicipio, A.loca_id, loca_nmlocalidade,"
@@ -128,27 +129,20 @@ public class RelatorioRedeInstaladaBean extends BaseRelatorioBean<RelatorioGeren
 			ResultSet rs = stm.executeQuery(sql);
 			
 			reportDataSource = new JRResultSetDataSource(rs);
-    		reportParametros = new HashMap<String, Object>();
-			reportParametros.put("logoRelatorio", "logoRelatorio.jpg");
-			reportParametros.put("nomeRelatorio", nomeRelatorio);
-			reportParametros.put("nomeUsuario", usuarioProxy.getNome());
-			reportParametros.put("dataInicial", primeiroDiaMes(referenciaInicial));
-			reportParametros.put("dataFinal", primeiroDiaMes(referenciaFinal));
-			reportParametros.put("filtro", filtroRelatorio.toString());
-			reportParametros.put("exibirRegional", (tipoAgrupamento >= 1 ? true : false));  
-			reportParametros.put("exibirUnidadeNegocio", (tipoAgrupamento >= 2 ? true : false));
-			reportParametros.put("exibirMunicipio", (tipoAgrupamento >= 3 ? true : false));
-			reportParametros.put("exibirLocalidade", (tipoAgrupamento >= 4 ? true : false));
-			reportParametros.put("exibirUnidadeOperacional", (tipoAgrupamento >= 5 ? true : false));
-			reportParametros.put("REPORT_CONNECTION", con);
-			reportParametros.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/") + "/");
-			reportParametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("dataInicial", primeiroDiaMes(referenciaInicial));
+			parametros.put("dataFinal", primeiroDiaMes(referenciaFinal));
+			parametros.put("filtro", filtroRelatorio.toString());
+			parametros.put("exibirRegional", (tipoAgrupamento >= 1 ? true : false));  
+			parametros.put("exibirUnidadeNegocio", (tipoAgrupamento >= 2 ? true : false));
+			parametros.put("exibirMunicipio", (tipoAgrupamento >= 3 ? true : false));
+			parametros.put("exibirLocalidade", (tipoAgrupamento >= 4 ? true : false));
+			parametros.put("exibirUnidadeOperacional", (tipoAgrupamento >= 5 ? true : false));
+			parametros.put("REPORT_CONNECTION", con);
+			parametros.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/") + "/");
+			parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
 			
-    		HttpServletResponse httpServletResponse=(HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-			httpServletResponse.setCharacterEncoding("ISO-8859-1");
-			geraRelatorio(httpServletResponse);
-    		
-			FacesContext.getCurrentInstance().responseComplete();  
+			geraRelatorio(parametros);
 		}
 		catch (Exception e){
 			logger.error(bundle.getText("erro_gerar_relatorio"), e);
