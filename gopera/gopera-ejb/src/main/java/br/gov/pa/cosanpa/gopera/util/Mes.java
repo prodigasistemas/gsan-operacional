@@ -4,6 +4,8 @@ public class Mes {
 	
 	private int numeral;
 	
+	private int posicao;
+	
 	private String nome;
 	
 	private String nomeCurto;
@@ -16,6 +18,14 @@ public class Mes {
 
 	public void setNumeral(int numeral) {
 		this.numeral = numeral;
+	}
+	
+	public int getPosicao() {
+		return posicao;
+	}
+
+	public void setPosicao(int posicao) {
+		this.posicao = posicao;
 	}
 
 	public String getNome() {

@@ -74,7 +74,8 @@ public class DadosRelatorioEnergiaEletrica implements Serializable{
 	}
 
 	public String toString() {
-		return "DadosRelatorioEnergiaEletrica [consumo=" + consumo
+		return "DadosRelatorioEnergiaEletrica [nomeMunicipio=" + nomeMunicipio
+				+ ", nomeLocalidade=" + nomeLocalidade + ", consumo=" + consumo
 				+ ", ultrapassagemKwh=" + ultrapassagemKwh
 				+ ", ultrapassagemValor=" + ultrapassagemValor
 				+ ", totalFatorPotencia=" + totalFatorPotencia

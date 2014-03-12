@@ -21,9 +21,11 @@ public class DateUtil {
 		
 		Date inicio = DateUtils.truncate(dataInicial, Calendar.DAY_OF_MONTH);
 		Date fim = DateUtils.truncate(dataFinal, Calendar.DAY_OF_MONTH);
+		int posicao = 1;
 		while (!inicio.after(fim)) {
 			Mes mes = new Mes();
 			mes.setNumeral(DateUtils.toCalendar(inicio).get(Calendar.MONTH) + 1);
+			mes.setPosicao(posicao++);
 			mes.setNome(format.format(inicio));
 			mes.setNomeCurto(formatCurto.format(inicio).toUpperCase());
 			mes.setMesAno(mesAno.format(inicio));
