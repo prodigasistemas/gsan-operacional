@@ -1075,7 +1075,7 @@ public UsuarioProxy getParametrosSistema(UsuarioProxy usuarioProxy) throws Excep
 		usuarioProxy.setDiaPendencia(Integer.parseInt(colunas.get(0).toString()));
 	}
 	
-	return (usuarioProxy);
+	return usuarioProxy;
 }
 
 @Override

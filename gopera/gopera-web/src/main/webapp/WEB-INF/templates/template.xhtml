@@ -15,10 +15,6 @@
 						$(".ui-selectonemenu-panel").hide();
 					});
 			});
-		
-		function redireciona() {
-				window.location.href = "#{usuarioBean.redireciona}";
-			}
 	</script>
 	</h:head>
 	<h:body>
@@ -147,7 +143,7 @@
 			<h:panelGrid columns="2" style="margin-bottom:10px">
 				<h:outputLabel value="Deseja realmente sair do sistema?" />
 			</h:panelGrid>
-			<p:commandButton id="respostaSim" value="Sim" action="#{usuarioBean.logout}" oncomplete="dlgSair.hide(); redireciona();" />
+			<p:commandButton id="respostaSim" value="Sim" action="#{usuarioBean.logout}" />
 			<p:commandButton id="respostaNao" value="N&atilde;o" oncomplete="dlgSair.hide();" />
 		</h:form>
 	</p:dialog>

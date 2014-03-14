@@ -40,8 +40,14 @@ public abstract class BaseBean<T> {
 	private Map<String, String> paginasRetorno = new HashMap<String, String>();
 	private List<T> lista = new ArrayList<T>();
 	private List<T> filtro;
-	HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-	public UsuarioProxy usuarioProxy = (UsuarioProxy) session.getAttribute("usuarioProxy");
+	protected HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+	public UsuarioProxy usuarioProxy = null;
+	
+	public BaseBean() {
+		if (session != null && session.getAttribute("usuarioProxy") != null){
+			usuarioProxy = (UsuarioProxy) session.getAttribute("usuarioProxy");
+		}
+	}
 	
 	
 	abstract public String iniciar();
