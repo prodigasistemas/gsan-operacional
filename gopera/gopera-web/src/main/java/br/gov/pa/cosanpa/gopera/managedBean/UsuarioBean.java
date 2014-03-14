@@ -45,22 +45,14 @@ public class UsuarioBean extends BaseBean {
 	
 	public void setCodigo(Integer codigo) {
 		try{
-			//Verificando chave do método get
-			GregorianCalendar data = new GregorianCalendar();
-			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd-HH");
-			String verificaKey = md5(codigo + formato.format(data.getTime()));
 			usuarioBean = new UsuarioBean();
 	    	usuarioBean.usuarioProxy = new UsuarioProxy();
-			//Verifica Ativação de Chave de Segurança
-			Integer ativaChave = Integer.parseInt(fachadaProxy.getParametroSistema(6));
-			if(verificaKey.equals(this.key) || ativaChave == 0) {
-				usuarioBean.usuarioProxy.setCodigo(codigo);
-				usuarioBean.usuarioProxy = fachadaProxy.getPerfilUsuario(usuarioBean.usuarioProxy);
-	    		usuarioBean.usuarioProxy = fachadaProxy.getParametrosSistema(usuarioBean.usuarioProxy);
-	    		this.setRedireciona(fachadaProxy.getParametroSistema(7));
-				iniciar();
-				session.setAttribute("usuarioProxy", usuarioBean.usuarioProxy);
-			}	    	
+	    	usuarioBean.usuarioProxy.setCodigo(codigo);
+	    	usuarioBean.usuarioProxy = fachadaProxy.getPerfilUsuario(usuarioBean.usuarioProxy);
+	    	usuarioBean.usuarioProxy = fachadaProxy.getParametrosSistema(usuarioBean.usuarioProxy);
+	    	this.setRedireciona(fachadaProxy.getParametroSistema(7));
+	    	iniciar();
+	    	session.setAttribute("usuarioProxy", usuarioBean.usuarioProxy);
 		}catch (Exception e){
 			logger.error(bundle.getText("erro_login_usuario"), e);
 			mostrarMensagemErro(bundle.getText("erro_login_usuario"));

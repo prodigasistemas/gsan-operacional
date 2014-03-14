@@ -347,3 +347,20 @@ div.ui-selectonemenu label.ui-selectonemenu-label {
 .ui-widget input.hasDatepicker {
 	width: 120px;
 }
+
+.div_acesso_negado {
+	width: 985px;
+	text-align: center;
+}
+
+.acesso_negado {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #a91102;
+	font-weight: bold;
+	display: block;
+	vertical-align: middle;
+	text-align: center;
+	margin: auto;
+	margin-top: 30px;
+}
