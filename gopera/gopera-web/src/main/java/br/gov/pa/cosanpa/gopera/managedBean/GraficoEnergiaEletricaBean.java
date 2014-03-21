@@ -15,10 +15,12 @@ import org.primefaces.model.chart.PieChartModel;
 
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 import br.gov.pa.cosanpa.gopera.fachada.IRelatorioEnergiaEletrica;
+import br.gov.pa.cosanpa.gopera.fachada.IUnidadeConsumidora;
 import br.gov.pa.cosanpa.gopera.model.LocalidadeProxy;
 import br.gov.pa.cosanpa.gopera.model.MunicipioProxy;
 import br.gov.pa.cosanpa.gopera.model.RegionalProxy;
 import br.gov.pa.cosanpa.gopera.model.RelatorioEnergiaEletrica;
+import br.gov.pa.cosanpa.gopera.model.UnidadeConsumidora;
 import br.gov.pa.cosanpa.gopera.model.UnidadeNegocioProxy;
 import br.gov.pa.cosanpa.gopera.util.WebBundle;
 
@@ -37,10 +39,12 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 	private List<UnidadeNegocioProxy> unidadesNegocio = new ArrayList<UnidadeNegocioProxy>();
 	private List<MunicipioProxy> municipios = new ArrayList<MunicipioProxy>();
 	private List<LocalidadeProxy> localidades = new ArrayList<LocalidadeProxy>();
+	private List<UnidadeConsumidora> unidadesConsumidoras = new ArrayList<UnidadeConsumidora>();
 	private Integer codigoRegional;
 	private Integer codigoUnidadeNegocio;
 	private Integer codigoMunicipio;
-	private Integer codigoLocalidade;	
+	private Integer codigoLocalidade;
+	private List<String> unidadesConsumidorasSelecionadas;
 	private PieChartModel pieModelo;
 	private CartesianChartModel barModelo; 
 	private CartesianChartModel lineModelo;  
@@ -49,6 +53,8 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 	private boolean exibeLine;
 	private String titulo;
 	
+	@EJB
+	private IUnidadeConsumidora unidadeConsumidoraEjb;
 	@EJB
 	private IRelatorioEnergiaEletrica fachadaRel;
 	@EJB
@@ -98,7 +104,8 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 						 this.codigoRegional,
 						 this.codigoUnidadeNegocio,
 						 this.codigoMunicipio,
-						 this.codigoLocalidade);
+						 this.codigoLocalidade,
+						 this.unidadesConsumidorasSelecionadas);
 
      		if (relatorio.size() == 0){
     			mostrarMensagemErro(bundle.getText("erro_nao_existe_retorno_filtro"));
@@ -209,6 +216,25 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 		return localidades;
 	}
 	
+	public List<String> getUnidadesConsumidorasSelecionadas() {
+		return unidadesConsumidorasSelecionadas;
+	}
+
+	public void setUnidadesConsumidorasSelecionadas(List<String> unidadesConsumidorasSelecionadas) {
+		this.unidadesConsumidorasSelecionadas = unidadesConsumidorasSelecionadas;
+	}
+
+	public List<UnidadeConsumidora> getUnidadesConsumidoras() {
+		if (this.getCodigoLocalidade() != null) {
+			try {
+				this.unidadesConsumidoras =  unidadeConsumidoraEjb.unidadesConsumidoras(codigoRegional, codigoUnidadeNegocio, codigoMunicipio, codigoLocalidade);
+			} catch (Exception e) {
+				mostrarMensagemErro("Erro ao consultar sistema externo.");
+			}
+		}
+		return unidadesConsumidoras;
+	}
+
 	public Integer getCodigoRegional() {
 		return codigoRegional;
 	}

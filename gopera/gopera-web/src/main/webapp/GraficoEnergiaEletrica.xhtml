@@ -38,12 +38,19 @@ xmlns:p="http://primefaces.org/ui">
 		        <f:selectItems value="#{graficoEnergiaEletricaBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
 		        <p:ajax update="localidade" event="change" />  
 	    </p:selectOneMenu>
-		
+
 		<h:outputLabel for="localidade" value="Localidade: " />
 	    <p:selectOneMenu id="localidade" value="#{graficoEnergiaEletricaBean.codigoLocalidade}" effect="fade" converter="selectOneConverter"  >
-		        <f:selectItems value="#{graficoEnergiaEletricaBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+	        <f:selectItems value="#{graficoEnergiaEletricaBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+	        <p:ajax update="unidades_consumidoras" event="change" />  
 	    </p:selectOneMenu>
 	
+		<h:outputLabel for="unidades_consumidoras" value="#{m.unidade_consumidora}: " />
+		<p:selectCheckboxMenu value="#{graficoEnergiaEletricaBean.unidadesConsumidorasSelecionadas}" id="unidades_consumidoras" 
+			label="#{m.unidades_consumidoras}" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:340px">  
+        	<f:selectItems value="#{graficoEnergiaEletricaBean.unidadesConsumidoras}" var="item" itemValue="#{item.codigo}" itemLabel="#{item.uc} - #{item.descricao}" />  
+    	</p:selectCheckboxMenu> 
+    	
 		<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
 		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória"/>
 

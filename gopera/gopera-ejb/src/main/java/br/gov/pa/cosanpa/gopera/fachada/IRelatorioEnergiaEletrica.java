@@ -26,5 +26,5 @@ public interface IRelatorioEnergiaEletrica {
 			List<String> dados) throws Exception;
 	public List<List> getCountLocalidade(String query, String municipio) throws Exception;
 	public List<RelatorioEnergiaEletrica> getEnergiaEletricaUC(Date dataReferencia, Integer tipoRelatorio, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
-	public List<RelatorioEnergiaEletrica> getEnergiaEletricaPeriodo(Date referenciaInicial, Date referenciaFinal, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
+	public List<RelatorioEnergiaEletrica> getEnergiaEletricaPeriodo(Date referenciaInicial, Date referenciaFinal, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade, List<String> unidadesConsumidorasSelecionadas) throws Exception;
 }

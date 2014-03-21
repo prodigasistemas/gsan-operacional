@@ -32,4 +32,5 @@ public interface IUnidadeConsumidora extends IGeneric<UnidadeConsumidora> {
 	List<ETA> getListaETA(UsuarioProxy usuario, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
 	List<RSO> getListaRSO(UsuarioProxy usuario, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
 	List<UnidadeConsumidoraOperacional> getListaUnidadeOperacional(Integer tipoUnidade, Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
+	public List<UnidadeConsumidora> unidadesConsumidoras(Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade) throws Exception;
 }

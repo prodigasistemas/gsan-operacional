@@ -671,4 +671,22 @@ public class UnidadeConsumidoraEJB implements IUnidadeConsumidora{
 		return lista;
 	}
 	
+	public List<UnidadeConsumidora> unidadesConsumidoras(Integer codigoRegional, Integer codigoUnidadeNegocio, Integer codigoMunicipio, Integer codigoLocalidade)
+			throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select uc from UnidadeConsumidora uc")
+		.append(" where uc.regionalProxy.codigo = :codigoRegional")
+		.append(" and uc.unidadeNegocioProxy.codigo = :codigoUnidadeNegocio")
+		.append(" and uc.municipioProxy.codigo = :codigoMunicipio")
+		.append(" and uc.localidadeProxy.codigo = :codigoLocalidade");
+
+		TypedQuery<UnidadeConsumidora> query = entity.createQuery(sql.toString(), UnidadeConsumidora.class)
+				.setParameter("codigoRegional", codigoRegional)
+				.setParameter("codigoUnidadeNegocio", codigoUnidadeNegocio)
+				.setParameter("codigoMunicipio", codigoMunicipio)
+				.setParameter("codigoLocalidade", codigoLocalidade);
+
+		return query.getResultList();
+	}
+	
 }
