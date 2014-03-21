@@ -48,10 +48,10 @@ public class RedeInstalada implements Serializable{
 	private LocalidadeProxy localidadeProxy = new LocalidadeProxy();
 	
 	@Column(name="rdin_cadastrada", nullable=false)
-	private Integer redeCadastrada;
+	private Double redeCadastrada;
 
 	@Column(name="rdin_existente", nullable=false)
-	private Integer redeExistente;
+	private Double redeExistente;
 	
     @Column(name="usur_id", nullable=false)
     private UsuarioProxy usuario = new UsuarioProxy();
@@ -108,19 +108,19 @@ public class RedeInstalada implements Serializable{
 		this.localidadeProxy = localidadeProxy;
 	}
 
-	public Integer getRedeCadastrada() {
+	public Double getRedeCadastrada() {
 		return redeCadastrada;
 	}
 
-	public void setRedeCadastrada(Integer redeCadastrada) {
+	public void setRedeCadastrada(Double redeCadastrada) {
 		this.redeCadastrada = redeCadastrada;
 	}
 
-	public Integer getRedeExistente() {
+	public Double getRedeExistente() {
 		return redeExistente;
 	}
 
-	public void setRedeExistente(Integer redeExistente) {
+	public void setRedeExistente(Double redeExistente) {
 		this.redeExistente = redeExistente;
 	}
 

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.gov.pa.cosanpa.gopera.model.UsuarioProxy;
 import br.gov.pa.cosanpa.gopera.util.WebUtil;
 
 @WebFilter(filterName="ControleAcessoFilter", urlPatterns={"/*"}, 
@@ -43,7 +44,10 @@ public class ControleAcessoFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		
-		boolean repassar = tokenValido(httpRequest) || exceptionRequest(httpRequest);
+		boolean repassar = usuarioAutenticado(httpRequest);
+		if (!repassar){
+			repassar = tokenValido(httpRequest) || exceptionRequest(httpRequest);
+		}
 		
 		if (repassar){
 			chain.doFilter(request, response);
@@ -52,6 +56,18 @@ public class ControleAcessoFilter implements Filter {
 		}
 	}
 	
+	private boolean usuarioAutenticado(HttpServletRequest httpRequest) {
+		HttpSession session = httpRequest.getSession();
+		if (session != null){
+			UsuarioProxy usuarioProxy  = (UsuarioProxy) session.getAttribute("usuarioProxy");
+			if (usuarioProxy != null){
+				return usuarioProxy.getLogado();
+			}
+		}
+		
+		return false;
+	}
+
 	private boolean exceptionRequest(HttpServletRequest httpRequest) {
 		Enumeration<String> params = filterConfig.getInitParameterNames();
 		String path = httpRequest.getRequestURL().toString();

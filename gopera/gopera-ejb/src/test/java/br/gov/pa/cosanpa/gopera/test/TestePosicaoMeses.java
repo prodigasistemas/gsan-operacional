@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -23,20 +24,9 @@ public class TestePosicaoMeses {
 		DateUtil util = new DateUtil();
 		
 		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		builder.append("Mes [numeral=11, nome=Novembro, nomeCurto=NOV]");
-		builder.append(", ");
-		builder.append("Mes [numeral=12, nome=Dezembro, nomeCurto=DEZ]");
-		builder.append(", ");
-		builder.append("Mes [numeral=1, nome=Janeiro, nomeCurto=JAN]");
-		builder.append(", ");
-		builder.append("Mes [numeral=2, nome=Fevereiro, nomeCurto=FEV]");
-		builder.append(", ");
-		builder.append("Mes [numeral=3, nome=Março, nomeCurto=MAR]");
-		builder.append(", ");
-		builder.append("Mes [numeral=4, nome=Abril, nomeCurto=ABR]");
-		builder.append("]");
-		assertEquals(builder.toString(), util.mesesPeriodo(dataInicial, dataFinal).toString());
+		builder.append("123456");
+		
+		assertEquals(builder.toString(), buildRetorno(util.mesesPeriodo(dataInicial, dataFinal)));
 	}
 
 	@Test
@@ -50,32 +40,10 @@ public class TestePosicaoMeses {
 		DateUtil util = new DateUtil();
 		
 		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		builder.append("Mes [numeral=1, nome=Janeiro, nomeCurto=JAN]");
-		builder.append(", ");
-		builder.append("Mes [numeral=2, nome=Fevereiro, nomeCurto=FEV]");
-		builder.append(", ");
-		builder.append("Mes [numeral=3, nome=Março, nomeCurto=MAR]");
-		builder.append(", ");
-		builder.append("Mes [numeral=4, nome=Abril, nomeCurto=ABR]");
-		builder.append(", ");
-		builder.append("Mes [numeral=5, nome=Maio, nomeCurto=MAI]");
-		builder.append(", ");
-		builder.append("Mes [numeral=6, nome=Junho, nomeCurto=JUN]");
-		builder.append(", ");
-		builder.append("Mes [numeral=7, nome=Julho, nomeCurto=JUL]");
-		builder.append(", ");
-		builder.append("Mes [numeral=8, nome=Agosto, nomeCurto=AGO]");
-		builder.append(", ");
-		builder.append("Mes [numeral=9, nome=Setembro, nomeCurto=SET]");
-		builder.append(", ");
-		builder.append("Mes [numeral=10, nome=Outubro, nomeCurto=OUT]");
-		builder.append(", ");
-		builder.append("Mes [numeral=11, nome=Novembro, nomeCurto=NOV]");
-		builder.append(", ");
-		builder.append("Mes [numeral=12, nome=Dezembro, nomeCurto=DEZ]");
-		builder.append("]");
-		assertEquals(builder.toString(), util.mesesPeriodo(dataInicial, dataFinal).toString());
+		
+		builder.append("123456789101112");
+		
+		assertEquals(builder.toString(), buildRetorno(util.mesesPeriodo(dataInicial, dataFinal)));
 	}
 
 	@Test
@@ -88,35 +56,9 @@ public class TestePosicaoMeses {
 		
 		DateUtil util = new DateUtil();
 		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		builder.append("Mes [numeral=1, nome=Janeiro, nomeCurto=JAN]");
-		builder.append(", ");
-		builder.append("Mes [numeral=2, nome=Fevereiro, nomeCurto=FEV]");
-		builder.append(", ");
-		builder.append("Mes [numeral=3, nome=Março, nomeCurto=MAR]");
-		builder.append(", ");
-		builder.append("Mes [numeral=4, nome=Abril, nomeCurto=ABR]");
-		builder.append(", ");
-		builder.append("Mes [numeral=5, nome=Maio, nomeCurto=MAI]");
-		builder.append(", ");
-		builder.append("Mes [numeral=6, nome=Junho, nomeCurto=JUN]");
-		builder.append(", ");
-		builder.append("Mes [numeral=7, nome=Julho, nomeCurto=JUL]");
-		builder.append(", ");
-		builder.append("Mes [numeral=8, nome=Agosto, nomeCurto=AGO]");
-		builder.append(", ");
-		builder.append("Mes [numeral=9, nome=Setembro, nomeCurto=SET]");
-		builder.append(", ");
-		builder.append("Mes [numeral=10, nome=Outubro, nomeCurto=OUT]");
-		builder.append(", ");
-		builder.append("Mes [numeral=11, nome=Novembro, nomeCurto=NOV]");
-		builder.append(", ");
-		builder.append("Mes [numeral=12, nome=Dezembro, nomeCurto=DEZ]");
-		builder.append(", ");
-		builder.append("Mes [numeral=1, nome=Janeiro, nomeCurto=JAN]");
-		builder.append("]");
-		
-		assertEquals(builder.toString(), util.mesesPeriodo(dataInicial, dataFinal).toString());
+		builder.append("12345678910111213");
+
+		assertEquals(builder.toString(), buildRetorno(util.mesesPeriodo(dataInicial, dataFinal)));
 	}
 	
 	@Test
@@ -129,16 +71,16 @@ public class TestePosicaoMeses {
 		
 		DateUtil util = new DateUtil();
 		StringBuilder builder = new StringBuilder();
-		builder.append("01/2013");
-		builder.append("02/2013");
-		builder.append("03/2013");
-		builder.append("04/2013");
+		builder.append("1234");
 		
-		StringBuilder meses = new StringBuilder();
-		for (Mes mes: util.mesesPeriodo(dataInicial, dataFinal)){
-			meses.append(mes.getMesAno());
+		assertEquals(builder.toString(), buildRetorno(util.mesesPeriodo(dataInicial, dataFinal)));
+	}
+	
+	private String buildRetorno(List<Mes> meses){
+		StringBuilder retorno = new StringBuilder();
+		for (Mes mes : meses) {
+			retorno.append(mes.getPosicao());
 		}
-		
-		assertEquals(builder.toString(), meses.toString());
+		return retorno.toString();
 	}
 }

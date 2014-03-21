@@ -351,6 +351,7 @@ div.ui-selectonemenu label.ui-selectonemenu-label {
 .div_acesso_negado {
 	width: 985px;
 	text-align: center;
+	margin: auto;
 }
 
 .acesso_negado {

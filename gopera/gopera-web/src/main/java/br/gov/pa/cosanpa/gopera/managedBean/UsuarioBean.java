@@ -1,6 +1,5 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +43,7 @@ public class UsuarioBean extends BaseBean {
     		usuarioProxy.setCodigo(Integer.parseInt(String.valueOf(session.getAttribute("usuario"))));
 	    	usuarioProxy = fachadaProxy.getPerfilUsuario(usuarioProxy);
 	    	usuarioProxy = fachadaProxy.getParametrosSistema(usuarioProxy);
+	    	usuarioProxy.setLogado(true);
 	    	session.setAttribute("usuarioProxy", usuarioProxy);
     		
     		//Setando Localização Default

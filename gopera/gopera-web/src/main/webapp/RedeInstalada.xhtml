@@ -136,15 +136,22 @@ xmlns:p="http://primefaces.org/ui">
 				<p:calendar value="#{redeInstaladaBean.registro.referencia}" id="mesreferencia" locale="pt" disabled="#{redeInstaladaBean.desabilitaForm or redeInstaladaBean.editando}" showOn="button" pattern="MM/yyyy" required="true" requiredMessage="Mês de Referência, deve ser informado."/>
 
 				<h:outputLabel for="redecadastrada" value="Rede Cadastrada (Km) *"/>
-				<p:inputText style="width: 80px !important;" value="#{redeInstaladaBean.registro.redeCadastrada}" id="redecadastrada" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Cadastrada, deve ser informado."/>
+				<p:inputText style="width: 80px" value="#{redeInstaladaBean.registro.redeCadastrada}" id="redecadastrada" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Cadastrada, deve ser informado.">
+		     		<f:convertNumber maxFractionDigits="2" pattern="#0.00"/>
+		     		<f:validateDoubleRange minimum="0"/>				
+				</p:inputText>
 
 				<h:outputLabel for="redeexistente" value="Rede Existente (Km) *"/>
-				<p:inputText style="width: 80px !important;" value="#{redeInstaladaBean.registro.redeExistente}" id="redeexistente" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Existente, deve ser informado."/>
+				<p:inputText style="width: 80px;" value="#{redeInstaladaBean.registro.redeExistente}" id="redeexistente" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Existente, deve ser informado.">
+		     		<f:convertNumber maxFractionDigits="2" pattern="#0.00"/>
+		     		<f:validateDoubleRange minimum="0"/>
+				</p:inputText>
+				
 				<script type="text/javascript">
 					$(function(){
-						$("input[id*=rede]").setMask("int");				
+						$("input[id*=rede]").setMask("simple-decimal-us");
 						$("input[id*=mes]").setMask("99/9999");
-						});
+					});
 				</script>	
 			</h:panelGrid>				
 			</p:column>
