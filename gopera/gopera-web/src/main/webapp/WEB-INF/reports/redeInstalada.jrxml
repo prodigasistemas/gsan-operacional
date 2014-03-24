@@ -29,8 +29,8 @@
 	<field name="muni_nmmunicipio" class="java.lang.String"/>
 	<field name="loca_nmlocalidade" class="java.lang.String"/>
 	<field name="rdin_referencia" class="java.util.Date"/>
-	<field name="rdin_existente" class="java.lang.Integer"/>
-	<field name="rdin_cadastrada" class="java.lang.Integer"/>
+	<field name="rdin_existente" class="java.lang.Double"/>
+	<field name="rdin_cadastrada" class="java.lang.Double"/>
 	<field name="greg_nmregional" class="java.lang.String"/>
 	<field name="greg_id" class="java.lang.String"/>
 	<field name="uneg_id" class="java.lang.String"/>
@@ -90,14 +90,14 @@
 					</textElement>
 					<textFieldExpression><![CDATA["Total Gerência Regional: " + $F{greg_nmregional}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="57b97fac-6193-425b-bf1e-09ecd2a9ce27" x="380" y="0" width="80" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Soma_Regional_Coletado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="7dfaf83d-44d6-4076-b350-0e3cb5f0f53c" x="460" y="0" width="95" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
@@ -131,14 +131,14 @@
 					</textElement>
 					<textFieldExpression><![CDATA["     Total Unidade de Negócio: " + $F{uneg_nmunidadenegocio}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="b5d0fff8-6114-425b-bb94-0e1485ae967a" x="380" y="0" width="80" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Soma_Unidade_Coletado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="b3cb0985-cbb4-46a4-8a44-db9443d2bb52" x="460" y="0" width="95" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
@@ -172,14 +172,14 @@
 					</textElement>
 					<textFieldExpression><![CDATA["          Total Município: " + $F{muni_nmmunicipio}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="4f75bbb5-68e3-43fa-881c-7cea604e6892" x="380" y="0" width="80" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Soma_Municipio_Coletado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="9319cd13-dc89-488d-9680-adc850a1cd32" x="460" y="0" width="95" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
@@ -213,14 +213,14 @@
 					</textElement>
 					<textFieldExpression><![CDATA["               Total Localidade:  " + $F{loca_nmlocalidade}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="d7ba02ce-671b-46bf-acc3-ab6475b032d0" x="380" y="0" width="80" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Soma_Localidade_Coletado}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="d73d6c8d-d19d-463f-ace0-00c1c8581a2c" x="460" y="0" width="95" height="10"/>
 					<textElement textAlignment="Right">
 						<font fontName="Arial" size="6" isBold="true"/>
@@ -335,14 +335,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rdin_referencia}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#0" isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="380" y="0" width="80" height="10"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rdin_existente}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#0" isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement uuid="c4dc1ef3-1fc9-40e7-8754-6f6fb023a3c2" x="460" y="0" width="95" height="10"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="6"/>

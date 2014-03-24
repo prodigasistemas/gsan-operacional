@@ -137,19 +137,19 @@ xmlns:p="http://primefaces.org/ui">
 
 				<h:outputLabel for="redecadastrada" value="Rede Cadastrada (Km) *"/>
 				<p:inputText style="width: 80px" value="#{redeInstaladaBean.registro.redeCadastrada}" id="redecadastrada" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Cadastrada, deve ser informado.">
-		     		<f:convertNumber maxFractionDigits="2" pattern="#0.00"/>
+		     		<f:convertNumber maxFractionDigits="2" pattern="#0.00" locale="#{m.locale}"/>
 		     		<f:validateDoubleRange minimum="0"/>				
 				</p:inputText>
 
 				<h:outputLabel for="redeexistente" value="Rede Existente (Km) *"/>
 				<p:inputText style="width: 80px;" value="#{redeInstaladaBean.registro.redeExistente}" id="redeexistente" maxlength="10" disabled="#{redeInstaladaBean.desabilitaForm}" required="true" requiredMessage="Rede Existente, deve ser informado.">
-		     		<f:convertNumber maxFractionDigits="2" pattern="#0.00"/>
+		     		<f:convertNumber maxFractionDigits="2" pattern="#0.00" locale="#{m.locale}"/>
 		     		<f:validateDoubleRange minimum="0"/>
 				</p:inputText>
 				
 				<script type="text/javascript">
 					$(function(){
-						$("input[id*=rede]").setMask("simple-decimal-us");
+						$("input[id*=rede]").setMask("only-decimal");
 						$("input[id*=mes]").setMask("99/9999");
 					});
 				</script>	
