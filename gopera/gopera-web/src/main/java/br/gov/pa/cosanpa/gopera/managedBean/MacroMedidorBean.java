@@ -83,6 +83,8 @@ public class MacroMedidorBean extends BaseBean<MacroMedidor> {
 		try {
 			registro.setUsuario(usuarioProxy);
 			registro.setUltimaAlteracao(new Date());
+			if (registro.getCodigo() == null)
+				registro.setDataCadastro(new Date());
 			return super.confirmar();
 		} catch (Exception e) {
 			this.mostrarMensagemErro("Erro ao Salvar");

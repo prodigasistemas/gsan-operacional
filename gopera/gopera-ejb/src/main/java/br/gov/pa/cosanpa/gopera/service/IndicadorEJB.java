@@ -72,19 +72,19 @@ public class IndicadorEJB implements IIndicador {
 		campos.append(" B.indc_id, B.indm_data, A.indc_seq, A.indc_nome, A.indc_und, A.indc_form, A.indc_resp, A.indc_grp");
 		
 		StringBuilder filtro = new StringBuilder();
-		if (codigoRegional != -1) {
+		if (codigoRegional > 0) {
 			filtro.append("  AND B.greg_id = " + codigoRegional);
 		}
-		if (codigoUnidadeNegocio != -1) {
+		if (codigoUnidadeNegocio > 0) {
 			filtro.append("  AND B.uneg_id = " + codigoUnidadeNegocio);
 		}
-		if (codigoMunicipio != -1) {
+		if (codigoMunicipio > 0) {
 			filtro.append("  AND B.muni_id = " + codigoMunicipio);
 		}
-		if (codigoLocalidade != -1) {
+		if (codigoLocalidade > 0) {
 			filtro.append("  AND B.loca_id = " + codigoLocalidade);
 		}
-		if (codigoUnidadeOperacional != 0) {
+		if (codigoUnidadeOperacional > 0) {
 			filtro.append("  AND B.unop_tipo = " + tipoUnidadeOperacional + "  AND B.unop_id = " + codigoUnidadeOperacional);
 		}
 		
@@ -116,10 +116,10 @@ public class IndicadorEJB implements IIndicador {
 		.append(" FROM operacao.indicador A ")
 		.append(" INNER JOIN operacao.indicador_mensal B ON A.indc_id = B.indc_id ")
 		.append(" AND B.indm_data BETWEEN '" + strDataIni + "' AND '" + strDataFim + "' ")
-		.append(" INNER JOIN cadastro.gerencia_regional greg on greg.greg_id = B.greg_id  ")
-		.append(" INNER JOIN cadastro.unidade_negocio uneg ON uneg.uneg_id = B.uneg_id ")
-		.append(" INNER JOIN cadastro.localidade loca ON loca.loca_id = B.loca_id ")
-		.append(" INNER JOIN cadastro.municipio muni ON muni.muni_id = B.muni_id ")
+		.append(" LEFT JOIN cadastro.gerencia_regional greg on greg.greg_id = B.greg_id  ")
+		.append(" LEFT JOIN cadastro.unidade_negocio uneg ON uneg.uneg_id = B.uneg_id ")
+		.append(" LEFT JOIN cadastro.localidade loca ON loca.loca_id = B.loca_id ")
+		.append(" LEFT JOIN cadastro.municipio muni ON muni.muni_id = B.muni_id ")
 		.append(" LEFT JOIN (SELECT eeab_id AS unop_id, eeab_nome AS unop_nmunidadeoperacional, 1 AS unop_tipo FROM operacao.eeab ")
 		.append("            UNION ALL ")
 		.append("            SELECT eta_id AS unop_id, eta_nome AS unop_nmunidadeoperacional, 2 AS unop_tipo FROM operacao.eta ")

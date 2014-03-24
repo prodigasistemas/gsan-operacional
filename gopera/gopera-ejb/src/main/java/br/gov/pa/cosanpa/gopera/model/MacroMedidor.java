@@ -81,6 +81,10 @@ public class MacroMedidor implements BaseEntidade, Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date ultimaAlteracao;
 
+    @Column(name="mmed_datacadastro", nullable=false, insertable=false)
+    @Temporal(TemporalType.DATE)
+    private Date dataCadastro;
+    
 	public MacroMedidor() {
 		super();
 	}
@@ -227,6 +231,14 @@ public class MacroMedidor implements BaseEntidade, Serializable{
 
 	public void setUltimaAlteracao(Date ultimaAlteracao) {
 		this.ultimaAlteracao = ultimaAlteracao;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 
 	public static long getSerialversionuid() {

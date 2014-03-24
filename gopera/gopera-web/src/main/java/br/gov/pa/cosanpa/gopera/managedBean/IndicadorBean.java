@@ -21,6 +21,7 @@ import br.gov.pa.cosanpa.gopera.exception.BaseRuntimeException;
 import br.gov.pa.cosanpa.gopera.fachada.IIndicador;
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 import br.gov.pa.cosanpa.gopera.fachada.IUnidadeConsumidora;
+import br.gov.pa.cosanpa.gopera.model.GrupoIndicador;
 import br.gov.pa.cosanpa.gopera.model.Indicador;
 import br.gov.pa.cosanpa.gopera.model.IndicadorValor;
 import br.gov.pa.cosanpa.gopera.model.LocalidadeProxy;
@@ -47,6 +48,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 	private Integer tipoUnidadeOperacional;
 	private Integer tipoAgrupamento = 0;
 	private String grupoIndicador;
+	private String exibeParaUsrp = "display: none";
 	
 	@EJB
 	private IProxy fachadaProxy;
@@ -67,7 +69,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		listaIndicador.put(bundle.getText("produtividade_capital_produto_quimico"), "2");  
 		listaIndicador.put(bundle.getText("produtividade_capital_energia_eletrica"), "3");  
 		listaIndicador.put(bundle.getText("horas_paradas_sistema"), "4");
-		this.grupoIndicador = "USAG";
+		this.grupoIndicador = GrupoIndicador.USAG.name();
 		tipoAgrupamento = 0;
 		return "Indicadores.jsf";
 	}	
@@ -79,7 +81,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		listaIndicador.put(bundle.getText("despesa_decor_fator_pot_eletrica"), "102");  
 		listaIndicador.put(bundle.getText("macromedidores"), "103");
 		listaIndicador.put(bundle.getText("rede_instalada"), "104");
-		this.grupoIndicador = "USRP";
+		this.grupoIndicador = GrupoIndicador.USRP.name();
 		tipoAgrupamento = 0;
 		return "Indicadores.jsf";
 	}	
@@ -96,7 +98,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		listaIndicador.put(bundle.getText("indice_macromed_total"), "209");
 		listaIndicador.put(bundle.getText("indice_perda_fisica_agua"), "210");
 		listaIndicador.put(bundle.getText("indice_clientes_precariedade"), "211");
-		this.grupoIndicador = "BIGDO";
+		this.grupoIndicador = GrupoIndicador.BIGDO.name();
 		tipoAgrupamento = 0;
 		return "Indicadores.jsf";
 	}	
@@ -445,5 +447,14 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		unidadesOperacional = new ArrayList<UnidadeConsumidoraOperacional>();
 		unidadesOperacional.add(0, new UnidadeConsumidoraOperacional(-1, "Selecione..."));			
 		return unidadesOperacional;
-	}	
+	}
+
+	public String getExibeParaUsrp() {
+		if (grupoIndicador.equals(GrupoIndicador.USRP.name()))
+			return "display: none";
+		else 
+			return "";
+	}
+	
+	
 }

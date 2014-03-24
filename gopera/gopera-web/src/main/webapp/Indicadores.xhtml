@@ -19,76 +19,91 @@ xmlns:p="http://primefaces.org/ui">
 </table>
 <h:form id="form" prependId="true">
 	<p:messages showDetail="false" autoUpdate="true" id="msg" />
-	<h:panelGrid id="cadastro" columns="2">
-		<h:outputLabel for="regional" value="Regional: "/>
-		<p:selectOneMenu id="regional" value="#{indicadorBean.registro.codigoRegional}" effect="fade" converter="selectOneConverter" required="false"   requiredMessage="Regional é Obrigatória">
-			    <f:selectItems value="#{indicadorBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		         <p:ajax update="cadastro" event="change" />  
-	    </p:selectOneMenu>
-		
-		<h:outputLabel for="unidadenegocio" value="Unidade de Negócio: " />
-	    <p:selectOneMenu id="unidadenegocio" value="#{indicadorBean.registro.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Unidade de Negócio é Obrigatória">
-		        <f:selectItems value="#{indicadorBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		        <p:ajax update="cadastro" event="change" />  
-	    </p:selectOneMenu> 
-		
-		<h:outputLabel for="municipio" value="Município: " />
-	    <p:selectOneMenu id="municipio" value="#{indicadorBean.registro.codigoMunicipio}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Município é Obrigatório" >
-		        <f:selectItems value="#{indicadorBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		        <p:ajax update="cadastro" event="change" />  
-	    </p:selectOneMenu>
-		
-		<h:outputLabel for="localidade" value="Localidade: " />
-	    <p:selectOneMenu id="localidade" value="#{indicadorBean.registro.codigoLocalidade}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Localidade é Obrigatória" >
-		        <f:selectItems value="#{indicadorBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		        <p:ajax update="cadastro" event="change" />  
-	    </p:selectOneMenu>
-
-		<h:outputLabel for="tipounidadeoperacional" value="Tipo Unidade Operacional: " />
-	    <p:selectOneMenu id="tipounidadeoperacional" value="#{indicadorBean.tipoUnidadeOperacional}" effect="fade" required="false" requiredMessage="Tipo de Unidade Operacional é Obrigatória" >
+	<div class="campos_cadastro" style="#{indicadorBean.exibeParaUsrp}">
+		<div>
+			<h:outputLabel for="regional" value="Regional: "/>
+			<p:selectOneMenu id="regional" value="#{indicadorBean.registro.codigoRegional}" effect="fade" converter="selectOneConverter">
+				<f:selectItems value="#{indicadorBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				<p:ajax update="cadastro" event="change" />  
+		    </p:selectOneMenu>
+		</div>
+		<div>
+			<h:outputLabel for="unidadenegocio" value="Unidade de Negócio: " />
+		    <p:selectOneMenu id="unidadenegocio" value="#{indicadorBean.registro.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter"  >
+			        <f:selectItems value="#{indicadorBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+			        <p:ajax update="cadastro" event="change" />  
+		    </p:selectOneMenu> 
+		</div>
+		<div>
+			<h:outputLabel for="municipio" value="Município: " />
+		    <p:selectOneMenu id="municipio" value="#{indicadorBean.registro.codigoMunicipio}" effect="fade" converter="selectOneConverter" >
+			        <f:selectItems value="#{indicadorBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+			        <p:ajax update="cadastro" event="change" />  
+		    </p:selectOneMenu>
+		</div>
+		<div>
+			<h:outputLabel for="localidade" value="Localidade: " />
+		    <p:selectOneMenu id="localidade" value="#{indicadorBean.registro.codigoLocalidade}" effect="fade" converter="selectOneConverter" >
+			        <f:selectItems value="#{indicadorBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+			        <p:ajax update="cadastro" event="change" />  
+		    </p:selectOneMenu>
+		</div>
+		<div>
+			<h:outputLabel for="tipounidadeoperacional" value="Tipo Unidade Operacional: "/>
+		    <p:selectOneMenu id="tipounidadeoperacional" value="#{indicadorBean.tipoUnidadeOperacional}" effect="fade" >
 	    		<f:selectItem itemLabel="Selecione..." itemValue="0"/>
 		        <f:selectItem itemLabel="EAB" itemValue="1"/>
 		        <f:selectItem itemLabel="ETA" itemValue="2"/>
 		        <f:selectItem itemLabel="EAT" itemValue="3"/>
 		        <f:selectItem itemLabel="RSO" itemValue="4"/>
 		        <p:ajax update="cadastro" event="change" />
-	    </p:selectOneMenu>
-	    
-		<h:outputLabel for="unidadeoperacional" value="Unidade Operacional: " />
-	    <p:selectOneMenu id="unidadeoperacional" value="#{indicadorBean.registro.codigoUnidadeOperacional}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Unidade Operacional é Obrigatória" >
-		        <f:selectItems value="#{indicadorBean.unidadesOperacional}" var="x" itemLabel="#{x.descricao}" itemValue="#{x.codigo}"/>
-	    </p:selectOneMenu>	    
+		    </p:selectOneMenu>
+		</div>
+		<div>
+			<h:outputLabel for="unidadeoperacional" value="Unidade Operacional: " />
+		    <p:selectOneMenu id="unidadeoperacional" value="#{indicadorBean.registro.codigoUnidadeOperacional}" effect="fade" 
+		    converter="selectOneConverter" >
+			        <f:selectItems value="#{indicadorBean.unidadesOperacional}" var="x" itemLabel="#{x.descricao}" itemValue="#{x.codigo}"/>
+		    </p:selectOneMenu>	   
+		</div>
+	</div>
 		
-		<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
-		<p:column style="text-align:left">
+	<div class="campos_cadastro">
+		<div>
+			<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
 			<p:inputText value="#{indicadorBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória"/>
-		</p:column>
+		</div>
 
-		<h:outputLabel for="referenciaFinal" value="Referência Final: *"/>
-		<p:column style="text-align:left">
+		<div>
+			<h:outputLabel for="referenciaFinal" value="Referência Final: *"/>
 			<p:inputText value="#{indicadorBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória"/>
-		</p:column>
+		</div>
 		
-		<h:outputLabel for="listaIndicador" value="Indicadores: " />
-		<p:column style="text-align:left">          
+		<div>
+			<h:outputLabel for="listaIndicador" value="Indicadores: " />
 		 	<p:selectCheckboxMenu id="listaIndicador" value="#{indicadorBean.indicadorSelecionado}" label="Indicadores" filter="false" filterText="Filter" filterMatchMode="startsWith" required="true" requiredMessage="Seleção de Indicadores é Obrigatória" >  
 	        	<f:selectItems value="#{indicadorBean.listaIndicador}" />  
 	     	</p:selectCheckboxMenu>  
-        </p:column>
+		</div>
+    </div>
+	
+	<div class="campos_cadastro" style="#{indicadorBean.exibeParaUsrp}">
+		<div>
         <h:outputLabel for="tipoAgrupamento" value="Agrupamento: " />
-		<p:column style="text-align:left">          
-	        <p:selectOneMenu id="tipoAgrupamento" value="#{indicadorBean.tipoAgrupamento}">
-	            <f:selectItem itemLabel="Sem Agrupamento" itemValue="0" />  
-	            <f:selectItem itemLabel="Gerência Regional" itemValue="1" />  
-	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio" itemValue="2" />  
-	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município" itemValue="3" />  
-	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município + Localidade" itemValue="4" />
-	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município + Localidade + Unidade Operacional" itemValue="5" />
-	        </p:selectOneMenu>
-        </p:column>
-		<p:column>
-			<p:commandButton value="Exibir" action="#{indicadorBean.exibir}" ajax="false"/>
-		</p:column>
+        <p:selectOneMenu id="tipoAgrupamento" value="#{indicadorBean.tipoAgrupamento}">
+            <f:selectItem itemLabel="Sem Agrupamento" itemValue="0" />  
+            <f:selectItem itemLabel="Gerência Regional" itemValue="1" />  
+            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio" itemValue="2" />  
+            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município" itemValue="3" />  
+            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município + Localidade" itemValue="4" />
+            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município + Localidade + Unidade Operacional" itemValue="5" />
+        </p:selectOneMenu>		
+		</div>
+     </div>
+	
+	<h:panelGrid id="cadastro" columns="2">
+		
+		<p:commandButton value="Exibir" action="#{indicadorBean.exibir}" ajax="false"/>
    <script type="text/javascript">
 	$(function(){
 		options = {
