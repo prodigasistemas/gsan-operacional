@@ -910,4 +910,10 @@ public class RelatorioEnergiaEletrica implements Serializable{
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "RelatorioEnergiaEletrica [codigoUC=" + codigoUC + ", referencia=" + referencia + "]";
+	}
+	
+	
 }

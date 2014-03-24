@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 import org.jboss.logging.Logger;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
@@ -114,16 +115,13 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
         	 
              lineModelo = new CartesianChartModel();
              Integer codigoUC = 0;
-             ChartSeries lineUC = new ChartSeries();; 
+             ChartSeries lineUC = null; 
              for (RelatorioEnergiaEletrica rel : relatorio){
-            	 if (!codigoUC.equals(rel.getCodigoUC())){
-            		 if (!codigoUC.equals(0)){
-            			 lineModelo.addSeries(lineUC);
-                		 lineUC = new ChartSeries();
-            		 }
-            		 lineUC.setLabel(rel.getCodigoUC().toString() + " - " + rel.getNomeUC());
-            		 //lineUC.setLabel(rel.getCodigoUC().toString());
+            	 if (codigoUC.intValue() != rel.getCodigoUC().intValue()){
             		 codigoUC = rel.getCodigoUC();
+            		 lineUC = new ChartSeries();;
+            		 lineUC.setLabel(rel.getCodigoUC().toString() + " - " + rel.getNomeUC());
+            		 lineModelo.addSeries(lineUC);
             	 }
 
         		 switch (tipoRelatorio) {
