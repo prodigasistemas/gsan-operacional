@@ -66,9 +66,9 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		this.registro = new Indicador();
 		listaIndicador = new HashMap<String, String>();  
 		listaIndicador.put(bundle.getText("consumo_produtos_quimicos"), "1");  
-		listaIndicador.put(bundle.getText("produtividade_capital_produto_quimico"), "2");  
-		listaIndicador.put(bundle.getText("produtividade_capital_energia_eletrica"), "3");  
-		listaIndicador.put(bundle.getText("horas_paradas_sistema"), "4");
+//		listaIndicador.put(bundle.getText("produtividade_capital_produto_quimico"), "2");  
+//		listaIndicador.put(bundle.getText("produtividade_capital_energia_eletrica"), "3");  
+//		listaIndicador.put(bundle.getText("horas_paradas_sistema"), "4");
 		this.grupoIndicador = GrupoIndicador.USAG.name();
 		tipoAgrupamento = 0;
 		return "Indicadores.jsf";
@@ -95,8 +95,8 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		listaIndicador.put(bundle.getText("taxa_ret_vaza_agua"), "204");
 		listaIndicador.put(bundle.getText("indice_trat_esgoto"), "205");
 		listaIndicador.put(bundle.getText("indice_confor_quali_agua"), "206");
-		listaIndicador.put(bundle.getText("indice_macromed_total"), "209");
-		listaIndicador.put(bundle.getText("indice_perda_fisica_agua"), "210");
+//		listaIndicador.put(bundle.getText("indice_macromed_total"), "209");
+//		listaIndicador.put(bundle.getText("indice_perda_fisica_agua"), "210");
 		listaIndicador.put(bundle.getText("indice_clientes_precariedade"), "211");
 		this.grupoIndicador = GrupoIndicador.BIGDO.name();
 		tipoAgrupamento = 0;
