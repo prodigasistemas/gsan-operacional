@@ -160,7 +160,7 @@ public class RedeInstaladaBean extends BaseBean<RedeInstalada> {
 												  this.registro.getMunicipioProxy().getCodigo(),
 												  this.registro.getLocalidadeProxy().getCodigo(),
 												  this.filtroData(this.registro.getReferencia(), "yyyy-MM-dd")) ){
-					throw new Exception("Mês de referência já cadastrado!");
+					throw new Exception(bundle.getText("erro_mes_referencia_ja_cadastrado"));
 				}
 			}
 			if(!validaReferencia(this.registro.getReferencia())) return null;
