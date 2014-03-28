@@ -19,6 +19,7 @@ xmlns:p="http://primefaces.org/ui">
 </table>
 <h:form id="form" prependId="true">
 	<p:messages showDetail="false" autoUpdate="true" id="msg" />
+	<p:panel id="cadastro">
 	<div class="campos_cadastro" style="#{indicadorBean.exibeParaUsrp}">
 		<div>
 			<h:outputLabel for="regional" value="Regional: "/>
@@ -101,8 +102,6 @@ xmlns:p="http://primefaces.org/ui">
 		</div>
      </div>
 	
-	<h:panelGrid id="cadastro" columns="2">
-		
 		<p:commandButton value="Exibir" action="#{indicadorBean.exibir}" ajax="false"/>
    <script type="text/javascript">
 	$(function(){
@@ -112,7 +111,7 @@ xmlns:p="http://primefaces.org/ui">
 		$("input[id*=referencia]").monthpicker(options);				
 		});
    </script>		
-	</h:panelGrid>
+	</p:panel>
 </h:form>
 </div>
 </ui:define>
