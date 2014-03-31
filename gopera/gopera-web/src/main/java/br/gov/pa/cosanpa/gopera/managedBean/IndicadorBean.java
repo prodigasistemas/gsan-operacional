@@ -33,7 +33,12 @@ import br.gov.pa.cosanpa.gopera.model.UnidadeNegocioProxy;
 @ManagedBean
 @SessionScoped
 public class IndicadorBean extends BaseRelatorioBean<Indicador> {
+
 	private static Logger logger = Logger.getLogger(IndicadorBean.class);
+	
+	private static final int INDICE_EFICIENCIA_RETIRADA_VAZAMENTO_DIAS = 203;
+	
+	private static final int PRAZO_MEDIO_ATENDIMENTO_OS_ESGOTO = 201;
 
 	private List<RegionalProxy> regionais = new ArrayList<RegionalProxy>();
 	private List<UnidadeNegocioProxy> unidadesNegocio = new ArrayList<UnidadeNegocioProxy>();
@@ -275,7 +280,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 	}
 
 	private boolean indicadorMultiplicaPercentual(Indicador indicador) {
-		return indicador.getCodigo().intValue() != 201 && indicador.getCodigo().intValue() != 203;
+		return indicador.getCodigo().intValue() != PRAZO_MEDIO_ATENDIMENTO_OS_ESGOTO && indicador.getCodigo().intValue() != INDICE_EFICIENCIA_RETIRADA_VAZAMENTO_DIAS;
 	}
 
 	private void preencheResumoIndicador(WritableSheet sheet, int linha, Indicador indicador) throws WriteException {
