@@ -257,7 +257,11 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 						&& calendar.get(Calendar.MONTH) == calIndicador.get(Calendar.MONTH)){
 					addNumero(sheet, colDados, linha, valor.getIndicador1(),wcfNumeroBorder);
 					addNumero(sheet, colDados++, linha + 1, valor.getIndicador2(),wcfNumeroBorder);
-					addNumero(sheet, colDados, linha, valor.getTotal() * 100, wcfPercentual);
+					double percentual = valor.getTotal();
+					if (indicadorMultiplicaPercentual(indicador)){
+						percentual *= 100;
+					}
+					addNumero(sheet, colDados, linha, percentual, wcfPercentual);
 					colDados++;
 					break;
 				}
@@ -268,6 +272,10 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 				datIni = calendar.getTime(); 
 			}
 		}
+	}
+
+	private boolean indicadorMultiplicaPercentual(Indicador indicador) {
+		return indicador.getCodigo().intValue() != 201 && indicador.getCodigo().intValue() != 203;
 	}
 
 	private void preencheResumoIndicador(WritableSheet sheet, int linha, Indicador indicador) throws WriteException {
