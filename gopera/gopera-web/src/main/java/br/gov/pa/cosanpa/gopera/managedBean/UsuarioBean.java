@@ -8,11 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
 
 import br.gov.pa.cosanpa.gopera.fachada.IProxy;
 import br.gov.pa.cosanpa.gopera.model.LancamentoPendente;
 import br.gov.pa.cosanpa.gopera.model.UsuarioProxy;
+import br.gov.pa.cosanpa.gopera.util.WebUtil;
 
 @SuppressWarnings("rawtypes")
 @ManagedBean
@@ -84,12 +86,24 @@ public class UsuarioBean extends BaseBean {
 	}
 	
 	public void logout() {
+		String referer = getHeaderReferer();
+		
 		usuarioProxy.setLogado(false);
 		session.invalidate();
 		try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect(fachadaProxy.getParametroSistema(7));
+			FacesContext.getCurrentInstance().getExternalContext().redirect(referer);
 		} catch (Exception e) {
 			logger.error("Erro ao redirecionar para gsan", e);
 		}
+	}
+
+	protected String getHeaderReferer() {
+		Object atribute = session.getAttribute(WebUtil.ATRIBUTO_REFERER);
+		String referer = null;
+		
+		if (atribute != null && StringUtils.isNotBlank(String.valueOf(atribute))){
+			referer = String.valueOf(atribute);
+		}
+		return referer;
 	}
 }

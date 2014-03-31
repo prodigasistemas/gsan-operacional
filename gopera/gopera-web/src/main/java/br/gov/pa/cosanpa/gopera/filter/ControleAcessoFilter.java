@@ -113,7 +113,9 @@ public class ControleAcessoFilter implements Filter {
 
 		session.setAttribute(ATRIBUTO_USUARIO, dados.get(ATRIBUTO_USUARIO));
 		session.setAttribute(ATRIBUTO_TOKEN, dados.get(ATRIBUTO_TOKEN));
-		
+		if (StringUtils.isNotBlank(httpRequest.getHeader(WebUtil.ATRIBUTO_REFERER))){
+			session.setAttribute(WebUtil.ATRIBUTO_REFERER, httpRequest.getHeader(WebUtil.ATRIBUTO_REFERER));
+		}
 	}
 
 	private Map<String, String> recuperaDadosAcessoNaRequest(HttpServletRequest httpRequest) {

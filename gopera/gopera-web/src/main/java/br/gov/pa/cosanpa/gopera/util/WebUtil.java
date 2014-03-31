@@ -21,6 +21,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import br.gov.pa.cosanpa.gopera.model.RelatorioGerencial;
 
 public class WebUtil {
+	public static final String ATRIBUTO_REFERER = "referer";
+	
 	private static Logger logger = Logger.getLogger(WebUtil.class);
 	
 	private WebBundle bundle = new WebBundle();
