@@ -364,9 +364,9 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				addLabel(sheet, 2, linha, "Sistema de Abastecimento:", wcfLabelHeader);
 				addLabel(sheet, 3, linha, rs.getString("eeab_sabs") , wcfLabelHeader);
 				linha++;				
-				addLabel(sheet, 0, linha, "Volume Útil", wcfLabel);
-				addLabel(sheet, 1, linha, "Altura Útil", wcfLabel);
-				addLabel(sheet, 2, linha, "Capacidade", wcfLabel);
+				addLabel(sheet, 0, linha, bundle.getText("volume_util"), wcfLabel);
+				addLabel(sheet, 1, linha, bundle.getText("altura_util"), wcfLabel);
+				addLabel(sheet, 2, linha, bundle.getText("capacidade"), wcfLabel);
 				linha++;
 				addNumero(sheet, 0, linha, Double.parseDouble(rs.getString("eeab_volumeutil")) , wcfNumero);
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("eeab_alturautil")) , wcfNumero);
@@ -375,10 +375,10 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				addLabel(sheet, 0, linha, "CMB - Conjunto Motor-Bomba", wcfLabelBold);
 				sheet.mergeCells(0, linha, 5, linha);
 				linha++;
-				addLabel(sheet, 0, linha, "Qtd", wcfLabel);
-				addLabel(sheet, 1, linha, "Modelo", wcfLabel);
-				addLabel(sheet, 2, linha, "Vazão", wcfLabel);
-				addLabel(sheet, 3, linha, "Potência", wcfLabel);
+				addLabel(sheet, 0, linha, bundle.getText("qtd"), wcfLabel);
+				addLabel(sheet, 1, linha, bundle.getText("modelo"), wcfLabel);
+				addLabel(sheet, 2, linha, bundle.getText("vazao"), wcfLabel);
+				addLabel(sheet, 3, linha, bundle.getText("potencia"), wcfLabel);
 				addLabel(sheet, 4, linha, "MCA", wcfLabel);
 				linha++;
 				addNumero(sheet, 0, linha, Double.parseDouble(rs.getString("eeab_cmb")) , wcfInteiro);
@@ -398,11 +398,11 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				headerLinha = false;
 				while (rsMed.next()) {
 					if (!headerLinha){
-						addLabel(sheet, 1, linha, "Medidor de Saída", wcfLabelBold);
+						addLabel(sheet, 1, linha, bundle.getText("medidor_saida"), wcfLabelBold);
 						sheet.mergeCells(1, linha, 3, linha);
 						linha++;
 						addLabel(sheet, 1, linha, "Medidor", wcfLabel);
-						addLabel(sheet, 2, linha, "Data Instalação", wcfLabel);
+						addLabel(sheet, 2, linha, bundle.getText("data_instalacao"), wcfLabel);
 						addLabel(sheet, 3, linha, "TAG", wcfLabel);
 						linha++;
 						headerLinha = true;
@@ -434,13 +434,13 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				headerLinha = false;
 				while (rsFonte.next()) {
 					if (!headerLinha){
-						addLabel(sheet, 1, linha, "Fonte de Captação", wcfLabelBold);
+						addLabel(sheet, 1, linha, bundle.getText("fonte_captacao"), wcfLabelBold);
 						sheet.mergeCells(1, linha, 5, linha);
 						linha++;
 						addLabel(sheet, 1, linha, "Tipo Fonte", wcfLabel);
 						addLabel(sheet, 2, linha, "Nome Fonte", wcfLabel);
 						addLabel(sheet, 3, linha, "Medidor", wcfLabel);
-						addLabel(sheet, 4, linha, "Data Instalação", wcfLabel);
+						addLabel(sheet, 4, linha, bundle.getText("data_instalacao"), wcfLabel);
 						addLabel(sheet, 5, linha, "TAG", wcfLabel);
 						linha++;
 						headerLinha = true;
@@ -472,8 +472,8 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				addLabel(sheet, 0, linha, "ETA:", wcfLabelHeader);
 				addLabel(sheet, 1, linha, rs.getString("eta_nome") , wcfLabelHeader);
 				linha++;				
-				addLabel(sheet, 1, linha, "Volume Útil", wcfLabel);
-				addLabel(sheet, 2, linha, "Altura Útil", wcfLabel);
+				addLabel(sheet, 1, linha, bundle.getText("volume_util"),  wcfLabel);
+				addLabel(sheet, 2, linha, bundle.getText("altura_util"), wcfLabel);
 				addLabel(sheet, 3, linha, "Capacidade", wcfLabel);
 				linha++;
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("eta_volumeutil")) , wcfNumero);
@@ -485,8 +485,8 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				linha++;
 				addLabel(sheet, 1, linha, "Qtd", wcfLabel);
 				addLabel(sheet, 2, linha, "Modelo", wcfLabel);
-				addLabel(sheet, 3, linha, "Vazão", wcfLabel);
-				addLabel(sheet, 4, linha, "Potência", wcfLabel);
+				addLabel(sheet, 3, linha, bundle.getText("vazao"), wcfLabel);
+				addLabel(sheet, 4, linha, bundle.getText("potencia"), wcfLabel);
 				addLabel(sheet, 5, linha, "MCA", wcfLabel);
 				linha++;
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("eta_cmb")) , wcfInteiro);
@@ -506,11 +506,11 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				headerLinha = false;
 				while (rsMed.next()) {
 					if (!headerLinha){
-						addLabel(sheet, 1, linha, "Medidor de Saída", wcfLabelBold);
+						addLabel(sheet, 1, linha, bundle.getText("medidor_saida"), wcfLabelBold);
 						sheet.mergeCells(1, linha, 3, linha);
 						linha++;
 						addLabel(sheet, 1, linha, "Medidor", wcfLabel);
-						addLabel(sheet, 2, linha, "Data Instalação", wcfLabel);
+						addLabel(sheet, 2, linha, bundle.getText("data_instalacao"), wcfLabel);
 						addLabel(sheet, 3, linha, "TAG", wcfLabel);
 						linha++;
 						headerLinha = true;
@@ -534,12 +534,12 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				headerLinha = false;
 				while (rsFonte.next()) {
 					if (!headerLinha){
-						addLabel(sheet, 1, linha, "Fonte de Captação", wcfLabelBold);
+						addLabel(sheet, 1, linha, bundle.getText("fonte_captacao"), wcfLabelBold);
 						sheet.mergeCells(1, linha, 4, linha);
 						linha++;
 						addLabel(sheet, 1, linha, "Nome Fonte", wcfLabel);
 						addLabel(sheet, 2, linha, "Medidor", wcfLabel);
-						addLabel(sheet, 3, linha, "Data Instalação", wcfLabel);
+						addLabel(sheet, 3, linha, bundle.getText("data_instalacao"), wcfLabel);
 						addLabel(sheet, 4, linha, "TAG", wcfLabel);
 						linha++;
 						headerLinha = true;
@@ -569,11 +569,11 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 			while (rs.next()) {
 				addLabel(sheet, 0, linha, "EAT:", wcfLabelHeader);
 				addLabel(sheet, 1, linha, rs.getString("eeat_nome") , wcfLabelHeader);
-				addLabel(sheet, 2, linha, "Característica:", wcfLabelHeader);
+				addLabel(sheet, 2, linha, bundle.getText("caracteristica"), wcfLabelHeader);
 				addLabel(sheet, 3, linha, rs.getString("eeat_tipo") , wcfLabelHeader);
 				linha++;				
-				addLabel(sheet, 1, linha, "Volume Útil", wcfLabel);
-				addLabel(sheet, 2, linha, "Altura Útil", wcfLabel);
+				addLabel(sheet, 1, linha, bundle.getText("volume_util"), wcfLabel);
+				addLabel(sheet, 2, linha, bundle.getText("altura_util"), wcfLabel);
 				addLabel(sheet, 3, linha, "Capacidade", wcfLabel);
 				linha++;
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("eeat_volumeutil")) , wcfNumero);
@@ -585,8 +585,8 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				linha++;
 				addLabel(sheet, 1, linha, "Qtd", wcfLabel);
 				addLabel(sheet, 2, linha, "Modelo", wcfLabel);
-				addLabel(sheet, 3, linha, "Vazão", wcfLabel);
-				addLabel(sheet, 4, linha, "Potência", wcfLabel);
+				addLabel(sheet, 3, linha, bundle.getText("vazao"), wcfLabel);
+				addLabel(sheet, 4, linha, bundle.getText("potencia"), wcfLabel);
 				addLabel(sheet, 5, linha, "MCA", wcfLabel);
 				linha++;
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("eeat_cmb")) , wcfInteiro);
@@ -606,11 +606,11 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				headerLinha = false;
 				while (rsMed.next()) {
 					if (!headerLinha){
-						addLabel(sheet, 1, linha, "Medidor de Saída", wcfLabelBold);
+						addLabel(sheet, 1, linha, bundle.getText("medidor_saida"), wcfLabelBold);
 						sheet.mergeCells(1, linha, 3, linha);
 						linha++;
 						addLabel(sheet, 1, linha, "Medidor", wcfLabel);
-						addLabel(sheet, 2, linha, "Data Instalação", wcfLabel);
+						addLabel(sheet, 2, linha, bundle.getText("data_instalacao"), wcfLabel);
 						addLabel(sheet, 3, linha, "TAG", wcfLabel);
 						linha++;
 						headerLinha = true;
@@ -642,13 +642,13 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				headerLinha = false;
 				while (rsFonte.next()) {
 					if (!headerLinha){
-						addLabel(sheet, 1, linha, "Fonte de Captação", wcfLabelBold);
+						addLabel(sheet, 1, linha, bundle.getText("fonte_captacao"), wcfLabelBold);
 						sheet.mergeCells(1, linha, 5, linha);
 						linha++;
 						addLabel(sheet, 1, linha, "Tipo Fonte", wcfLabel);
 						addLabel(sheet, 2, linha, "Nome Fonte", wcfLabel);
 						addLabel(sheet, 3, linha, "Medidor", wcfLabel);
-						addLabel(sheet, 4, linha, "Data Instalação", wcfLabel);
+						addLabel(sheet, 4, linha, bundle.getText("data_instalacao"), wcfLabel);
 						addLabel(sheet, 5, linha, "TAG", wcfLabel);
 						linha++;
 						headerLinha = true;
@@ -678,11 +678,11 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 			while (rs.next()) {
 				addLabel(sheet, 0, linha, "RSO:", wcfLabelHeader);
 				addLabel(sheet, 1, linha, rs.getString("rso_nome") , wcfLabelHeader);
-				addLabel(sheet, 2, linha, "Estação de Água Tratada:", wcfLabelHeader);
+				addLabel(sheet, 2, linha, bundle.getText("estacao_agua_tratada"), wcfLabelHeader);
 				addLabel(sheet, 3, linha, rs.getString("eeat_nome") , wcfLabelHeader);
 				linha++;				
-				addLabel(sheet, 1, linha, "Volume Útil", wcfLabel);
-				addLabel(sheet, 2, linha, "Altura Útil", wcfLabel);
+				addLabel(sheet, 1, linha, bundle.getText("volume_util"), wcfLabel);
+				addLabel(sheet, 2, linha, bundle.getText("altura_util"), wcfLabel);
 				addLabel(sheet, 3, linha, "Capacidade", wcfLabel);
 				linha++;
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("rso_volumeutil")) , wcfNumero);
@@ -694,8 +694,8 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				linha++;
 				addLabel(sheet, 1, linha, "Qtd", wcfLabel);
 				addLabel(sheet, 2, linha, "Modelo", wcfLabel);
-				addLabel(sheet, 3, linha, "Vazão", wcfLabel);
-				addLabel(sheet, 4, linha, "Potência", wcfLabel);
+				addLabel(sheet, 3, linha, bundle.getText("vazao"), wcfLabel);
+				addLabel(sheet, 4, linha, bundle.getText("potencia"), wcfLabel);
 				addLabel(sheet, 5, linha, "MCA", wcfLabel);
 				linha++;
 				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("rso_cmb")) , wcfInteiro);
@@ -704,11 +704,11 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				addNumero(sheet, 4, linha, Double.parseDouble(rs.getString("rso_cmbpotencia")) , wcfInteiro);
 				addNumero(sheet, 5, linha, Double.parseDouble(rs.getString("rso_cmbmca")) , wcfNumero);
 				linha++;
-				addLabel(sheet, 1, linha, "Medidor de Saída", wcfLabelBold);
+				addLabel(sheet, 1, linha, bundle.getText("medidor_saida"), wcfLabelBold);
 				sheet.mergeCells(1, linha, 3, linha);
 				linha++;
 				addLabel(sheet, 1, linha, "Medidor", wcfLabel);
-				addLabel(sheet, 2, linha, "Data Instalação", wcfLabel);
+				addLabel(sheet, 2, linha, bundle.getText("data_instalacao"), wcfLabel);
 				addLabel(sheet, 3, linha, "TAG", wcfLabel);
 				addLabel(sheet, 1, linha, rs.getString("mmed_idleitura") , wcfLabel);
 				if (rs.getString("mmed_dtinstalacao") != null){

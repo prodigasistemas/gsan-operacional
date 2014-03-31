@@ -21,6 +21,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.jboss.logging.Logger;
+
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -38,6 +40,8 @@ import br.gov.pa.cosanpa.gopera.model.UnidadeNegocioProxy;
 @SessionScoped
 public class RelatorioEsgotoBean extends BaseRelatorioBean<RelatorioGerencial> {
 
+	private static Logger logger = Logger.getLogger(RelatorioEsgotoBean.class);
+	
 	@Resource(lookup="java:/gopera")
 	private DataSource	dataSource;
 
@@ -253,8 +257,8 @@ public class RelatorioEsgotoBean extends BaseRelatorioBean<RelatorioGerencial> {
 			FacesContext.getCurrentInstance().responseComplete();  
 		}
 		catch (Exception e){
-			e.printStackTrace();
-			mostrarMensagemErro("Erro ao exibir Relatório: " + e.getMessage());
+			logger.error(bundle.getText("erro_exibir_relatorio"), e);
+			mostrarMensagemErro(bundle.getText("erro_exibir_relatorio") + e.getMessage());
 		}
 		finally {
 			con.close();
@@ -280,7 +284,7 @@ public class RelatorioEsgotoBean extends BaseRelatorioBean<RelatorioGerencial> {
 		sheet.mergeCells(0, 1, 6, 1);
 
 		//Referência
-		addLabel(sheet, 0, 2, "Referência: " + referenciaInicial + " a " + referenciaFinal, wcfLabelBold);
+		addLabel(sheet, 0, 2,  bundle.getText("referencia") + " : " + referenciaInicial + " a " + referenciaFinal, wcfLabelBold);
 		sheet.mergeCells(0, 2, 6, 2);
 		
 		//Dados
@@ -294,13 +298,13 @@ public class RelatorioEsgotoBean extends BaseRelatorioBean<RelatorioGerencial> {
 		Double valor1 = 0.0, valor2 = 0.0;
 		
 		//Cabeçalho
-		addLabel(sheet, 0, linha, "REGIONAL", wcfLabelHeader);
-		addLabel(sheet, 1, linha, "UNIDADE NEGÓCIO", wcfLabelHeader);
-		addLabel(sheet, 2, linha, "MUNICÍPIO", wcfLabelHeader);
-		addLabel(sheet, 3, linha, "LOCALIDADE", wcfLabelHeader);
-		addLabel(sheet, 4, linha, "REFERÊNCIA", wcfLabelHeader);
-		addLabel(sheet, 5, linha, "VOLUME COLETADO", wcfLabelHeader);
-		addLabel(sheet, 6, linha, "VOLUME TRATADO", wcfLabelHeader);
+		addLabel(sheet, 0, linha, bundle.getText("regional"), wcfLabelHeader);
+		addLabel(sheet, 1, linha, bundle.getText("unidade_negocio"), wcfLabelHeader);
+		addLabel(sheet, 2, linha, bundle.getText("municipio"), wcfLabelHeader);
+		addLabel(sheet, 3, linha, bundle.getText("localidade"), wcfLabelHeader);
+		addLabel(sheet, 4, linha, bundle.getText("referencia"), wcfLabelHeader);
+		addLabel(sheet, 5, linha, bundle.getText("volume_coletado"), wcfLabelHeader);
+		addLabel(sheet, 6, linha, bundle.getText("volume_tratado"), wcfLabelHeader);
 		linha++;
 		while (rs.next()) {
 			//TOTALIZADORES	
