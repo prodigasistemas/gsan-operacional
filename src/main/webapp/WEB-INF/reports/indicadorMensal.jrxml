@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consumoGerencialMensal" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3660eaed-39bb-41aa-a6d9-0cad4defb975">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="27"/>
+	<property name="ireport.y" value="34"/>
+	<parameter name="dataInicial" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="dataFinal" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="nomeUsuario" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exibirRegional" class="java.lang.String"/>
+	<parameter name="exibirMunicipio" class="java.lang.String"/>
+	<parameter name="exibirLocalidade" class="java.lang.String"/>
+	<parameter name="exibirUnidadeNegocio" class="java.lang.String"/>
+	<parameter name="exibirSistemaAbastecimento" class="java.lang.String"/>
+	<parameter name="logoRelatorio" class="java.lang.String"/>
+	<parameter name="referenciaMes1" class="java.util.Date"/>
+	<parameter name="referenciaMes2" class="java.util.Date"/>
+	<parameter name="referenciaMes3" class="java.util.Date"/>
+	<parameter name="referenciaMes4" class="java.util.Date"/>
+	<parameter name="referenciaMes5" class="java.util.Date"/>
+	<parameter name="referenciaMes6" class="java.util.Date"/>
+	<parameter name="referenciaMes7" class="java.util.Date"/>
+	<parameter name="referenciaMes8" class="java.util.Date"/>
+	<parameter name="referenciaMes9" class="java.util.Date"/>
+	<parameter name="referenciaMes10" class="java.util.Date"/>
+	<parameter name="referenciaMes11" class="java.util.Date"/>
+	<parameter name="referenciaMes12" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoRegional" class="java.lang.Integer"/>
+	<field name="nomeRegional" class="java.lang.String"/>
+	<field name="codigoUnidadeNegocio" class="java.lang.Integer"/>
+	<field name="nomeUnidadeNegocio" class="java.lang.String"/>
+	<field name="codigoMunicipio" class="java.lang.Integer"/>
+	<field name="nomeMunicipio" class="java.lang.String"/>
+	<field name="codigoLocalidade" class="java.lang.Integer"/>
+	<field name="nomeLocalidade" class="java.lang.String"/>
+	<field name="codigoUnidadeOperacional" class="java.lang.Integer"/>
+	<field name="nomeUnidadeOperacional" class="java.lang.String"/>
+	<field name="nomeIndicador" class="java.lang.String"/>
+	<field name="referenciaMes1" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes1" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes1" class="java.lang.Double"/>
+	<field name="vlrTotalMes1" class="java.lang.Double"/>
+	<field name="referenciaMes2" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes2" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes2" class="java.lang.Double"/>
+	<field name="vlrTotalMes2" class="java.lang.Double"/>
+	<field name="referenciaMes3" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes3" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes3" class="java.lang.Double"/>
+	<field name="vlrTotalMes3" class="java.lang.Double"/>
+	<field name="referenciaMes4" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes4" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes4" class="java.lang.Double"/>
+	<field name="vlrTotalMes4" class="java.lang.Double"/>
+	<field name="referenciaMes5" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes5" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes5" class="java.lang.Double"/>
+	<field name="vlrTotalMes5" class="java.lang.Double"/>
+	<field name="referenciaMes6" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes6" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes6" class="java.lang.Double"/>
+	<field name="vlrTotalMes6" class="java.lang.Double"/>
+	<field name="referenciaMes7" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes7" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes7" class="java.lang.Double"/>
+	<field name="vlrTotalMes7" class="java.lang.Double"/>
+	<field name="referenciaMes8" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes8" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes8" class="java.lang.Double"/>
+	<field name="vlrTotalMes8" class="java.lang.Double"/>
+	<field name="referenciaMes9" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes9" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes9" class="java.lang.Double"/>
+	<field name="vlrTotalMes9" class="java.lang.Double"/>
+	<field name="referenciaMes10" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes10" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes10" class="java.lang.Double"/>
+	<field name="vlrTotalMes10" class="java.lang.Double"/>
+	<field name="referenciaMes11" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes11" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes11" class="java.lang.Double"/>
+	<field name="vlrTotalMes11" class="java.lang.Double"/>
+	<field name="referenciaMes12" class="java.util.Date"/>
+	<field name="vlrIndicador1Mes12" class="java.lang.Double"/>
+	<field name="vlrIndicador2Mes12" class="java.lang.Double"/>
+	<field name="vlrTotalMes12" class="java.lang.Double"/>
+	<group name="Regional">
+		<groupExpression><![CDATA[$F{codigoRegional}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirRegional}.equals("1")]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="d19642ce-b821-4118-98c4-5d5f41f12e69" x="0" y="0" width="70" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Gerência Regional:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="8d42d58e-69e0-49f3-9a54-5e1103ad3222" x="89" y="0" width="100" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomeRegional}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="UnidadeNegocio">
+		<groupExpression><![CDATA[$F{codigoUnidadeNegocio}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirUnidadeNegocio}.equals("1")]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="12" y="0" width="76" height="11"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unidade de Negócio:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="ac8e6d47-065b-48aa-a816-41b359629456" x="100" y="0" width="111" height="11"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomeUnidadeNegocio}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Municipio">
+		<groupExpression><![CDATA[$F{codigoMunicipio}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirMunicipio}.equals("1")]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="59" y="0" width="45" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Município:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="51156e7d-d2d2-47d1-a951-3a9685c29340" x="112" y="0" width="90" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomeMunicipio}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Localidade">
+		<groupExpression><![CDATA[$F{codigoLocalidade}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirLocalidade}.equals("1")]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="65" y="0" width="47" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Localidade:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="7aee1ae4-9406-46ac-9b9f-cc282f297691" x="123" y="0" width="100" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomeLocalidade}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="UnidadeOperacional">
+		<groupExpression><![CDATA[$F{codigoUnidadeOperacional}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<printWhenExpression><![CDATA[$P{exibirSistemaAbastecimento}.equals("1")]]></printWhenExpression>
+				<textField>
+					<reportElement uuid="8a492766-58c8-4148-8bc3-79b3d803f0dd" x="138" y="0" width="127" height="12"/>
+					<textElement>
+						<font size="7" isBold="true" isItalic="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomeUnidadeOperacional}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="3ceefe82-81ff-40aa-97a7-94d203fe13bc" x="47" y="0" width="73" height="12"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unidade Operacional:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="64">
+			<image>
+				<reportElement uuid="53ec021a-7caf-4d6b-891b-4ba7c0ef12cc" x="2" y="-14" width="553" height="63"/>
+				<imageExpression><![CDATA[$P{logoRelatorio}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="50" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="c6e4fbce-7fd0-4ede-b147-7177cf1cecae" x="0" y="63" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="127563d9-f017-4471-b030-c10224228285" x="184" y="1" width="345" height="15" forecolor="#2D6B82"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSANPA - Companhia de Saneamento do Estado do Pará]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f2618d1f-ae74-4664-8d1c-df7cf1f2a4ca" x="184" y="15" width="196" height="15" forecolor="#2D6B82"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indicador Mensal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d7b4e41-5b32-4987-8138-48a637318762" x="409" y="52" width="31" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ebab8c36-0470-4967-8f70-4b4d47c94826" x="486" y="52" width="8" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<textField pattern="MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="6b0a6740-9341-45b7-829a-f6a820a19346" x="441" y="52" width="45" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/yyyy">
+				<reportElement uuid="fcf0d5df-d618-499c-9334-1070d8442f6c" x="494" y="52" width="43" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="1368e2c8-7f68-4f46-8648-e3f65ce74ad6" x="2" y="0" width="100" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indicador]]></text>
+			</staticText>
+			<textField pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="ff471dde-4dd5-4ba7-a872-b046ca35a0c9" x="121" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="88f2a36b-5435-438c-acf4-6eb182679f1c" x="157" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="aea9602b-21e1-4dd7-930f-187954d6d06a" x="193" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="1353bf01-32a9-4844-9c9f-05c21b0c9ae3" x="229" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="5a6191c7-8f3c-4f44-bae1-94cf8443fee0" x="337" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="72bac35e-345f-402c-bd66-8faf824c973e" x="373" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="e2a343f1-c0aa-4f0b-84eb-5ad025af2393" x="265" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="2e76729e-e465-4889-8f58-cc2f9e0d18ae" x="301" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="a84d2d97-6615-4549-b0df-f15a76458cd9" x="481" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="67a8c46c-a104-4781-82cc-a9a05274c0f8" x="517" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="ffab9d1c-04ff-4127-a17f-3935176bd45e" x="409" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="675febac-452f-4883-b341-504b1929a262" x="445" y="0" width="37" height="10"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{referenciaMes10}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d2dbfa62-4dd7-47d3-a3a6-b58048f23100" x="3" y="0" width="108" height="19"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeIndicador}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="121" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes1}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="121" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes1}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="139" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes1}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="157" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes2}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="157" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes2}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="175" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes2}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="211" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes3}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="193" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes3}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="193" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes3}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="247" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes4}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="229" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes4}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="229" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes4}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="283" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes5}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="265" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes5}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="265" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes5}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="319" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes6}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="301" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes6}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="301" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes6}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="355" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes7}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes7}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="337" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes7}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes7}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="337" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes7}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes7}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="391" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes8}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes8}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="373" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes8}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes8}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="373" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes8}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes8}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="409" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes9}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes9}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="409" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes9}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes9}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="427" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes9}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes9}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="445" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes10}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="445" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes10}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="463" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes10}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="481" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes11}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes11}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="481" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes11}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes11}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="499" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes11}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes11}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="517" y="0" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes12}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador1Mes12}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="517" y="9" width="19" height="10">
+					<printWhenExpression><![CDATA[!$P{referenciaMes12}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrIndicador2Mes12}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="535" y="0" width="19" height="19">
+					<printWhenExpression><![CDATA[!$P{referenciaMes12}.equals(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlrTotalMes12}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="c6e4fbce-7fd0-4ede-b147-7177cf1cecae" x="3" y="0" width="551" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ba508e74-25fd-4bfb-af8d-a975fc6c2ae2" x="453" y="1" width="68" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="6eedf9d8-13d5-462c-b03c-5b4a55200461" x="521" y="1" width="34" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c22f666c-275a-4d03-9be5-a27fa97128ef" x="237" y="1" width="38" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba2fdd24-a675-46f9-b01a-310384b21675" x="3" y="1" width="29" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="f7ec67d3-5dd1-43a1-8a56-c425fd2d8fd0" x="268" y="1" width="66" height="9"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2386a4dd-4ce6-4954-82af-0e5bfe88ab8d" x="33" y="1" width="100" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeUsuario}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

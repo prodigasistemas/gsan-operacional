@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+<br />
+<h:form id="form" prependId="true">
+<p:messages autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Movimento </td>
+		<td class="sessao"> &raquo; Horas Trabalhadas </td>
+		<td class="pagina"> &raquo; RSO</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{rsoHorasBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+	<p:commandButton value="Não" onclick="PF('cd').hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta" prependId="false">
+<p:panel rendered="#{rsoHorasBean.visualizando}">
+	<p:dataTable var="var" id="tabela" value="#{rsoHorasBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+	  	<p:column headerText="Opções" width="90" style="text-align:left">
+	  		<f:facet name="header">
+				<h:outputText class="tabela" value="Opções"/>
+			</f:facet>
+			<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{rsoHorasBean.consultar}" ajax="false">
+				<f:setPropertyActionListener value="#{var}" target="#{rsoHorasBean.registro}" />
+			</p:commandButton>
+			<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{rsoHorasBean.alterar}" ajax="false">
+				<f:setPropertyActionListener value="#{var}" target="#{rsoHorasBean.registro}" />
+			</p:commandButton>
+			<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="PF('cd').show()">
+				<f:setPropertyActionListener value="#{var.codigo}" target="#{rsoHorasBean.pk}" />
+			</p:commandButton>
+		</p:column>
+				
+		<p:column filterBy="#{var.rso.descricao}" headerText="RSO" filterMatchMode="contains" style="text-align:left">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="RSO"/>
+			</f:facet>
+			<h:outputText value="#{var.rso.descricao}" />
+		</p:column>					
+
+		<p:column filterBy="#{rsoHorasBean.filtroData(var.referencia,'MM/yyyy')}" styleClass="data" headerText="Data de Referência" filterMatchMode="contains" style="text-align:left">
+			<f:facet name="header">
+				<h:outputText class="tabela" value="Mês de Referência"/>
+			</f:facet>
+			<h:outputText value="#{var.referencia}">
+				<f:convertDateTime pattern="MM/yyyy"/>
+			</h:outputText>
+		</p:column>	
+
+	</p:dataTable>
+	<p:column>
+		<p:commandButton value="Novo" action="#{rsoHorasBean.novo}" update=":formCadastro,:formConsulta"/>
+	</p:column>
+	</p:panel>
+	<script type="text/javascript">
+		$(function(){
+			$(".data input").setMask('99/9999');
+			});
+	</script>		
+</h:form>
+
+<h:form id="formCadastro">
+<p:panelGrid id="pgrCadastro" rendered="#{!rsoHorasBean.visualizando}">
+	<p:row>
+		<p:column coslspan="2">
+			<h:panelGrid id="cadastro" columns="2">
+				<h:outputLabel for="regional" value="Regional *"/>
+				<p:selectOneMenu id="regional" value="#{rsoHorasBean.registro.regionalProxy.codigo}" disabled="#{rsoHorasBean.confirmando or rsoHorasBean.editando or rsoHorasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+					    <f:selectItems value="#{rsoHorasBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				         <p:ajax update="unidadenegocio" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="unidadenegocio" value="Unidade de Negócio *" />
+			    <p:selectOneMenu id="unidadenegocio" value="#{rsoHorasBean.registro.unidadeNegocioProxy.codigo}" disabled="#{rsoHorasBean.confirmando or rsoHorasBean.editando or rsoHorasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{rsoHorasBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="municipio" event="change" />  
+			    </p:selectOneMenu> 
+				
+				<h:outputLabel for="municipio" value="Município *" />
+			    <p:selectOneMenu id="municipio" value="#{rsoHorasBean.registro.municipioProxy.codigo}" disabled="#{rsoHorasBean.confirmando or rsoHorasBean.editando or rsoHorasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{rsoHorasBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="localidade" event="change" />  
+			    </p:selectOneMenu>
+				
+				<h:outputLabel for="localidade" value="Localidade *" />
+			    <p:selectOneMenu id="localidade" value="#{rsoHorasBean.registro.localidadeProxy.codigo}" disabled="#{rsoHorasBean.confirmando or rsoHorasBean.editando or rsoHorasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
+			    		<f:selectItem itemLabel="Selecione" itemValue="" />
+				        <f:selectItems value="#{rsoHorasBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				        <p:ajax update="rso" event="change" />  
+			    </p:selectOneMenu>
+
+				<h:outputLabel for="rso" value="RSO *"/>
+				<p:selectOneMenu id="rso" value="#{rsoHorasBean.registro.rso.codigo}" converter="selectOneConverter" effect="fade" disabled="#{rsoHorasBean.desabilitaForm or rsoHorasBean.editando}" required="true" requiredMessage="RSO, deve ser informado.">
+					<f:selectItem itemLabel="Selecione" itemValue="" /> 
+		         	<f:selectItems value="#{rsoHorasBean.listaRSO}" var="rso" itemLabel="#{rso.descricao}" itemValue="#{rso.codigo}"/>
+		         	<p:ajax listener="#{rsoHorasBean.carregarCMB}" update="tabela" event="change" />  
+	    		</p:selectOneMenu>
+
+				<h:outputLabel for="datareferencia" value="Mês de Referência *"/>
+				<p:calendar styleClass="valor" value="#{rsoHorasBean.registro.referencia}" id="datareferencia" locale="pt" disabled="#{rsoHorasBean.desabilitaForm or rsoHorasBean.editando}" showOn="button" pattern="MM/yyyy" required="true" requiredMessage="Data Referência, deve ser informado.">
+					<p:ajax listener="#{rsoHorasBean.carregarHoras}" update=":formCadastro:horasMes" event="change"/>
+					<p:ajax listener="#{rsoHorasBean.carregarHoras}" update=":formCadastro:horasMes" event="dateSelect"/>
+				</p:calendar>
+			</h:panelGrid>			
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column colspan="2">
+			<p:dataTable var="var" id="tabela" value="#{rsoHorasBean.registro.cmb}" paginator="false" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Nenhum Registro Encontrado">
+		        <f:facet name="header">  
+		            Conjunto Motor-Bomba
+		        </f:facet> 			
+				<p:column headerText="CMB" style="text-align:left">
+			  		<f:facet name="header">
+						<h:outputText class="tabela" value="CMB"/>
+					</f:facet>				
+	                <h:outputText value="#{var.quantidade} CMB"/>
+				</p:column>					
+				<p:column headerText="Medição (horas)" style="text-align:left">
+			  		<f:facet name="header">
+						<h:outputText class="tabela" value="Medição (horas)"/>
+					</f:facet>				
+					<p:inputText style="width: 80px !important;" value="#{var.horaAux}" id="medicao" maxlength="10" disabled="#{rsoHorasBean.desabilitaForm}" required="true" requiredMessage="Valor da Medição de CMB, deve ser informado.">
+						<p:ajax listener="#{rsoHorasBean.carregarHoras}" update=":formCadastro:horasTrabalhadas" event="change"/>
+					</p:inputText>
+					<script type="text/javascript">
+						$(function(){
+							$("input[id*=medicao]").setMask("decimal");					
+							});
+					</script>	
+				</p:column>
+			</p:dataTable>
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column style="text-align:left">
+			<h:outputLabel for="horasTrabalhadas" class="tabela" value="TOTAL CMB:"/>
+		</p:column>
+		<p:column style="text-align:right">
+			<h:outputText class="tabela" id="horasTrabalhadas" value="#{rsoHorasBean.horasTrabalhadas}">
+				<f:convertNumber pattern="#0.00"/>
+			</h:outputText>
+		</p:column>
+	</p:row>
+	<p:row>		
+		<p:column style="text-align:left">
+			<h:outputLabel for="horasMes" class="tabela" value="TOTAL HORAS MÊS:"/>
+		</p:column>
+		<p:column style="text-align:right">
+			<h:outputText id="horasMes" class="tabela" value="#{rsoHorasBean.horasMes}">
+				<f:convertNumber pattern="#0.00"/>
+			</h:outputText>
+		</p:column>			
+	</p:row>		
+	<p:row>
+		<p:column>
+			<p:commandButton value="Cadastrar" action="#{rsoHorasBean.cadastrar}" rendered="#{rsoHorasBean.cadastrando or rsoHorasBean.editando}" update="formCadastro"/>
+			<p:commandButton value="Confirmar" action="#{rsoHorasBean.confirmar}" rendered="#{rsoHorasBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Cancelar" action="#{rsoHorasBean.cancelar}" rendered="#{rsoHorasBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Limpar" rendered="#{rsoHorasBean.cadastrando}" type="reset" />
+			<p:commandButton process="@this" value="Voltar" action="#{rsoHorasBean.voltar}" rendered="#{!rsoHorasBean.confirmando}" update=":formCadastro,:formConsulta"/>
+		</p:column>
+	</p:row>
+</p:panelGrid>
+<script type="text/javascript">
+	$(function(){
+		$("input[id*=medicao]").setMask("decimal");				
+		$("input[id*=referencia]").setMask("99/9999");
+		});
+</script>	
+</h:form>
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

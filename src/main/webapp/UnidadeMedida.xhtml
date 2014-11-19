@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+<h:form id="form" prependId="true">
+<br />
+<p:messages showDetail="true" autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Cadastro </td>
+		<td class="pagina"> &raquo; Unidade de Medida</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert" widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{unidadeMedidaBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+	<p:commandButton value="Não" onclick="PF('cd').hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta" prependId="false">
+	<p:panel rendered="#{unidadeMedidaBean.visualizando}">
+		<p:dataTable var="var" id="tabela" value="#{unidadeMedidaBean.lista}" filteredValue="#{unidadeMedidaBean.filtro}" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+		  	<p:column headerText="Opções" width="90" style="text-align:left">
+		  		<f:facet name="header">
+					<h:outputText class="tabela" value="Opções"/>
+				</f:facet>
+				<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{unidadeMedidaBean.consultar}" update=":formCadastro,:formConsulta">
+					<f:setPropertyActionListener value="#{var}" target="#{unidadeMedidaBean.registro}" />
+				</p:commandButton>
+				<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{unidadeMedidaBean.alterar}" update=":formCadastro,:formConsulta">
+					<f:setPropertyActionListener value="#{var}" target="#{unidadeMedidaBean.registro}" />
+				</p:commandButton>
+				<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="PF('cd').show()">
+					<f:setPropertyActionListener value="#{var.codigo}" target="#{unidadeMedidaBean.pk}" />
+				</p:commandButton>
+			</p:column>
+					
+		  	<p:column headerText="Código" style="text-align:left">
+		  		<f:facet name="header">
+					<h:outputText class="tabela" value="Código"/>
+				</f:facet>
+				<h:outputText value="#{var.codigo}" />
+			</p:column>
+				
+			<p:column filterBy="#{var.descricao} " headerText="Unidade" filterMatchMode="contains" style="text-align:left">
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Unidade"/>
+				</f:facet>
+				<h:outputText value="#{var.descricao}" />
+			</p:column>					
+	
+			<p:column filterBy="#{var.sigla}" headerText="Sigla" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 40px; min-width: 40px;"> <!-- 17-10-2012 Define o tamanho da caixa de texto da pesquisa (filterStyle="max-width: 40px; min-width: 40px;") -->
+				<f:facet name="header">
+					<h:outputText class="tabela" value="Sigla"/>
+				</f:facet>
+				<h:outputText value="#{var.sigla}"/>
+			</p:column>			
+					
+		</p:dataTable>
+		
+		<p:column>
+			<p:commandButton value="Novo" action="#{unidadeMedidaBean.novo}" update=":formCadastro,:formConsulta"/>
+		</p:column>
+	</p:panel>			
+</h:form>
+<h:form id="formCadastro">
+<p:panelGrid id="pgrCadastro"  rendered="#{!unidadeMedidaBean.visualizando}">
+	<p:row>
+		<p:column style="text-align:left">
+			<h:outputLabel for="descricao" value="Descrição da Unidade *"/>
+		</p:column>
+		<p:column style="text-align:left">
+			<h:outputLabel for="sigla" value="Sigla *" />
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+			<p:inputText value="#{unidadeMedidaBean.registro.descricao}" id="descricao" maxlength="50" disabled="#{unidadeMedidaBean.desabilitaForm}" required="true" requiredMessage="Descrição da Unidade, deve ser informada."/>
+		</p:column>
+		<p:column>
+			<p:inputText style="width: 40px !important;" value="#{unidadeMedidaBean.registro.sigla}" id="sigla" maxlength="3" disabled="#{unidadeMedidaBean.desabilitaForm}" required="true" requiredMessage="Sigla, deve ser informada."/>
+		</p:column>
+	</p:row>
+	<p:row>
+		<p:column>
+				<p:commandButton value="Cadastrar" action="#{unidadeMedidaBean.cadastrar}" rendered="#{unidadeMedidaBean.cadastrando or unidadeMedidaBean.editando}" update="formCadastro"/>
+				<p:commandButton value="Confirmar" action="#{unidadeMedidaBean.confirmar}" rendered="#{unidadeMedidaBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Cancelar" action="#{unidadeMedidaBean.cancelar}" rendered="#{unidadeMedidaBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Limpar" rendered="#{unidadeMedidaBean.cadastrando}" type="reset"/>
+				<p:commandButton process="@this" value="Voltar" action="#{unidadeMedidaBean.voltar}" rendered="#{!unidadeMedidaBean.confirmando}" update=":formCadastro,:formConsulta" />
+		</p:column>
+	</p:row>
+</p:panelGrid>
+</h:form>
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

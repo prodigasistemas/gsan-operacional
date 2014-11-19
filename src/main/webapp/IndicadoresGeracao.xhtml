@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+<ui:define name="centro"> 
+<div class='geral'>
+<br/>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Indicadores </td>
+		<td class="pagina"> &raquo; Geração de Indicadores</td>
+	</tr>
+</table>
+<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+<p:dialog modal="true" widgetVar="statusDialog" header="Gerando Indicadores..." 
+        draggable="false" closable="false">
+	<p:graphicImage value="resources/images/ajaxloadingbar.gif" />
+</p:dialog>
+<h:form id="form" prependId="true">
+	<p:messages showDetail="false" autoUpdate="true" id="msg" />
+	<h:panelGrid id="cadastro" columns="2">
+		<h:outputLabel for="referencia" value="Referência: *"/>
+		<p:column style="text-align:left">
+			<p:inputText value="#{indicadorGeracaoBean.referencia}" id="referencia" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência é Obrigatória"/>
+		</p:column>
+		<p:column>
+			<p:commandButton value="Gerar" action="#{indicadorGeracaoBean.gerarIndicadores}"/>
+		</p:column>
+   <script type="text/javascript">
+	$(function(){
+		options = {
+			    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+			};	
+		$("input[id*=referencia]").monthpicker(options);				
+		});
+   </script>		
+	</h:panelGrid>
+</h:form>
+</div>
+</ui:define>
+</ui:composition>
+</html>

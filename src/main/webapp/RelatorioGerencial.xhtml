@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+<ui:define name="centro"> 
+<div class='geral'>
+<br/>
+<table>
+	<tr>
+		<td class="caminho"> #{m.voce_esta_aqui}:</td>
+		<td class="sessao"> #{m.relatorio} </td>
+		<td class="pagina"> &raquo; #{m.produtos_quimicos}</td>
+	</tr>
+</table>
+<h:form id="form" prependId="false">
+	<p:messages showDetail="false" autoUpdate="true" id="msg"/>
+	<h:panelGrid id="cadastro" columns="2">
+		<h:outputLabel for="regional" value="Regional: "/>
+		<p:selectOneMenu id="regional" value="#{relatorioGerencialBean.registro.codigoRegional}" effect="fade" converter="selectOneConverter" required="false"   requiredMessage="Regional é Obrigatória">
+			    <f:selectItems value="#{relatorioGerencialBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		         <p:ajax update="unidadenegocio,municipio,localidade,unidadeoperacional" event="change" />  
+	    </p:selectOneMenu>
+		
+		<h:outputLabel for="unidadenegocio" value="Unidade de Negócio: " />
+	    <p:selectOneMenu id="unidadenegocio" value="#{relatorioGerencialBean.registro.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Unidade de Negócio é Obrigatória">
+		        <f:selectItems value="#{relatorioGerencialBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		        <p:ajax update="municipio,localidade,unidadeoperacional" event="change" />  
+	    </p:selectOneMenu> 
+		
+		<h:outputLabel for="municipio" value="Município: " />
+	    <p:selectOneMenu id="municipio" value="#{relatorioGerencialBean.registro.codigoMunicipio}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Município é Obrigatório" >
+		        <f:selectItems value="#{relatorioGerencialBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		        <p:ajax update="localidade,unidadeoperacional" event="change" />  
+	    </p:selectOneMenu>
+		
+		<h:outputLabel for="localidade" value="Localidade: " />
+	    <p:selectOneMenu id="localidade" value="#{relatorioGerencialBean.registro.codigoLocalidade}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Localidade é Obrigatória" >
+		        <f:selectItems value="#{relatorioGerencialBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		        <p:ajax update="unidadeoperacional" event="change" />  
+	    </p:selectOneMenu>
+		
+		<h:outputLabel for="tipounidadeoperacional" value="Tipo Unidade Operacional: " />
+	    <p:selectOneMenu id="tipounidadeoperacional" value="#{relatorioGerencialBean.tipoUnidadeOperacional}" effect="fade" required="false" requiredMessage="Tipo de Unidade Operacional é Obrigatória" >
+	    		<f:selectItem itemLabel="Selecione..." itemValue="0"/>
+		        <f:selectItem itemLabel="ETA" itemValue="2"/>
+		        <f:selectItem itemLabel="EAT" itemValue="3"/>
+		        <p:ajax update="unidadeoperacional" event="change" />
+	    </p:selectOneMenu>
+	    
+		<h:outputLabel for="unidadeoperacional" value="Unidade Operacional: " />
+	    <p:selectOneMenu id="unidadeoperacional" value="#{relatorioGerencialBean.registro.codigoUnidadeOperacional}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Unidade Operacional é Obrigatória" >
+		        <f:selectItems value="#{relatorioGerencialBean.unidadesOperacional}" var="x" itemLabel="#{x.descricao}" itemValue="#{x.codigo}"/>
+	    </p:selectOneMenu>	    
+
+		<h:outputLabel for="dataInicial" value="Data Inicial: *"/>
+		<p:column style="text-align:left">
+			<p:calendar value="#{relatorioGerencialBean.dataInicial}" id="dataInicial" showOn="button" pattern="dd/MM/yyyy" locale="pt" required="true" requiredMessage="Período Inicial Obrigatório"/>
+		</p:column>
+
+		<h:outputLabel for="dataFinal" value="Data Final: *"/>
+		<p:column style="text-align:left">
+			<p:calendar value="#{relatorioGerencialBean.dataFinal}" id="dataFinal" showOn="button" pattern="dd/MM/yyyy" locale="pt" required="true" requiredMessage="Período Final Obrigatório"/>
+		</p:column>
+		
+		<h:outputLabel for="tipoRelatorio" value="Tipo Relatório: " />
+		<p:column style="text-align:left">          
+	        <p:selectOneRadio id="tipoRelatorio" value="#{relatorioGerencialBean.tipoRelatorio}">  
+	            <f:selectItem itemLabel="Físico" itemValue="1" />  
+	            <f:selectItem itemLabel="Financeiro" itemValue="2" />  
+	        </p:selectOneRadio>
+        </p:column>
+
+        <h:outputLabel for="tipoExibicao" value="Tipo Exibição: " />
+		<p:column style="text-align:left">          
+	        <p:selectOneRadio id="tipoExibicao" value="#{relatorioGerencialBean.tipoExibicao}">
+	        	<f:selectItems value="#{relatorioGerencialBean.tiposExibicao}" var="tipo"  itemLabel="#{m[tipo.descricao]}" itemValue= "#{tipo}"/>
+	        </p:selectOneRadio>
+        </p:column> 
+
+        <h:outputLabel for="tipoAgrupamento" value="Agrupamento: " />
+		<p:column style="text-align:left">          
+	        <p:selectOneMenu id="tipoAgrupamento" value="#{relatorioGerencialBean.tipoAgrupamento}">
+	            <f:selectItem itemLabel="Sem Agrupamento" itemValue="0" />  
+	            <f:selectItem itemLabel="Gerência Regional" itemValue="1" />  
+	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio" itemValue="2" />  
+	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município" itemValue="3" />  
+	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município + Localidade" itemValue="4" />
+	            <f:selectItem itemLabel="Gerência Regional + Unidade Negócio + Município + Localidade + Unidade Operacional" itemValue="5" />
+	        </p:selectOneMenu>
+        </p:column> 
+        
+		<h:outputLabel for="tipoExportacao" value="Tipo Exportação: " />
+        <p:selectOneRadio id="tipoExportacao" value="#{relatorioGerencialBean.tipoExportacao}">
+            <f:selectItem itemLabel="PDF" itemValue="1" />    
+            <f:selectItem itemLabel="XLS" itemValue="2" />  
+        </p:selectOneRadio>
+                
+		<p:column>
+			<p:commandButton value="Exibir"  actionListener="#{relatorioGerencialBean.exibir}" ajax="false"/>
+		</p:column>
+   <script type="text/javascript">
+	$(function(){
+		$("input[id*=data]").setMask("date");				
+		});
+   </script>			
+	</h:panelGrid>
+</h:form>
+</div>
+</ui:define>
+</ui:composition>
+</html>

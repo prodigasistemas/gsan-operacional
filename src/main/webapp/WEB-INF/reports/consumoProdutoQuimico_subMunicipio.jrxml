@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consumoProdutoQuimico_subMunicipio" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74565f47-c618-43c6-b9ed-b3b714e84527">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="Table Dataset 1" uuid="ee4bc330-940c-4a6e-bd8f-a30b296e0bc6">
+		<parameter name="nome_produto" class="java.lang.String"/>
+		<parameter name="quantidade" class="java.lang.Double"/>
+		<parameter name="valor" class="java.lang.Double"/>
+		<parameter name="total" class="java.lang.Double"/>
+	</subDataset>
+	<parameter name="greg_id" class="java.lang.Integer"/>
+	<parameter name="uneg_id" class="java.lang.Integer"/>
+	<parameter name="muni_id" class="java.lang.Integer"/>
+	<parameter name="data_ini" class="java.util.Date"/>
+	<parameter name="data_fim" class="java.util.Date"/>
+	<parameter name="exibirAnalitico" class="java.lang.Boolean"/>
+	<parameter name="exibirFinanceiro" class="java.lang.Boolean"/>
+	<parameter name="exibirRegional" class="java.lang.Boolean"/>
+	<parameter name="exibirUnidadeNegocio" class="java.lang.Boolean"/>
+	<parameter name="exibirMunicipio" class="java.lang.Boolean"/>
+	<parameter name="exibirLocalidade" class="java.lang.Boolean"/>
+	<parameter name="exibirUnidadeOperacional" class="java.lang.Boolean"/>
+	<queryString>
+		<![CDATA[SELECT *, (prod_qtd * prod_valor) AS prod_total FROM (
+ SELECT SUM(B.conp_quantidade) AS prod_qtd,
+ AVG((SELECT tbpp_preco FROM operacao.tabelapreco_produto X INNER JOIN operacao.tabelapreco Z ON X.tabp_id = Z.tabp_id WHERE Z.tabp_vigencia <= B.cons_data  AND X.prod_id = C.prod_id ORDER BY Z.tabp_vigencia DESC LIMIT 1)) AS prod_valor ,
+(C.prod_nmproduto || ' - ' || (CASE $P{exibirFinanceiro} WHEN 'true' THEN 'R$' ELSE D.umed_sigla END)) AS prod_nmproduto
+  FROM (SELECT DISTINCT A.greg_id, A.greg_nmregional, B.uneg_id, B.uneg_nmunidadenegocio, E.muni_id, E.muni_nmmunicipio, C.loca_id, C.loca_nmlocalidade
+         FROM cadastro.gerencia_regional A
+        INNER JOIN cadastro.unidade_negocio B ON A.greg_id = B.greg_id
+        INNER JOIN cadastro.localidade C ON A.greg_id = C.greg_id AND B.uneg_id = C.uneg_ID
+        INNER JOIN cadastro.setor_comercial D ON C.loca_id = D.loca_id
+        INNER JOIN cadastro.municipio E ON D.muni_id = E.muni_id) AS A
+ INNER JOIN (SELECT A.greg_id, A.uneg_id, A.muni_id, A.loca_id,
+                    C.eta_id AS unop_id, C.eta_nome AS unop_nmunidadeoperacional, 2 AS unop_tipo,
+                    A.cons_data, B.prod_id, B.conp_quantidade
+               FROM operacao.consumoeta A
+              INNER JOIN operacao.consumoeta_produto B ON A.cons_id = B.cons_id
+              INNER JOIN operacao.eta C ON A.eta_id = C.eta_id
+              UNION ALL
+             SELECT A.greg_id, A.uneg_id, A.muni_id, A.loca_id,
+                    C.eeat_id AS unop_id, C.eeat_nome AS unop_nmunidadeoperacional, 3 AS unop_tipo,
+                    A.cons_data, B.prod_id, B.conp_quantidade
+               FROM operacao.consumoeat A
+              INNER JOIN operacao.consumoeat_produto B ON A.cons_id = B.cons_id
+              INNER JOIN operacao.eeat C ON A.eat_id = C.eeat_id)  B ON A.greg_id = B.greg_id AND A.uneg_id = B.uneg_id AND A.muni_id = B.muni_id AND A.loca_id = B.loca_id
+  INNER JOIN operacao.produto C ON B.prod_id = C.prod_id
+  INNER JOIN operacao.unidademedida D ON C.umed_id = D.umed_id
+  WHERE B.cons_data BETWEEN $P{data_ini} AND $P{data_fim}
+    AND B.conp_quantidade <> 0
+    AND A.greg_id = $P{greg_id}
+    AND A.uneg_id = $P{uneg_id}
+    AND A.muni_id = $P{muni_id}
+  GROUP BY C.prod_nmproduto, D.umed_sigla) AS A
+  ORDER BY prod_nmproduto]]>
+	</queryString>
+	<field name="prod_qtd" class="java.lang.Double"/>
+	<field name="prod_valor" class="java.lang.Double"/>
+	<field name="prod_nmproduto" class="java.lang.String"/>
+	<field name="prod_total" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="78cbd71d-8105-4135-a144-138be4a483c3" key="table" x="0" y="0" width="780" height="10"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Table Dataset 1" uuid="05fbe64e-37a5-4303-bd7e-c018f034048a">
+						<datasetParameter name="nome_produto">
+							<datasetParameterExpression><![CDATA[$F{prod_nmproduto}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="quantidade">
+							<datasetParameterExpression><![CDATA[$F{prod_qtd}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="valor">
+							<datasetParameterExpression><![CDATA[$F{prod_valor}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="total">
+							<datasetParameterExpression><![CDATA[$F{prod_total}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="40" uuid="a20813b6-212d-464b-9a50-2b07e59c6ceb">
+						<printWhenExpression><![CDATA[$P{exibirRegional}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="40" uuid="ab8c9c50-bc79-47e0-b507-ed8043f23d89">
+						<printWhenExpression><![CDATA[$P{exibirUnidadeNegocio}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="40" uuid="3e77b994-3d94-460a-ac14-34b0569e5ac0">
+						<printWhenExpression><![CDATA[$P{exibirMunicipio}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="40" uuid="8924128a-c92e-433f-89a3-a709f4915198">
+						<printWhenExpression><![CDATA[$P{exibirLocalidade}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="40" uuid="729d74e1-8843-4d15-91e0-84e939a5f854">
+						<printWhenExpression><![CDATA[$P{exibirUnidadeOperacional}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="60" uuid="038431d0-eb32-4df0-bb69-4cb63c0462cd">
+						<printWhenExpression><![CDATA[$P{exibirAnalitico}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="90" uuid="d22960f9-5a83-4f94-babf-e4ba2a08dab2">
+						<printWhenExpression><![CDATA[$P{exibirRegional} == false && $P{exibirAnalitico}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="90" uuid="cb6b0a79-e58a-48f2-8fdc-90986af65e1e">
+						<printWhenExpression><![CDATA[$P{exibirUnidadeNegocio} == false && $P{exibirAnalitico}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="90" uuid="c9462979-cc2b-4a1f-aecb-e243df29eff4">
+						<printWhenExpression><![CDATA[$P{exibirMunicipio} == false && $P{exibirAnalitico}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="90" uuid="e5ece1e5-8a16-4385-9874-23963063a5aa">
+						<printWhenExpression><![CDATA[$P{exibirLocalidade} == false && $P{exibirAnalitico}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="90" uuid="01ab5088-8ef2-4ec1-9ea6-c03f3689010c">
+						<printWhenExpression><![CDATA[$P{exibirUnidadeOperacional} == false && $P{exibirAnalitico}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1"/>
+					</jr:column>
+					<jr:column width="90" uuid="91aeb867-6725-417d-a795-43d9fc842abb">
+						<jr:detailCell height="10" rowSpan="1">
+							<textField>
+								<reportElement uuid="55af5f1e-90d3-487a-8fea-e3dd552553e1" x="0" y="0" width="90" height="10"/>
+								<textElement>
+									<font fontName="Arial" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{nome_produto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="b6ffdaf4-04e5-4dba-9149-346832885006">
+						<jr:detailCell height="10" rowSpan="1">
+							<textField pattern="#,##0.00000">
+								<reportElement uuid="d5f8b59d-4fa5-4b80-bc05-4d56e0115a4b" x="0" y="0" width="60" height="10"/>
+								<textElement textAlignment="Right">
+									<font fontName="Arial" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{quantidade}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="96020cea-b837-414f-9278-ecf54e9fadf7">
+						<printWhenExpression><![CDATA[$P{exibirFinanceiro}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1">
+							<textField pattern="#,##0.00000" isBlankWhenNull="true">
+								<reportElement uuid="19287399-fb4f-4d97-9d1c-8f8496d02461" x="0" y="0" width="60" height="10"/>
+								<textElement textAlignment="Right">
+									<font fontName="Arial" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{valor}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="910ae82e-845d-4dd1-80e7-bf3e1a143369">
+						<printWhenExpression><![CDATA[$P{exibirFinanceiro}]]></printWhenExpression>
+						<jr:detailCell height="10" rowSpan="1">
+							<textField pattern="#,##0.00000">
+								<reportElement uuid="73d8dd22-ba4a-4ed4-86a7-6dfa852e8ca3" x="0" y="0" width="60" height="10"/>
+								<textElement textAlignment="Right">
+									<font fontName="Arial" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

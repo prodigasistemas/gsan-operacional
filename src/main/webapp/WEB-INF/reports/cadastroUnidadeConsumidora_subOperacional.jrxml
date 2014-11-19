@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cadastroEAB_subMedidor" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74565f47-c618-43c6-b9ed-b3b714e84527">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ucon_id" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT C.unop_nome, eeab_nome AS ucop_nome, A.ucop_percentual
+   FROM operacao.unidade_consumidora_operacional A
+  INNER JOIN operacao.eeab B ON A.ucop_idoperacional = B.eeab_id
+  INNER JOIN operacao.tipo_unidade_operacional C ON A.ucop_tipooperacional = C.unop_tipo
+  WHERE A.ucop_tipooperacional = 1
+    AND A.ucon_id = $P{ucon_id}
+  UNION ALL
+  SELECT C.unop_nome, eta_nome AS ucop_nome, A.ucop_percentual
+   FROM operacao.unidade_consumidora_operacional A
+  INNER JOIN operacao.eta B ON A.ucop_idoperacional = B.eta_id
+  INNER JOIN operacao.tipo_unidade_operacional C ON A.ucop_tipooperacional = C.unop_tipo
+  WHERE A.ucop_tipooperacional = 2
+    AND A.ucon_id = $P{ucon_id}
+   UNION ALL
+  SELECT C.unop_nome, eeat_nome AS ucop_nome, A.ucop_percentual
+   FROM operacao.unidade_consumidora_operacional A
+  INNER JOIN operacao.eeat B ON A.ucop_idoperacional = B.eeat_id
+  INNER JOIN operacao.tipo_unidade_operacional C ON A.ucop_tipooperacional = C.unop_tipo
+  WHERE A.ucop_tipooperacional = 3
+    AND A.ucon_id = $P{ucon_id}
+  UNION ALL
+  SELECT C.unop_nome, rso_nome AS ucop_nome, A.ucop_percentual
+   FROM operacao.unidade_consumidora_operacional A
+  INNER JOIN operacao.rso B ON A.ucop_idoperacional = B.rso_id
+  INNER JOIN operacao.tipo_unidade_operacional C ON A.ucop_tipooperacional = C.unop_tipo
+  WHERE A.ucop_tipooperacional = 4
+    AND A.ucon_id = $P{ucon_id}
+  UNION ALL
+  SELECT C.unop_nome, resd_nome AS ucop_nome, A.ucop_percentual
+   FROM operacao.unidade_consumidora_operacional A
+  INNER JOIN operacao.residencia B ON A.ucop_idoperacional = B.resd_id
+  INNER JOIN operacao.tipo_unidade_operacional C ON A.ucop_tipooperacional = C.unop_tipo
+  WHERE A.ucop_tipooperacional = 5
+    AND A.ucon_id = $P{ucon_id}
+  UNION ALL
+  SELECT C.unop_nome, escr_nome AS ucop_nome, A.ucop_percentual
+   FROM operacao.unidade_consumidora_operacional A
+  INNER JOIN operacao.escritorio B ON A.ucop_idoperacional = B.escr_id
+  INNER JOIN operacao.tipo_unidade_operacional C ON A.ucop_tipooperacional = C.unop_tipo
+  WHERE A.ucop_tipooperacional = 6
+    AND A.ucon_id = $P{ucon_id}]]>
+	</queryString>
+	<field name="unop_nome" class="java.lang.String"/>
+	<field name="ucop_nome" class="java.lang.String"/>
+	<field name="ucop_percentual" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bda865b8-36e6-4f88-b7a7-3ac287eee47f" x="0" y="0" width="555" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unidades Operacionais]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="590687f0-3caf-47c3-a0f9-977a57e4fa38" x="0" y="10" width="185" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Unidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3cbdd51c-5a1b-415e-936d-642761240f5c" x="185" y="10" width="185" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unidade Operacional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="01fae665-da02-472b-be43-44ef87b697a0" x="370" y="10" width="185" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(%) Utilização]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b4511475-6668-43d0-bf4c-5c034dcb9274" x="0" y="0" width="185" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unop_nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="5712b9fe-fd4d-4bdb-a855-b37baf5fca47" x="185" y="0" width="185" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ucop_nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="77425c9d-3e85-4473-91ba-a29bc874fcd7" x="370" y="0" width="185" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ucop_percentual}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

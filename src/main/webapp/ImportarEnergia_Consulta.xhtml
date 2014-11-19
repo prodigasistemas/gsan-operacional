@@ -1,0 +1,855 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+    <ui:define name="centro"> 
+<h:head>
+</h:head>
+<h:body>
+<div class="geral">
+<br />
+<h:form id="form" prependId="true">
+<p:messages showDetail="false" autoUpdate="true" id="msg" />
+</h:form>
+<table>
+	<tr>
+		<td class="caminho">Você está aqui:</td>
+		<td class="sessao"> Movimento </td>
+		<td class="sessao"> &raquo; Energia Elétrica </td>
+		<td class="pagina"> &raquo; Dados do Arquivo</td>
+	</tr>
+</table>
+
+<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+	<p:commandButton value="Sim" actionListener="#{importarEnergiaDadosBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+	<p:commandButton value="Não" onclick="PF('cd').hide();" type="button" />
+</p:confirmDialog>
+
+<h:form id="formConsulta">
+	<p:panel rendered="#{importarEnergiaDadosBean.visualizando}">
+		<p:panelGrid id="pgrConsulta">
+			<p:row>
+				<p:column style="text-align:left">
+					<p:panelGrid>
+						<p:row>
+							<p:column style="text-align:left">
+								<h:outputLabel for="datareferencia" value="Referencia *" />
+							</p:column>
+							<p:column style="text-align:left">				
+								<p:calendar value="#{importarEnergiaDadosBean.energia.dataReferencia}" id="datareferencia" disabled="true" showOn="button" pattern="MM/yyyy" required="true" requiredMessage="Referência, deve ser informado."/>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column style="text-align:center" colspan="2">
+					<p:dataTable var="var" id="tabela" value="#{importarEnergiaDadosBean.listaDados}" lazy="true" selectionMode="single" selection="#{importarEnergiaDadosBean.registro}" filteredValue="#{importarEnergiaDadosBean.filtro}" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,30,50" editable="false" emptyMessage="Nenhum Registro Encontrado">
+					  	<p:column headerText="Opções" width="90" style="text-align:left">
+					  		<f:facet name="header">
+								<h:outputText class="tabela" value="Opções"/>
+							</f:facet>
+							<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{importarEnergiaDadosBean.consultarDados}" update=":formCadastro,:formConsulta">
+								<f:setPropertyActionListener value="#{var}" target="#{importarEnergiaDadosBean.energiaDados}" />
+							</p:commandButton>
+							<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{importarEnergiaDadosBean.alterarDados}" rendered="#{importarEnergiaDadosBean.estadoEdicao}" update=":formCadastro,:formConsulta">
+								<f:setPropertyActionListener value="#{var}" target="#{importarEnergiaDadosBean.energiaDados}" />
+							</p:commandButton>
+							<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="PF('cd').show()" rendered="#{importarEnergiaDadosBean.estadoEdicao}">
+								<f:setPropertyActionListener value="#{var.codigo}" target="#{importarEnergiaDadosBean.pk}" />
+							</p:commandButton>
+						</p:column>			
+						<p:column filterBy="#{var.dataLeitura}" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 50px; min-width: 50px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Data Leitura"/>
+							</f:facet>
+							<h:outputText value="#{var.dataLeitura}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						<p:column filterBy="#{var.uc}" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 100px; min-width: 100px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Unidade Consumidora"/>
+							</f:facet>
+							<h:outputText value="#{var.uc}" />
+						</p:column>					
+						<p:column filterBy="#{var.fatura}" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 100px; min-width: 100px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Número Fatura"/>
+							</f:facet>
+							<h:outputText value="#{var.fatura}" />
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Valor Total"/>
+							</f:facet>
+							<h:outputText value="#{var.vlr_Total}" >
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo Total"/>
+							</f:facet>
+							<h:outputText value="#{var.cvlr_Consumo}" >
+								<f:convertNumber pattern="#,##0" />
+							</h:outputText>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Situação"/>
+							</f:facet>
+							<p:selectBooleanCheckbox value="#{var.UC.ativo}" disabled="true"/>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Distrito"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.unidadeNegocioProxy.nome}" />
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Localidade"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.localidadeProxy.nome}" />
+						</p:column>						
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Município"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.municipioProxy.nome}" />
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Regional"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.regionalProxy.nome}" />
+						</p:column>					
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Unidade Operacional"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.unidadeOperacional}" />
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Tipo Tarifa"/>
+							</f:facet>
+							<h:outputText value="#{var.contrato.subGrupoTarifario} / #{var.contrato.modalidadeTarifaria}" />
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Nº Equipamento Medição"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.equipamento}"/>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Tensão"/>
+							</f:facet>
+							<h:outputText value="#{var.contrato.tensaoNominal}">
+								<f:convertNumber pattern="###,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Total Ajuste Fator Potência"/>
+							</f:facet>
+							<h:outputText value="#{var.caj_fat_Pt}">
+								<f:convertNumber pattern="###,##0.00" />
+							</h:outputText>
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Atividade Principal"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.naturezaAtividade}"/>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Data Instalação Capacitor"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.dataInstalacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Potência Banco kVA"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.potencia}" />
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Ultra Demanda"/>
+							</f:facet>
+							<h:outputText value="#{var.cult_Demanda}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Potência Fora de Ponta Úmida"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_pot_FP_Umida}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Potência na Ponta Úmida"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_pot_Pt_Umida}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Potência Fora de Ponta Seca"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_pot_FP_Seca}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Potência na Ponta Seca"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_pot_Pt_Seca}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Potência Convencional"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_pot_Cv}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Nº Dias Faturado"/>
+							</f:facet>
+							<h:outputText value="#{var.cdias_fat}" />
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo KWh 30 dias"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_KW}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Total R$ 30 dias"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_total}">
+								<f:convertNumber type="currency"/>
+						 	</h:outputText>								
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Tarifa Média R$/KWh"/>
+							</f:facet>
+							<h:outputText value="#{var.ctarifa_media}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Potência Instalada KVa"/>
+							</f:facet>
+							<h:outputText value="#{var.contrato.potenciaInstalada}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>		
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Alimentador"/>
+							</f:facet>
+							<h:outputText value="#{var.UC.alimentador}"/>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Variação de Consumo"/>
+							</f:facet>
+							<h:outputText value="#{var.cvariacao_consumo}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_carga}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga na Ponta"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_carga_Pt}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga Fora da Ponta"/>
+							</f:facet>
+							<h:outputText value="#{var.cfat_carga_FP}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>								
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga Fora da Ponta Umida Indutivo"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_FP_Umida_Ind}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga Fora da Ponta Umida Capacitivo"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_FP_Umida_Cap}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga Fora da Ponta Seca Indutivo"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_FP_Seca_Ind}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>													
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Fator de Carga Fora da Ponta Seca Capacitivo"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_FP_Seca_Cap}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo KWh Fora da Ponta Seca"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_KW_FP_Seca}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo KWh na Ponta Seca"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_KW_Pt_Seca}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>													
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo KWh Fora da Ponta Umida"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_KW_FP_Umida}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>	
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo KWh na Ponta Umida"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_KW_Pt_Umida}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo Faturado Fora da Ponta Seca"/>
+							</f:facet>
+							<h:outputText value="#{var.cvlr_Consumo_FP_Seca}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo Faturado na Ponta Seca"/>
+							</f:facet>
+							<h:outputText value="#{var.cvlr_Consumo_Pt_Seca}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo Faturado Fora da Ponta Umida"/>
+							</f:facet>
+							<h:outputText value="#{var.cvlr_Consumo_FP_Umida}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo Faturado na Ponta Umida"/>
+							</f:facet>
+							<h:outputText value="#{var.cvlr_Consumo_Pt_Umida}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>							
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo KWh Convencional"/>
+							</f:facet>
+							<h:outputText value="#{var.ccons_KW_Cv}">
+								<f:convertNumber pattern="###,##0.00" />
+						 	</h:outputText>								
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Consumo Faturado Convencional"/>
+							</f:facet>
+							<h:outputText value="#{var.cvlr_Consumo_Cv}">
+								<f:convertNumber type="currency"/>
+							</h:outputText>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Mês Referência Multa"/>
+							</f:facet>
+							<h:outputText value="#{var.referenciaMulta}"/>
+						</p:column>
+						<p:column filterBy="" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 80px; min-width: 80px;">
+							<f:facet name="header">
+								<h:outputText class="tabela" value="Agrupador Fatura"/>
+							</f:facet>
+							<h:outputText value="#{var.contrato.agrupadorFatura}"/>
+						</p:column>														
+					</p:dataTable>
+				</p:column>	
+			</p:row>
+		</p:panelGrid>
+		<p:commandButton value="Novo" action="#{importarEnergiaDadosBean.novo}" rendered="#{importarEnergiaDadosBean.estadoEdicao}" />
+		<p:commandButton value="Voltar" rendered="#{!importarEnergiaDadosBean.confirmando}" type="button" onclick="javascript:parent.location.href='ImportarEnergia.jsf';" ajax="false"/>
+	</p:panel>	
+</h:form>
+<h:form id="formCadastro">
+	<p:panelGrid id="pgrCadastro" rendered="#{!importarEnergiaDadosBean.visualizando}">
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dataleitura" value="Data da leitura" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="uc" value="UC" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="fatura" value="Fatura" />
+			</p:column>	
+			<p:column style="text-align:left">
+				<h:outputLabel for="nome" value="Nome" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:calendar value="#{importarEnergiaDadosBean.energiaDados.dataLeitura}" id="dataleitura" disabled="#{importarEnergiaDadosBean.desabilitaForm}" showOn="button" pattern="dd/MM/yyyy" required="true" requiredMessage="Data de Leitura, deve ser informada."/>
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.uc}" id="uc" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.fatura}" id="fatura" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.nome}" id="nome" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="endereco" value="Endereço" />
+			</p:column>	
+			<p:column style="text-align:left">
+				<h:outputLabel for="bairro" value="Bairro" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="cep" value="CEP" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="codigoGrupo" value="Grupo tarifário" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.endereco}" id="endereco" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.bairro}" id="bairro" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.cep}" id="cep" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.codigoGrupo}" id="codigoGrupo" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="codigoTipo" value="Tipo tarifário" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="c_Kwh_Cv" value="Consumo geral medido" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="c_Kwh_FS" value="Consumo medido fora da ponta seca" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="c_Kwh_FU" value="Consumo medido fora da ponta úmida" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.energiaDados.codigoTipo}" id="codigoTipo" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.c_Kwh_Cv}" id="c_Kwh_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.c_Kwh_FS}" id="c_Kwh_FS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.c_Kwh_FU}" id="c_Kwh_FU" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="c_Kwh_PS" value="Consumo medido na ponta seca" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="c_Kwh_PU" value="Consumo medido na ponta úmida" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="DCv" value="Demanda contratada período único" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="DFS" value="Demanda contratada fora da ponta" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.c_Kwh_PS}" id="c_Kwh_PS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.c_Kwh_PU}" id="c_Kwh_PU" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.DCv}" id="DCv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.DFS}" id="DFS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="DPS" value="Demanda contratada na ponta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="DFU" value="Demanda contratada fora da ponta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="DPU" value="Demanda contratada na ponta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Fat_Cv" value="Demanda faturada (convencional e verde)" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.DPS}" id="DPS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.DFU}" id="DFU" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.DPU}" id="DPU" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Fat_Cv}" id="dem_Fat_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Fat_FP" value="Demanda faturada (fora da ponta)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Fat_Pt" value="Demanda faturada (ponta)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Med_Cv" value="Demanda medida (convencional e verde)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Med_FP" value="Demanda medida fora da ponta" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Fat_FP}" id="dem_Fat_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Fat_Pt}" id="dem_Fat_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Med_Cv}" id="dem_Med_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Med_FP}" id="dem_Med_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Med_Pt" value="Demanda medida na ponta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Ut_Cv" value="Demanda ultrapassada (convencional e verde)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Ut_FP" value="Demanda ultrapassada fora da ponta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="dem_Ut_Pt" value="Demanda ultrapassada na ponta" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Med_Pt}" id="dem_Med_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Ut_Cv}" id="dem_Ut_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Ut_FP}" id="dem_Ut_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.dem_Ut_Pt}" id="dem_Ut_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="fcarga" value="Fator de carga geral" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="fpot_FP" value="Fator de potência fora da ponta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="fpot_Cv" value="Fator de potência geral" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="fpot_Pt" value="Fator de potência na ponta" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.fcarga}" id="fcarga" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.fpot_FP}" id="fpot_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.fpot_Cv}" id="fpot_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.fpot_Pt}" id="fpot_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Ult_Pt" value="Valor da demanda de ultrapassagem (ponta)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Ult_FP" value="Valor da demanda de ultrapassagem (fora da ponta)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_dem_Cv" value="Valor da demanda faturada (convencional e verde)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_dem_FP" value="Valor da demanda faturada (fora da ponta)" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Ult_Pt}" id="vlr_Ult_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Ult_FP}" id="vlr_Ult_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_dem_Cv}" id="vlr_dem_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_dem_FP}" id="vlr_dem_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_dem_Pt" value="Valor da demanda faturada (ponta)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Ult_Cv" value="Valor da demanda ultrapassada (geral)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Multas" value="Valor das Multas" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Kwh_FS" value="Valor do consumo faturado (fora da ponta seca)" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_dem_Pt}" id="vlr_dem_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Ult_Cv}" id="vlr_Ult_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Multas}" id="vlr_Multas" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Kwh_FS}" id="vlr_Kwh_FS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Kwh_FU" value="Valor do consumo faturado (fora da ponta úmida)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Kwh_Cv" value="Valor do consumo faturado (geral)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Kwh_PS" value="Valor do consumo faturado (ponta seca)" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Kwh_PU" value="Valor do consumo faturado (ponta úmida)" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Kwh_FU}" id="vlr_Kwh_FU" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Kwh_Cv}" id="vlr_Kwh_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Kwh_PS}" id="vlr_Kwh_PS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Kwh_PU}" id="vlr_Kwh_PU" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_ICMS" value="Valor do ICMS" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_DRe_Cv" value="Valor faturado de demanda reativa excedente geral" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_DRe_Pt" value="Valor faturado de demanda reativa excedente na ponta " />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_DRe_FP" value="Valor faturado de demanda reativa excedente fora da ponta" />
+			</p:column>	
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_ICMS}" id="vlr_ICMS" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_DRe_Cv}" id="vlr_DRe_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_DRe_Pt}" id="vlr_DRe_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_DRe_FP}" id="vlr_DRe_FP" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_ERe_Cv" value="Valor faturado de energia reativa excedente  geral" />
+			</p:column>
+			<p:column></p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_ERe_Pt" value="Valor faturado de energia reativa excedente na ponta" />
+			</p:column>		
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_ERe_Cv}" id="vlr_ERe_Cv" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column></p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_ERe_Pt}" id="vlr_ERe_Pt" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">
+				<h:outputLabel for="vlr_Total" value="Valor total da conta" />
+			</p:column>
+			<p:column style="text-align:left">
+				<h:outputLabel for="referenciaMulta" value="Mês de Referência da Multa" />
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.vlr_Total}" id="vlr_Total" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+			<p:column style="text-align:left">				
+				<p:inputText value="#{importarEnergiaDadosBean.referenciaMulta}" id="referenciaMulta" disabled="#{importarEnergiaDadosBean.desabilitaForm}" />
+			</p:column>
+		</p:row>		
+		<p:row>
+			<p:column style="text-align:left">
+				<p:commandButton value="Cadastrar" action="#{importarEnergiaDadosBean.cadastrar}" rendered="#{importarEnergiaDadosBean.cadastrando or importarEnergiaDadosBean.editando}" update="formCadastro"/>
+				<p:commandButton value="Confirmar" action="#{importarEnergiaDadosBean.confirmar}" rendered="#{importarEnergiaDadosBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Cancelar" action="#{importarEnergiaDadosBean.cancelar}" rendered="#{importarEnergiaDadosBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Limpar" rendered="#{importarEnergiaDadosBean.cadastrando}" type="reset"/>
+				<p:commandButton process="@this" value="Voltar" action="#{importarEnergiaDadosBean.voltar}" rendered="#{!importarEnergiaDadosBean.confirmando}" update=":formCadastro,:formConsulta" />
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+	<script type="text/javascript">
+		$(function(){
+			$("input[id*=uc]").setMask("int");
+			$("input[id*=referencia]").setMask("99/9999");
+			$("input[id*=data]").setMask("99/99/9999");
+			$("input[id*=c_Kwh]").setMask("decimal");
+			$("input[id*=D]").setMask("decimal");
+			$("input[id*=dem_]").setMask("decimal");			
+			$("input[id*=fcar]").setMask("decimal");
+			$("input[id*=fpot]").setMask("decimal");
+			$("input[id*=vlr_]").setMask("decimal");				
+			});
+	</script>		
+</h:form>
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

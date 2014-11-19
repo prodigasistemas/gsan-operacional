@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="centro">
+		<h:head>
+			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/relatorioCadastroPQ.css" />
+		</h:head>
+		<div class='geral'>
+			<br />
+			<table>
+				<tr>
+					<td class="caminho">#{m.voce_esta_aqui}</td>
+					<td class="sessao">#{m.relatorio}</td>
+					<td class="sessao">&raquo; #{m.cadastro}</td>
+					<td class="pagina">&raquo; #{m.produtos_quimicos}</td>
+				</tr>
+			</table>
+
+			<h:form id="form" prependId="false">
+				<p:messages showDetail="false" autoUpdate="true" id="msg" />
+				<div class='campos_cadastro'>
+					<div>
+						<h:outputLabel for="tipoRelatorio" value="#{m.tipo_relatorio}: " />
+						<p:selectOneMenu id="tipoRelatorio" value="#{relatorioCadastroPQBean.tipoRelatorio}">
+							<f:selectItems value="#{relatorioCadastroPQBean.listaRelatorio}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div>
+						<h:outputLabel for="tipoExportacao" value="#{m.tipo_exportacao}: " />
+						<p:selectOneRadio id="tipoExportacao" value="#{relatorioCadastroPQBean.tipoExportacao}">
+							<f:selectItem itemLabel="PDF" itemValue="1" />
+							<f:selectItem itemLabel="XLS" itemValue="2" />
+						</p:selectOneRadio>
+					</div>
+				</div>
+				<p:commandButton value="Exibir" action="#{relatorioCadastroPQBean.exibir}" ajax="false" />
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

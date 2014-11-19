@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cadastroContratoEnergiaEletrica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3660eaed-39bb-41aa-a6d9-0cad4defb975">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="41"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.2" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.3" value="columnHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.4" value="columnFooter"/>
+	<parameter name="nomeUsuario" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="logoRelatorio" class="java.lang.String"/>
+	<parameter name="nomeRelatorio" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filtro" class="java.lang.String"/>
+	<parameter name="exibirExcel" class="java.lang.Boolean"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="ucon_uc" class="java.lang.String"/>
+	<field name="ucon_nmconsumidora" class="java.lang.String"/>
+	<field name="cene_nmcontrato" class="java.lang.String"/>
+	<field name="cene_dataini" class="java.util.Date"/>
+	<field name="cene_datafim" class="java.util.Date"/>
+	<field name="cene_dataassinatura" class="java.util.Date"/>
+	<field name="cene_periodoajuste" class="java.lang.String"/>
+	<field name="cene_periodoteste" class="java.lang.String"/>
+	<field name="cene_tensaonominal" class="java.lang.Double"/>
+	<field name="cene_tensaocontratada" class="java.lang.Double"/>
+	<field name="cene_subgrupotarifario" class="java.lang.String"/>
+	<field name="cene_frequencia" class="java.lang.Double"/>
+	<field name="cene_perdastransformacao" class="java.lang.Double"/>
+	<field name="cene_potenciainstalada" class="java.lang.Double"/>
+	<field name="cene_horariopontaini" class="java.lang.String"/>
+	<field name="cene_horariopontafim" class="java.lang.String"/>
+	<field name="cene_id" class="java.lang.Integer"/>
+	<field name="cene_horarioreservadoini" class="java.lang.String"/>
+	<field name="cene_horarioreservadofim" class="java.lang.String"/>
+	<field name="cene_opcaofaturamento" class="java.lang.String"/>
+	<field name="cene_modalidadetarifaria" class="java.lang.String"/>
+	<field name="cene_agrupadorfatura" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="65">
+			<image>
+				<reportElement uuid="53ec021a-7caf-4d6b-891b-4ba7c0ef12cc" x="0" y="0" width="555" height="50"/>
+				<imageExpression><![CDATA[$P{logoRelatorio}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="50" width="555" height="1">
+					<printWhenExpression><![CDATA[$P{exibirExcel} == false]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement uuid="c6e4fbce-7fd0-4ede-b147-7177cf1cecae" x="0" y="64" width="555" height="1">
+					<printWhenExpression><![CDATA[$P{exibirExcel} == false]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement uuid="127563d9-f017-4471-b030-c10224228285" x="0" y="0" width="555" height="15" forecolor="#2D6B82"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSANPA - Companhia de Saneamento do Estado do Pará]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="716067cb-5096-4381-8f3e-b2dedece497a" x="0" y="15" width="555" height="15" forecolor="#2D6B82"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeRelatorio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3ec59164-697d-4b7e-8dcc-bd824f2e7727" x="0" y="50" width="555" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{filtro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement uuid="174da25b-7248-452d-abd7-12b56f5cb91e" mode="Opaque" x="90" y="0" width="60" height="10" backcolor="#CCCCCC"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ucon_uc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1368e2c8-7f68-4f46-8648-e3f65ce74ad6" mode="Opaque" x="0" y="0" width="90" height="10" backcolor="#CCCCCC"/>
+				<textElement>
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unidade Consumidora:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80e5f31a-fb11-41ce-94dc-90d98264b182" mode="Opaque" x="370" y="0" width="70" height="10" backcolor="#CCCCCC"/>
+				<textElement>
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº Contrato:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="99393f5a-91ba-4c67-9149-0cae503cabb0" x="0" y="10" width="90" height="10"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Início:  ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="0edf95fd-72bb-4a61-a3af-d90bfe5b2f76" x="90" y="10" width="60" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_dataini}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="34366b30-cbc1-41fe-8bfc-41f8bcecffdc" x="150" y="10" width="50" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Fim:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="a571b2c5-c3f4-4b92-92b4-da1db8d0181a" x="200" y="10" width="80" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_datafim}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c8cc9837-5f6f-4dc9-89f6-7de3b5e6a2db" x="280" y="10" width="80" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Assinatura:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="c4ab27a8-7d85-4f20-b03b-56b6bd20d4a5" x="360" y="10" width="195" height="10">
+					<printWhenExpression><![CDATA[$F{cene_dataassinatura} != null &&
+ ((java.util.Date) $F{cene_dataassinatura}).getTime() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_dataassinatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e97d19bd-3904-4469-a86f-bdc5baa82c82" mode="Opaque" x="440" y="0" width="115" height="10" backcolor="#CCCCCC"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_nmcontrato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="9bcc1043-8f25-4cef-bdaf-afa66ae8d70f" x="360" y="20" width="195" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_periodoteste}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0dd2bd99-0948-4dcc-866b-21be483e4fbf" x="280" y="20" width="80" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Testes:]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="0fbc11eb-bdf1-496c-9af8-b37c330bb943" x="90" y="20" width="190" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_periodoajuste}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="075f2ac1-1f16-4429-9732-c71cef02869c" x="0" y="20" width="90" height="10"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Ajuste:  ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="7fa8d839-1fec-4ab4-836a-a77b7320f053" x="0" y="50" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_tensaonominal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="d25aec8f-cecb-449c-a888-82aa7ab4aa3e" x="140" y="80" width="140" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Modalidade Tarifária: " + $F{cene_modalidadetarifaria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="422ccabc-1ab6-4fd0-816d-37b8b470720e" x="280" y="80" width="275" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Agrupador Fatura: " + $F{cene_agrupadorfatura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="36dbbe53-dde1-480c-8ae2-23828eb7b912" x="0" y="80" width="140" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Opção Faturamento: " + $F{cene_opcaofaturamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm" isBlankWhenNull="true">
+				<reportElement uuid="d635b044-97ca-4f92-bd29-38f345c955ba" x="0" y="70" width="140" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Horário Ponta Inicial: " + $F{cene_horariopontaini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="232f7a3b-3036-429b-9f54-d5448a1b12a1" mode="Opaque" x="150" y="0" width="220" height="10" backcolor="#CCCCCC"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ucon_nmconsumidora}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9a11e0f3-2930-4449-bb16-636d37d6af59" x="0" y="30" width="555" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Características Técnicas de Fornecimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d7206896-0679-4dab-9737-f2f852c27be5" x="0" y="40" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tensão Nominal (kV)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3869369d-edf5-4439-bcb3-c08179477045" x="90" y="40" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tensão Contratada (kV)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c580f284-45cb-4247-835a-46a4cf969aeb" x="180" y="40" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sub-Grupo Tarifário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0ea1c843-68ca-45e5-abd2-82dbdbe522d4" x="270" y="40" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Frequência (Hz)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8ab0426f-b8dd-4d93-861e-019e68bedbdb" x="360" y="40" width="100" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Perdas Transformação (%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0e0b4715-f83c-48fa-9594-2b5f36262ca5" x="460" y="40" width="95" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Potência Instalada (kVA)]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="961676af-36c5-4738-b3f2-2c6ec8608c23" x="90" y="50" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_tensaocontratada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="a5a3e66d-acb7-4a68-90cd-6a8eff86cd23" x="180" y="50" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_subgrupotarifario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="b00f8400-9b2f-4ec6-a352-92a585016b62" x="270" y="50" width="90" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_frequencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="19353b9f-8801-4d41-93db-1434e57a73ef" x="360" y="50" width="100" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_perdastransformacao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="945232e6-b2d6-40d9-983f-e5d027eade24" x="460" y="50" width="95" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cene_potenciainstalada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm" isBlankWhenNull="true">
+				<reportElement uuid="3f13760e-a5c8-452b-af21-60d0ebaf322d" x="140" y="70" width="140" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Horário Ponta Final: " + $F{cene_horariopontafim}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm" isBlankWhenNull="true">
+				<reportElement uuid="07b8d13e-1e89-4129-8ad5-31139e40cd3c" x="280" y="70" width="140" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Horário Reservado Inicial: " + $F{cene_horarioreservadoini}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm" isBlankWhenNull="true">
+				<reportElement uuid="247d7b7a-9444-4bca-afca-417b291038f3" x="420" y="70" width="135" height="10"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Horário Reservado Final: " + $F{cene_horarioreservadofim}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ef2141ad-3dce-4b32-b1c4-208af3c0beaa" x="0" y="60" width="555" height="10"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horas]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="98456206-fa31-4062-83b5-c186686c2f89" x="0" y="90" width="555" height="10" isRemoveLineWhenBlank="true"/>
+				<subreportParameter name="cene_id">
+					<subreportParameterExpression><![CDATA[$F{cene_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cadastroContratoEnergiaEletrica_subDemanda.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ba508e74-25fd-4bfb-af8d-a975fc6c2ae2" x="430" y="1" width="80" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="6eedf9d8-13d5-462c-b03c-5b4a55200461" x="510" y="1" width="45" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c22f666c-275a-4d03-9be5-a27fa97128ef" x="240" y="1" width="40" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba2fdd24-a675-46f9-b01a-310384b21675" x="0" y="1" width="40" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="f7ec67d3-5dd1-43a1-8a56-c425fd2d8fd0" x="280" y="1" width="150" height="10"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2386a4dd-4ce6-4954-82af-0e5bfe88ab8d" x="40" y="1" width="200" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeUsuario}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="0" width="555" height="1">
+					<printWhenExpression><![CDATA[$P{exibirExcel} == false]]></printWhenExpression>
+				</reportElement>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

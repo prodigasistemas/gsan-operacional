@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consumoProdutoQuimico_subTotalQuantidades" columnCount="12" printOrder="Horizontal" pageWidth="600" pageHeight="802" columnWidth="50" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="74565f47-c618-43c6-b9ed-b3b714e84527">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="exibirRegional" class="java.lang.Boolean"/>
+	<parameter name="exibirUnidadeNegocio" class="java.lang.Boolean"/>
+	<parameter name="exibirMunicipio" class="java.lang.Boolean"/>
+	<parameter name="exibirLocalidade" class="java.lang.Boolean"/>
+	<parameter name="exibirUnidadeOperacional" class="java.lang.Boolean"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="valor" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="d3dfc718-637a-45b6-8671-9f1d74f331b7" x="0" y="0" width="50" height="10"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

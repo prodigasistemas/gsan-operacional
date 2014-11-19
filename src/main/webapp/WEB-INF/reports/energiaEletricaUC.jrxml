@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="energiaEletricaUC" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3660eaed-39bb-41aa-a6d9-0cad4defb975">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="dataReferencia" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="nomeUsuario" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="logoRelatorio" class="java.lang.String"/>
+	<parameter name="nomeRelatorio" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exibeDetalhe" class="java.lang.Boolean" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoUC" class="java.lang.Integer"/>
+	<field name="nomeUC" class="java.lang.String"/>
+	<field name="fatura" class="java.lang.String"/>
+	<field name="valorTotal" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="65">
+			<image>
+				<reportElement uuid="53ec021a-7caf-4d6b-891b-4ba7c0ef12cc" x="0" y="1" width="553" height="63"/>
+				<imageExpression><![CDATA[$P{logoRelatorio}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="50" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="c6e4fbce-7fd0-4ede-b147-7177cf1cecae" x="0" y="63" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9d7b4e41-5b32-4987-8138-48a637318762" x="467" y="52" width="38" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Referência::]]></text>
+			</staticText>
+			<textField pattern="MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="6b0a6740-9341-45b7-829a-f6a820a19346" x="506" y="52" width="45" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataReferencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="127563d9-f017-4471-b030-c10224228285" x="184" y="1" width="345" height="15" forecolor="#2D6B82"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSANPA - Companhia de Saneamento do Estado do Pará]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="6b0a6740-9341-45b7-829a-f6a820a19346" x="184" y="15" width="345" height="15" forecolor="#2D6B82"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeRelatorio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="1368e2c8-7f68-4f46-8648-e3f65ce74ad6" x="20" y="0" width="47" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código UC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba4be65f-0707-4a09-8b57-23ee6d00926f" x="483" y="0" width="70" height="10">
+					<printWhenExpression><![CDATA[$P{exibeDetalhe}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba4be65f-0707-4a09-8b57-23ee6d00926f" x="410" y="0" width="60" height="10">
+					<printWhenExpression><![CDATA[$P{exibeDetalhe}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fatura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1368e2c8-7f68-4f46-8648-e3f65ce74ad6" x="120" y="0" width="47" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome UC]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d2dbfa62-4dd7-47d3-a3a6-b58048f23100" x="20" y="0" width="100" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigoUC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="410" y="0" width="60" height="10">
+					<printWhenExpression><![CDATA[$P{exibeDetalhe}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fatura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="0267a7fa-5e71-4059-a4bd-bcd0aef7b881" x="483" y="0" width="70" height="10">
+					<printWhenExpression><![CDATA[$P{exibeDetalhe}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d2dbfa62-4dd7-47d3-a3a6-b58048f23100" x="120" y="2" width="260" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeUC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ba508e74-25fd-4bfb-af8d-a975fc6c2ae2" x="453" y="1" width="68" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="6eedf9d8-13d5-462c-b03c-5b4a55200461" x="521" y="1" width="34" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c22f666c-275a-4d03-9be5-a27fa97128ef" x="237" y="1" width="38" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba2fdd24-a675-46f9-b01a-310384b21675" x="3" y="1" width="29" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="f7ec67d3-5dd1-43a1-8a56-c425fd2d8fd0" x="268" y="1" width="66" height="9"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2386a4dd-4ce6-4954-82af-0e5bfe88ab8d" x="33" y="1" width="100" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeUsuario}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fd104b7c-b2cd-4676-9e37-67b545b29a37" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>
