@@ -7,3 +7,5 @@ tests/.project
 tests/tests/
 tests/bin/tests/DifMillis.class
 .metadata
+scripts/build/build_operacional_desenv.sh
+scripts/build/build_operacional_prod.sh

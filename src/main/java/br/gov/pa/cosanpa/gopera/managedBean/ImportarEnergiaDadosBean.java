@@ -488,7 +488,7 @@ public class ImportarEnergiaDadosBean extends BaseBean<EnergiaEletricaDados>{
 				public List<EnergiaEletricaDados> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<EnergiaEletricaDados> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters, energia.getCodigo());
-						listaLazy = fachada.CalculaDados(listaLazy);
+						listaLazy = fachada.calculaDados(listaLazy);
 						setRowCount(fachada.obterQtdRegistros(filters, energia.getCodigo()));
 						setPageSize(maxPerPage);						
 						return listaLazy;						

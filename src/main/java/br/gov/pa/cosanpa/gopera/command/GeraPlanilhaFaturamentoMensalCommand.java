@@ -44,13 +44,13 @@ public class GeraPlanilhaFaturamentoMensalCommand extends AbstractCommandGeraPla
 				j = i + 2;
 				this.addLabel(sheet, 0, j, formataData.format(this.energiaEletricaDados.get(i).getDataLeitura()));
 				this.addInteiro(sheet, 1, j, this.energiaEletricaDados.get(i).getCodigoUC());
-				this.addLong(sheet, 2, j, Long.parseLong(this.energiaEletricaDados.get(i).getFatura()));
+				this.addLong(sheet, 2, j, Long.parseLong(this.energiaEletricaDados.get(i).getFatura() != null ? this.energiaEletricaDados.get(i).getFatura().trim() : "0"));
 				this.addLabelLeft(sheet, 3, j, this.energiaEletricaDados.get(i).getNome());
 				this.addLabelLeft(sheet, 4, j, this.energiaEletricaDados.get(i).getEndereco());
 				this.addLabelLeft(sheet, 5, j, this.energiaEletricaDados.get(i).getBairro());
-				this.addInteiro(sheet, 6, j, Integer.parseInt(this.energiaEletricaDados.get(i).getCep()));
+				this.addInteiro(sheet, 6, j, Integer.parseInt(this.energiaEletricaDados.get(i).getCep() != null ? this.energiaEletricaDados.get(i).getCep().trim() : "0"));
 				this.addLabel(sheet, 7, j, this.energiaEletricaDados.get(i).getCodigoGrupo());
-				this.addInteiro(sheet, 8, j, Integer.parseInt(this.energiaEletricaDados.get(i).getCodigoTipo()));
+				this.addInteiro(sheet, 8, j, Integer.parseInt(this.energiaEletricaDados.get(i).getCodigoTipo() != null ? this.energiaEletricaDados.get(i).getCodigoTipo().trim() : "0"));
 				this.addNumeroSD(sheet, 9, j, this.energiaEletricaDados.get(i).getC_Kwh_Cv());
 				this.addNumeroSD(sheet, 10, j, this.energiaEletricaDados.get(i).getC_Kwh_FS());
 				this.addNumeroSD(sheet, 11, j, this.energiaEletricaDados.get(i).getC_Kwh_FU());
