@@ -95,8 +95,8 @@
 							</p:submenu>
 							<p:menuitem value="Produtos Qu&iacute;micos" action="#{relatorioGerencialBean.iniciar}" ajax="false" />
 							<p:menuitem value="Energia El&eacute;trica" action="#{relatorioEnergiaEletricaBean.iniciar}" ajax="false" />
-							<p:menuitem value="Horas Trabalhadas" action="#{relatorioHorasBean.iniciar}" ajax="false"/>
 							<!--
+							<p:menuitem value="Horas Trabalhadas" action="#{relatorioHorasBean.iniciar}" ajax="false"/>
 						<p:menuitem value="Volume de &Aacute;gua" action="#{relatorioVolumeBean.iniciar}" ajax="false"/>
 						 -->
 							<p:menuitem value="Tratamento de Esgoto" action="#{relatorioEsgotoBean.iniciar}" ajax="false" />
@@ -115,7 +115,7 @@
 							<p:menuitem value="BIG DO" action="#{indicadorBean.iniciarBIGDO}" ajax="false" />
 							<p:menuitem value="Gera&ccedil;&atilde;o Indicadores" action="#{indicadorGeracaoBean.iniciar}" ajax="false" />
 						</p:submenu>
-						<p:menuitem value="Sair" label="Sair" onclick="dlgSair.show()" />
+						<p:menuitem value="Sair" label="Sair" onclick="PF('dlgSair').show()" />
 					</p:menubar>
 				</h:form>
 			</div>

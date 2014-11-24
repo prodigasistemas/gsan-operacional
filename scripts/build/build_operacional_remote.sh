@@ -4,10 +4,19 @@ CURRENT_PATH=$(pwd)
 
 # Constroi o build
 cd $OPERACIONAL_PATH
+
+project_version=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+
+zip_file="gsan-operacional-${project_version}.war.zip"
+
 mvn clean package -Dmaven.test.skip=true
 
+
 # Compacta o build
-zip -vr target/gsan-operacional.war.zip target/*.war
+
+cd target
+
+zip -vr $zip_file *.war
 
 # Transfere o build para o servidor
 echo "Porta SSH (22):"
@@ -50,9 +59,9 @@ else
   caminho_remoto=$CAMINHO_REMOTO
 fi
 
-scp -P $porta $OPERACIONAL_PATH/target/gsan-operacional.war.zip $usuario@$ip_remoto:$caminho_remoto
+scp -P $porta $zip_file $usuario@$ip_remoto:$caminho_remoto
 
 # Apaga o build transferido e volta ao local inicial
-rm -rf $OPERACIONAL_PATH/target/gsan-operacional.war.zip
+rm -rf $zip_file
 
 cd $CURRENT_PATH
