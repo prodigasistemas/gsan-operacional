@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+<ui:define name="centro">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+<div class="geral">
+	<h:form id="form" prependId="true">
+		<br />
+		<p:messages showDetail="true" autoUpdate="true" id="msg" />
+	</h:form>
+	<table>
+		<tr>
+			<td class="caminho">#{m.voce_esta_aqui}:</td>
+			<td class="sessao">#{m.cadastro}</td>
+			<td class="pagina">&raquo; #{m.tabela_precos}</td>
+		</tr>
+	</table>
+	
+	<p:confirmDialog id="confirmDialog" message="Deseja realmente excluir este registro?" appendToBody="true" header="Excluir registro" severity="alert"
+			widgetVar="cd">
+		<h:form id="dlg">
+				<p:commandButton immediate="true" update=":formConsulta" id="confirm" value="#{m.sim}" action="#{precoProdutoBean.excluir}" oncomplete="PF('cd').hide()" />
+				<p:commandButton id="decline" value="#{m.nao}" onclick="PF('cd').hide()" type="button" />
+		</h:form>
+	</p:confirmDialog>
+
+	<h:form id="formConsulta">
+		<p:panel rendered="#{precoProdutoBean.visualizando}">
+			<p:dataTable id="dataTable" var="var"  value="#{precoProdutoBean.relatorio}" lazy="true" paginator="true" 
+				rows="10" paginatorPosition="bottom"  
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+		
+				<p:column headerText="#{m.opcoes}" width="90" style="text-align:left">
+					<f:facet name="header">
+						<h:outputText class="tabela" value="#{m.opcoes}" />
+					</f:facet>
+					<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{precoProdutoBean.consultar}" update=":formCadastro,:formConsulta">
+						<f:setPropertyActionListener value="#{var}" target="#{precoProdutoBean.selecionado}" />
+					</p:commandButton>
+					<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{precoProdutoBean.alterar}" update=":formCadastro,:formConsulta">
+						<f:setPropertyActionListener value="#{var}" target="#{precoProdutoBean.selecionado}" />
+					</p:commandButton>
+					<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{var.id}" target="#{precoProdutoBean.pk}" />
+					</p:commandButton>
+				</p:column>
+	
+				<p:column filterBy="#{var.produto}" filterMatchMode="contains" style="text-align:left" width="200">
+					<f:facet name="header">
+						<h:outputText class="tabela" value="#{m.produto_quimico}" />					
+					</f:facet>
+					<h:outputText value="#{var.produto}" />
+				</p:column>					
+		
+				<p:column style="text-align:left">
+					<f:facet name="header">
+						<h:outputText class="tabela" value="#{m.vigencia}" />
+					</f:facet>
+					<h:outputText value="#{var.vigencia}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column style="text-align:left">
+					<f:facet name="header">
+						<h:outputText class="tabela" value="#{m.preco_custo}" />
+					</f:facet>
+
+					<h:outputText value="#{var.preco}">
+						<f:convertNumber pattern="#0.000000" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column style="text-align:left">
+					<f:facet name="header">
+						<h:outputText class="tabela" value="#{m.unidade_medida}" />
+					</f:facet>
+
+					<h:outputText value="#{var.unidadeMedida}">
+						<f:convertNumber pattern="#0.000000" />
+					</h:outputText>
+				</p:column>
+				
+	
+			</p:dataTable>
+			<p:column>
+				<p:commandButton value="Novo" action="#{precoProdutoBean.novo}" update=":formCadastro,:formConsulta" />
+			</p:column>
+		</p:panel>
+	</h:form>
+	
+	<h:form id="formCadastro">
+		<p:panel id="produtos" rendered="#{!precoProdutoBean.visualizando}">
+				<div class='campos_cadastro'>
+					<div>
+						<h:outputLabel for="produto" value="#{m.produto_quimico} *"/>
+						<p:selectOneMenu id="produto" value="#{precoProdutoBean.cadastro.idProduto}" disabled="#{precoProdutoBean.editando or precoProdutoBean.desabilitaForm}" 
+							effect="fade" required="true" requiredMessage="#{m.required_produto}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+						    <f:selectItems value="#{precoProdutoBean.produtos}" var="x" itemLabel="#{x.descricao}" itemValue="#{x.codigo}"/>
+					    </p:selectOneMenu>
+					</div>
+					
+					<div>
+						<h:outputLabel for="vigencia" value="#{m.vigencia} *"/>
+						<p:calendar styleClass="data" value="#{precoProdutoBean.cadastro.vigencia}" id="vigencia" disabled="#{precoProdutoBean.editando or precoProdutoBean.desabilitaForm}"
+							showOn="button" pattern="dd/MM/yyyy" required="true" requiredMessage="#{m.required_vigencia}" />
+					</div>
+					
+					<div>
+						<h:outputLabel for="preco" value="#{m.preco_custo} *"/>
+						<p:inputText id="preco" style="width: 80px" value="#{precoProdutoBean.cadastro.preco}" maxlength="10" 
+							disabled="#{precoProdutoBean.desabilitaForm}" required="true" requiredMessage="#{m.required_preco_produto}"/>
+					</div>
+					
+				<script type="text/javascript">
+					$(function(){
+						$("input[id*=preco]").setMask("six-decimal-us");					
+						});
+				</script>	
+					
+				</div>
+			
+			<p:commandButton value="Cadastrar" action="#{precoProdutoBean.cadastrar}" rendered="#{precoProdutoBean.cadastrando or precoProdutoBean.editando}"
+				update="formCadastro" />
+			<p:commandButton value="Confirmar" action="#{precoProdutoBean.confirmar}" rendered="#{precoProdutoBean.confirmando}" update="formCadastro" />
+			<p:commandButton value="Cancelar" action="#{precoProdutoBean.cancelar}" rendered="#{precoProdutoBean.confirmando}" update="formCadastro" />
+			<p:commandButton value="Limpar" rendered="#{precoProdutoBean.cadastrando}" type="reset" />
+			<p:commandButton process="@this" value="Voltar" action="#{precoProdutoBean.voltar}" rendered="#{!precoProdutoBean.confirmando}"
+				update=":formCadastro,:formConsulta" />
+		</p:panel>
+		<script type="text/javascript">
+	$(function(){
+		$("input[id*=Valor]").setMask("decimal-six");				
+		});
+	</script>
+	</h:form>
+</div>
+</h:body>
+</ui:define>
+</ui:composition>
+</html>

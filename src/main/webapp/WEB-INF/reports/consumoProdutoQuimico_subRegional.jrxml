@@ -22,7 +22,7 @@
 	<queryString>
 		<![CDATA[SELECT *, (prod_qtd * prod_valor) AS prod_total FROM (
  SELECT SUM(B.conp_quantidade) AS prod_qtd,
- AVG((SELECT tbpp_preco FROM operacao.tabelapreco_produto X INNER JOIN operacao.tabelapreco Z ON X.tabp_id = Z.tabp_id WHERE Z.tabp_vigencia <= B.cons_data  AND X.prod_id = C.prod_id ORDER BY Z.tabp_vigencia DESC LIMIT 1)) AS prod_valor ,
+ AVG((SELECT preco FROM operacao.preco_produto X WHERE X.vigencia <= B.cons_data  AND X.prod_id = C.prod_id ORDER BY X.vigencia DESC LIMIT 1)) AS prod_valor ,
 (C.prod_nmproduto || ' - ' || (CASE $P{exibirFinanceiro} WHEN 'true' THEN 'R$' ELSE D.umed_sigla END)) AS prod_nmproduto
   FROM (SELECT DISTINCT A.greg_id, A.greg_nmregional, B.uneg_id, B.uneg_nmunidadenegocio, E.muni_id, E.muni_nmmunicipio, C.loca_id, C.loca_nmlocalidade
          FROM cadastro.gerencia_regional A

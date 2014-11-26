@@ -90,8 +90,8 @@ public class HorasBean extends BaseBean<Hora>{
 			this.cadastro.getCmbs().clear();
 			this.cadastro.getCmbs().addAll(todosCMBs.values());
 		} catch (Exception e) {
-			logger.error(bundle.getText("erro_carregar_horas_eta"), e);
-			this.mostrarMensagemErro(bundle.getText("erro_carregar_horas_eta"));
+			logger.error(bundle.getText("erro_carregar_horas"), e);
+			this.mostrarMensagemErro(bundle.getText("erro_carregar_horas"));
 		}
 	}
 

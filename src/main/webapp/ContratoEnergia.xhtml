@@ -331,7 +331,7 @@ xmlns:p="http://primefaces.org/ui">
 			            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demandaUmidoForaPonta}" id="demandaumidoforaponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Demanda Período Úmido fora da Ponta, deve ser informado."/>
 		             </p:column>		             
 					<p:column>
-						<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.convencionalVerde}" id="convencionalverde" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="#{m.msg_informar_valor_consumo_convencional}"/>
+						<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.convencionalVerde}" id="convencionalverde" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="#{m.required_valor_consumo_convencional}"/>
 			        </p:column>					
 					<p:column>
 						<p:commandButton value="Incluir Demanda" action="#{contratoEnergiaBean.incluirDemanda}" rendered="#{contratoEnergiaBean.cadastrando or contratoEnergiaBean.editando}" update="formCadastro"/>

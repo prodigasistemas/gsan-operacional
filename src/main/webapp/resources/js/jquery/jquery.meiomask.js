@@ -113,6 +113,7 @@
 				'decimal-us'		: { mask : '99.999,999,999,999', type : 'reverse', defaultValue : '000' },
 				'only-decimal'	    : { mask : '99,999999999999', type : 'reverse', defaultValue : '000' },
 				'simple-decimal-us'	: { mask : '99.999999999999', type : 'reverse', defaultValue : '000' },
+				'six-decimal-us'	: { mask : '999999.999999999999', type : 'reverse', defaultValue : '0000000' },
 				'signed-decimal'	: { mask : '99,999.999.999.999', type : 'reverse', defaultValue : '+000' },
 				'signed-decimal-us' : { mask : '99,999.999.999.999', type : 'reverse', defaultValue : '+000' }
 			},

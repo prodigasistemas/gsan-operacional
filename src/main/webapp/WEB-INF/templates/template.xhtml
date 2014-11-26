@@ -18,13 +18,14 @@
 	</script>
 	</h:head>
 	<h:body>
+		<f:loadBundle basename="version" var="vers"/>
 
 		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/estilos.css" />
 		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/novo.css" />
 		<div class="geral">
 			<div class="header">
 				<h:graphicImage value="resources/images/logo-topo.jpg" width="100%" />
-				<div class="versao" align="right">Vers&atilde;o 1.0.26</div>
+				<div class="versao" align="right">Vers&atilde;o <b> #{vers['project.version']} </b></div>
 			</div>
 
 			<div class="main-menu">
@@ -45,7 +46,7 @@
 								<p:menuitem value="Registro de Consumo" action="#{registroConsumoBean.iniciar}" ajax="false" />
 								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x ETA" action="#{registroConsumoETABean.iniciar}" ajax="false" />
 								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x EAT" action="#{registroConsumoEATBean.iniciar}" ajax="false" />
-								<p:menuitem value="Tabela de Pre&ccedil;o" action="#{tabelaPrecoBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.tabela_precos}" action="#{precoProdutoBean.iniciar}" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Energia El&eacute;trica">
 								<p:menuitem value="Unidade Consumidora" action="#{unidadeConsumidoraBean.iniciar}" ajax="false" />

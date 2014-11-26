@@ -143,12 +143,10 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 				nomeRelatorio += bundle.getText("tabela_precos");				
 				nomeArquivo = "cadastroTabelaPreco";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/cadastroTabelaPreco.jasper");
-				sql = "SELECT A.tabp_vigencia, C.prod_nmproduto, B.tbpp_preco"
-					+ "  FROM operacao.tabelapreco A"
-					+ " INNER JOIN operacao.tabelapreco_produto B ON A.tabp_id = B.tabp_id"
-					+ " INNER JOIN operacao.produto C ON B.prod_id = C.prod_id"
-					+ " WHERE A.tabp_id = (SELECT tabp_id FROM operacao.tabelapreco ORDER BY tabp_vigencia DESC LIMIT 1)"
-					+ " ORDER BY C.prod_nmproduto";			
+				sql = "SELECT A.vigencia, P.prod_nmproduto, A.preco"
+					+ "  FROM operacao.preco_produto A"
+					+ " INNER JOIN operacao.produto P ON A.prod_id = P.prod_id"
+					+ " ORDER BY A.vigencia, P.prod_nmproduto";
 				break;				
 			}
 			//Monta ResultSet	
@@ -329,7 +327,7 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 			while (rs.next()) {
 				if (!headerLinha) {
 					addLabel(sheet, 0, linha, bundle.getText("vigencia"), wcfLabelHeader);
-					addLabel(sheet, 1, linha, formataDataPadrao.format(formataDataSQL.parse(rs.getString("tabp_vigencia"))) , wcfLabelHeader);
+					addLabel(sheet, 1, linha, formataDataPadrao.format(formataDataSQL.parse(rs.getString("vigencia"))) , wcfLabelHeader);
 					linha++;
 					addLabel(sheet, 1, linha, bundle.getText("produto"), wcfLabelBold);
 					addLabel(sheet, 4, linha, bundle.getText("valor"), wcfLabelBold);
@@ -337,7 +335,7 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 					headerLinha = true;
 				}		
 				addLabel(sheet, 1, linha, rs.getString("prod_nmproduto"), wcfLabelLeft);
-				addNumero(sheet, 4, linha, Double.parseDouble(rs.getString("tbpp_preco")), wcfNumero);
+				addNumero(sheet, 4, linha, Double.parseDouble(rs.getString("preco")), wcfNumero);
 				linha++;
 			}
 			break;

@@ -9,11 +9,11 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="tabp_vigencia" class="java.util.Date"/>
-	<field name="tbpp_preco" class="java.lang.Double"/>
+	<field name="vigencia" class="java.util.Date"/>
+	<field name="preco" class="java.lang.Double"/>
 	<field name="prod_nmproduto" class="java.lang.String"/>
 	<group name="RegistroConsumo">
-		<groupExpression><![CDATA[$F{tabp_vigencia}]]></groupExpression>
+		<groupExpression><![CDATA[$F{vigencia}]]></groupExpression>
 		<groupHeader>
 			<band height="12">
 				<staticText>
@@ -28,7 +28,7 @@
 					<textElement>
 						<font size="7" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{tabp_vigencia}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{vigencia}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -96,7 +96,7 @@
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tbpp_preco}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{preco}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
