@@ -1,4 +1,5 @@
 target
+.tern-project
 RemoteSystemsTempFiles/
 tests/bin/.gitignore
 tests/bin/.project

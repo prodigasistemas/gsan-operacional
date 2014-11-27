@@ -25,6 +25,7 @@ import br.gov.model.operacao.HoraCMB;
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RegionalProxy;
+import br.gov.model.operacao.TipoRegistroHoras;
 import br.gov.model.operacao.TipoUnidadeOperacional;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.model.util.Utilitarios;
@@ -79,7 +80,7 @@ public class HorasBean extends BaseBean<Hora>{
 			
 			Map<Integer, HoraCmbTO> todosCMBs = new LinkedHashMap<Integer, HoraCmbTO>();
 			for (int i = 1; i <= cadastro.getQuantidadeCmb(); i++) {
-                todosCMBs.put(i, new HoraCmbTO(null, i, BigDecimal.ZERO));
+                todosCMBs.put(i, new HoraCmbTO(null, i, BigDecimal.ZERO, TipoRegistroHoras.TRABALHADAS));
             }
 			
 			List<HoraCmbTO> cmbs = horaCmbRepositorio.obterHoraCMBPorEstacao(cadastro.getTipoUnidadeOperacional(), cadastro.getCdUnidadeOperacional(), cadastro.getReferencia());
@@ -175,7 +176,7 @@ public class HorasBean extends BaseBean<Hora>{
 			EstacaoOperacional estacao = estacaoRepositorio.buscarPorTipoECodigo(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
 			
 			for(int i = 1; i <= estacao.getQuantidadeCmb(); i++){
-			    this.cadastro.getCmbs().add(new HoraCmbTO(null, i, BigDecimal.ZERO));
+			    this.cadastro.getCmbs().add(new HoraCmbTO(null, i, BigDecimal.ZERO, TipoRegistroHoras.TRABALHADAS));
 			}
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_cmbs"), e);
@@ -191,7 +192,7 @@ public class HorasBean extends BaseBean<Hora>{
 			}
 			
 			if (!this.getEditando()){
-				if(!repositorio.existeMesReferencia(TipoUnidadeOperacional.valueOf(this.tipoEstacao).getId()
+				if(repositorio.existeMesReferencia(TipoUnidadeOperacional.valueOf(this.tipoEstacao).getId()
 				        , this.cadastro.getCdUnidadeOperacional()
 				        , this.cadastro.getReferencia())){
 					this.mostrarMensagemErro(bundle.getText("erro_mes_referencia_ja_cadastrado"));
@@ -222,6 +223,7 @@ public class HorasBean extends BaseBean<Hora>{
 			    cmb.setCodigo(to.getCodigo());
 			    cmb.setCmb(to.getCmb());
 			    cmb.setMedicao(to.getMedicao());
+			    cmb.setTipoRegistro(to.getTipoRegistro());
 			    cmb.setHora(registro);
 			    registro.addCmb(cmb);
 			}			
@@ -240,7 +242,11 @@ public class HorasBean extends BaseBean<Hora>{
 		return tipoEstacao;
 	}
 
-	public HorasCadastroTO getCadastro() {
+	public TipoRegistroHoras[] getTiposHoras() {
+        return TipoRegistroHoras.values();
+    }
+
+    public HorasCadastroTO getCadastro() {
         return cadastro;
     }
 

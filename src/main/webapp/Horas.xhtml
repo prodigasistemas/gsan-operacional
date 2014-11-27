@@ -27,8 +27,8 @@ xmlns:p="http://primefaces.org/ui">
 </table>
 
 <p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
-	<p:commandButton value="Sim" actionListener="#{horasBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
-	<p:commandButton value="Não" onclick="PF('cd').hide();" type="button" />
+	<p:commandButton value="#{m.sim}" actionListener="#{horasBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+	<p:commandButton value="#{m.nao}" onclick="PF('cd').hide();" type="button" />
 </p:confirmDialog>
 
 <h:form id="formConsulta" prependId="false">
@@ -138,15 +138,24 @@ xmlns:p="http://primefaces.org/ui">
 			</p:column>					
 			<p:column style="text-align:right">
 		  		<f:facet name="header">
-					<h:outputText class="tabela" value="#{m.medicao} (horas)"/>
+					<h:outputText class="tabela" value="#{m.registro_consumo} (horas)"/>
 				</f:facet>	
 				<p:inputText style="width: 80px" value="#{var.medicao}" id="medicao" maxlength="10" disabled="#{horasBean.desabilitaForm}" required="true" requiredMessage="Valor da Medição de CMB, deve ser informado.">
+	         		<p:ajax update=":formCadastro:horasTrabalhadas" event="keyup"/>
 				</p:inputText>
 				<script type="text/javascript">
 					$(function(){
 						$("input[id*=medicao]").setMask("simple-decimal-us");					
 						});
 				</script>	
+			</p:column>
+			<p:column style="text-align:left" width="300">
+		  		<f:facet name="header">
+					<h:outputText class="tabela" value="#{m.tipo_registro}"/>
+				</f:facet>
+				<p:selectOneMenu id="tipoRegistro" value="#{var.tipoRegistro}" disabled="#{horasBean.desabilitaForm}">
+					<f:selectItems value="#{horasBean.tiposHoras}" var="h" itemValue="#{h}" itemLabel="#{managedBundle.text(h.descricao)}"> </f:selectItems>
+				</p:selectOneMenu>
 			</p:column>
 		</p:dataTable>
 	</div>
