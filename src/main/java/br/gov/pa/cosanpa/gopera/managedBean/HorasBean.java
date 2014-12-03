@@ -25,7 +25,6 @@ import br.gov.model.operacao.HoraCMB;
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RegionalProxy;
-import br.gov.model.operacao.TipoRegistroHoras;
 import br.gov.model.operacao.TipoUnidadeOperacional;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.model.util.Utilitarios;
@@ -63,7 +62,7 @@ public class HorasBean extends BaseBean<Hora>{
 	
 	private BigDecimal horasMes;
 	
-	private BigDecimal horasTrabalhadas;
+	private BigDecimal horasSistema;
 	
 	private String tipoEstacao;
 	
@@ -80,7 +79,7 @@ public class HorasBean extends BaseBean<Hora>{
 			
 			Map<Integer, HoraCmbTO> todosCMBs = new LinkedHashMap<Integer, HoraCmbTO>();
 			for (int i = 1; i <= cadastro.getQuantidadeCmb(); i++) {
-                todosCMBs.put(i, new HoraCmbTO(null, i, BigDecimal.ZERO, TipoRegistroHoras.TRABALHADAS));
+                todosCMBs.put(i, new HoraCmbTO(null, i, BigDecimal.ZERO));
             }
 			
 			List<HoraCmbTO> cmbs = horaCmbRepositorio.obterHoraCMBPorEstacao(cadastro.getTipoUnidadeOperacional(), cadastro.getCdUnidadeOperacional(), cadastro.getReferencia());
@@ -176,7 +175,7 @@ public class HorasBean extends BaseBean<Hora>{
 			EstacaoOperacional estacao = estacaoRepositorio.buscarPorTipoECodigo(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
 			
 			for(int i = 1; i <= estacao.getQuantidadeCmb(); i++){
-			    this.cadastro.getCmbs().add(new HoraCmbTO(null, i, BigDecimal.ZERO, TipoRegistroHoras.TRABALHADAS));
+			    this.cadastro.getCmbs().add(new HoraCmbTO(null, i, BigDecimal.ZERO));
 			}
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_cmbs"), e);
@@ -186,7 +185,7 @@ public class HorasBean extends BaseBean<Hora>{
 	
 	public String cadastrar(){
 		try {
-			if (horasTrabalhadas.subtract(horasMes).doubleValue() > 0){
+			if (horasSistema.subtract(horasMes).doubleValue() > 0){
 				this.mostrarMensagemErro(bundle.getText("erro_horas_invalidas"));
 				return null;
 			}
@@ -213,6 +212,9 @@ public class HorasBean extends BaseBean<Hora>{
 		    registro = new Hora();
 		    registro.setCodigo(cadastro.getCodigo());
 		    registro.setReferencia(cadastro.getReferencia());
+		    registro.setParadaPorEnergia(cadastro.getParadaPorEnergia());
+		    registro.setParadaPorControle(cadastro.getParadaPorControle());
+		    registro.setParadaPorManutencao(cadastro.getParadaPorManutencao());
 		    registro.setUsuario(usuarioProxy.getCodigo());
 		    registro.setUltimaAlteracao(new Date());
 		    registro.setTipoEstacao(TipoUnidadeOperacional.valueOf(tipoEstacao).getId());
@@ -223,7 +225,6 @@ public class HorasBean extends BaseBean<Hora>{
 			    cmb.setCodigo(to.getCodigo());
 			    cmb.setCmb(to.getCmb());
 			    cmb.setMedicao(to.getMedicao());
-			    cmb.setTipoRegistro(to.getTipoRegistro());
 			    cmb.setHora(registro);
 			    registro.addCmb(cmb);
 			}			
@@ -241,10 +242,6 @@ public class HorasBean extends BaseBean<Hora>{
 	public String getTipoEstacao() {
 		return tipoEstacao;
 	}
-
-	public TipoRegistroHoras[] getTiposHoras() {
-        return TipoRegistroHoras.values();
-    }
 
     public HorasCadastroTO getCadastro() {
         return cadastro;
@@ -273,15 +270,19 @@ public class HorasBean extends BaseBean<Hora>{
         return horasMes;
     }
 
-    public BigDecimal getHorasTrabalhadas() {
-        horasTrabalhadas = BigDecimal.ZERO;
+    public BigDecimal getHorasSistema() {
+        horasSistema = BigDecimal.ZERO;
         if (cadastro != null){
             for (HoraCmbTO cmb : this.cadastro.getCmbs()){
-                horasTrabalhadas = horasTrabalhadas.add(cmb.getMedicao());  
+                horasSistema = horasSistema.add(cmb.getMedicao());  
             }               
         }
         
-		return horasTrabalhadas;
+		horasSistema = horasSistema.add(cadastro.getParadaPorEnergia())
+                .add(cadastro.getParadaPorControle())
+                .add(cadastro.getParadaPorManutencao());
+		
+		return horasSistema;
 	}
 
 	public LazyDataModel<HorasListagemTO> getListaConsumo() {

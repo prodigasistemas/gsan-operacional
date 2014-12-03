@@ -76,7 +76,7 @@ xmlns:p="http://primefaces.org/ui">
 			<p:selectOneMenu id="regional" value="#{horasBean.cadastro.cdRegional}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
 					<f:selectItem itemLabel="Selecione" itemValue="" />
 				    <f:selectItems value="#{horasBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			         <p:ajax update="unidadenegocio, municipio, localidade, estacao, horasTrabalhadas" event="change" />  
+			         <p:ajax update="unidadenegocio, municipio, localidade, estacao, horasSistema" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
@@ -85,7 +85,7 @@ xmlns:p="http://primefaces.org/ui">
 		    <p:selectOneMenu id="unidadenegocio" value="#{horasBean.cadastro.cdUnidadeNegocio}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
 		    		<f:selectItem itemLabel="Selecione" itemValue="" />
 			        <f:selectItems value="#{horasBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			        <p:ajax update="municipio, localidade, estacao, horasTrabalhadas" event="change" />  
+			        <p:ajax update="municipio, localidade, estacao, horasSistema" event="change" />  
 		    </p:selectOneMenu> 
 		</div>
 		
@@ -94,7 +94,7 @@ xmlns:p="http://primefaces.org/ui">
 		    <p:selectOneMenu id="municipio" value="#{horasBean.cadastro.cdMunicipio}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
 		    		<f:selectItem itemLabel="Selecione" itemValue="" />
 			        <f:selectItems value="#{horasBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			        <p:ajax update="localidade, estacao, horasTrabalhadas" event="change" />  
+			        <p:ajax update="localidade, estacao, horasSistema" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
@@ -103,7 +103,7 @@ xmlns:p="http://primefaces.org/ui">
 		    <p:selectOneMenu id="localidade" value="#{horasBean.cadastro.cdLocalidade}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
 		    		<f:selectItem itemLabel="Selecione" itemValue="" />
 			        <f:selectItems value="#{horasBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			        <p:ajax update="estacao, horasTrabalhadas" event="change" />  
+			        <p:ajax update="estacao, horasSistema" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
@@ -112,7 +112,7 @@ xmlns:p="http://primefaces.org/ui">
 			<p:selectOneMenu id="estacao" value="#{horasBean.cadastro.cdUnidadeOperacional}" converter="selectOneConverter" effect="fade" disabled="#{horasBean.desabilitaForm or horasBean.editando}" required="true" requiredMessage="EEAB, deve ser informado.">
 				<f:selectItem itemLabel="Selecione" itemValue="" /> 
 	         	<f:selectItems value="#{horasBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/>
-	         	<p:ajax listener="#{horasBean.carregarCMB}" update="tabela, horasTrabalhadas" event="change"/>  
+	         	<p:ajax listener="#{horasBean.carregarCMB}" update="tabela, horasSistema" event="change"/>  
     		</p:selectOneMenu>
 		</div>
 		
@@ -120,7 +120,7 @@ xmlns:p="http://primefaces.org/ui">
 			<h:outputLabel for="referencia" value="#{m.referencia} *"/>
 			<p:inputText value="#{horasBean.cadastro.referencia}" id="referencia" style="width: 80px" disabled="#{horasBean.desabilitaForm or horasBean.editando}" size="8" required="true" requiredMessage="#{m.referencia_obrigatoria}">
 				<f:converter converterId="operacional.MesReferenciaConverter"/>
-	         	<p:ajax update="horasTrabalhadas, horasMes" event="change"/> 				
+	         	<p:ajax update="horasSistema, horasMes" event="change"/> 				
 			</p:inputText>				
 		</div>
 	</div>
@@ -141,7 +141,7 @@ xmlns:p="http://primefaces.org/ui">
 					<h:outputText class="tabela" value="#{m.registro_consumo} (horas)"/>
 				</f:facet>	
 				<p:inputText style="width: 80px" value="#{var.medicao}" id="medicao" maxlength="10" disabled="#{horasBean.desabilitaForm}" required="true" requiredMessage="Valor da Medição de CMB, deve ser informado.">
-	         		<p:ajax update=":formCadastro:horasTrabalhadas" event="keyup"/>
+	         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
 				</p:inputText>
 				<script type="text/javascript">
 					$(function(){
@@ -149,20 +149,34 @@ xmlns:p="http://primefaces.org/ui">
 						});
 				</script>	
 			</p:column>
-			<p:column style="text-align:left" width="300">
-		  		<f:facet name="header">
-					<h:outputText class="tabela" value="#{m.tipo_registro}"/>
-				</f:facet>
-				<p:selectOneMenu id="tipoRegistro" value="#{var.tipoRegistro}" disabled="#{horasBean.desabilitaForm}">
-					<f:selectItems value="#{horasBean.tiposHoras}" var="h" itemValue="#{h}" itemLabel="#{managedBundle.text(h.descricao)}"> </f:selectItems>
-				</p:selectOneMenu>
-			</p:column>
 		</p:dataTable>
 	</div>
+
+	<div class='campos_cadastro'>
+		<div>
+			<h:outputLabel for="paradasEnergia" class="label_maior" value="#{m.horas_paradas_energia}: "/>
+			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorEnergia}" id="medicaoEnergia" maxlength="10" disabled="#{horasBean.desabilitaForm}">
+         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+			</p:inputText>
+		</div>
+		<div>
+			<h:outputLabel for="paradasManutencao" class="label_maior" value="#{m.horas_paradas_manutencao}: "/>
+			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorManutencao}" id="medicaoManutencao" maxlength="10" disabled="#{horasBean.desabilitaForm}">
+         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+			</p:inputText>
+		</div>
+		<div>
+			<h:outputLabel for="paradasControle" class="label_maior" value="#{m.horas_paradas_controle}: "/>
+			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorControle}" id="medicaoControle" maxlength="10" disabled="#{horasBean.desabilitaForm}">
+         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+			</p:inputText>
+		</div>
+	</div>
+	
 	
 	<div align="right">
-		<h:outputLabel for="horasTrabalhadas" class="tabela" value="#{m.total_horas_cmb}: "/>
-		<h:outputText class="tabela" id="horasTrabalhadas" value="#{horasBean.horasTrabalhadas}" style="width:80px; display:inline-block; text-align: right">
+		<h:outputLabel for="horasSistema" class="tabela" value="#{m.total_horas_cmb}: "/>
+		<h:outputText class="tabela" id="horasSistema" value="#{horasBean.horasSistema}" style="width:80px; display:inline-block; text-align: right">
 			<f:convertNumber pattern="#0.00"/>
 		</h:outputText>
 	</div>
