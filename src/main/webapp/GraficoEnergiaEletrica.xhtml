@@ -22,19 +22,19 @@ xmlns:p="http://primefaces.org/ui">
 	<h:panelGrid id="cadastro" columns="2">
 	
 		<h:outputLabel for="regional" value="Regional: *"/>
-		<p:selectOneMenu id="regional" value="#{graficoEnergiaEletricaBean.codigoRegional}" effect="fade" converter="selectOneConverter" required="true" requiredMessage="Regional é Obrigatória">
+		<p:selectOneMenu id="regional" value="#{graficoEnergiaEletricaBean.codigoRegional}" effect="fade" required="true" requiredMessage="Regional é Obrigatória">
 			    <f:selectItems value="#{graficoEnergiaEletricaBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
 		         <p:ajax update="unidadenegocio, municipio, localidade" event="change" />  
 	    </p:selectOneMenu>
 		
 		<h:outputLabel for="unidadenegocio" value="Unidade de Negócio: *" />
-	    <p:selectOneMenu id="unidadenegocio" value="#{graficoEnergiaEletricaBean.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter"  required="true" requiredMessage="Unidade de Negócio é Obrigatória">
+	    <p:selectOneMenu id="unidadenegocio" value="#{graficoEnergiaEletricaBean.codigoUnidadeNegocio}" effect="fade"  required="true" requiredMessage="Unidade de Negócio é Obrigatória">
 		        <f:selectItems value="#{graficoEnergiaEletricaBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
 		        <p:ajax update="municipio, localidade" event="change" />  
 	    </p:selectOneMenu> 
 		
 		<h:outputLabel for="municipio" value="Município: *" />
-	    <p:selectOneMenu id="municipio" value="#{graficoEnergiaEletricaBean.codigoMunicipio}" effect="fade" converter="selectOneConverter"  required="true" requiredMessage="Município é Obrigatório" >
+	    <p:selectOneMenu id="municipio" value="#{graficoEnergiaEletricaBean.codigoMunicipio}" effect="fade" required="true" requiredMessage="Município é Obrigatório" >
 		        <f:selectItems value="#{graficoEnergiaEletricaBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
 		        <p:ajax update="localidade" event="change" />  
 	    </p:selectOneMenu>
@@ -51,16 +51,19 @@ xmlns:p="http://primefaces.org/ui">
         	<f:selectItems value="#{graficoEnergiaEletricaBean.unidadesConsumidoras}" var="item" itemValue="#{item.codigo}" itemLabel="#{item.uc} - #{item.descricao}" />  
     	</p:selectCheckboxMenu> 
     	
-		<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
-		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória"/>
+		<h:outputLabel for="referenciaInicial" value="#{m.referencia_inicial}: *"/>
+		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória">
+			<f:converter converterId="operacional.MesReferenciaConverter"/>
+		</p:inputText>
 
-		<h:outputLabel for="referenciaFinal" value="Referência Final: *"/>
-		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória"/>
+		<h:outputLabel for="referenciaFinal" value="#{m.referencia_final}: *"/>
+		<p:inputText value="#{graficoEnergiaEletricaBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória">
+			<f:converter converterId="operacional.MesReferenciaConverter"/>			
+		</p:inputText>
 
-
-		<h:outputLabel for="tipoRelatorio" value="Tipo Gráfico: " />
-        <p:selectOneMenu id="tipoRelatorio" value="#{graficoEnergiaEletricaBean.tipoRelatorio}">
-	         <f:selectItems value="#{graficoEnergiaEletricaBean.listaRelatorio}"/>
+		<h:outputLabel for="tipoRelatorio" value="#{m.tipo_grafico}: " />
+        <p:selectOneMenu id="tipoRelatorio" value="#{graficoEnergiaEletricaBean.tipoGrafico}">
+	         <f:selectItems value="#{graficoEnergiaEletricaBean.tiposGraficos}"/>
         </p:selectOneMenu>
 
 		<p:commandButton value="Exibir" action="#{graficoEnergiaEletricaBean.exibir}" update="form"/>
@@ -74,12 +77,8 @@ xmlns:p="http://primefaces.org/ui">
 			});
 	</script>	
 	
-	<p:pieChart id="custom" value="#{graficoEnergiaEletricaBean.pieModelo}" legendPosition="e" fill="false" showDataLabels="true" animate="true" zoom="true" 
-                title="#{graficoEnergiaEletricaBean.titulo}" style="width:800px;height:400px" sliceMargin="5" diameter="250" rendered="#{graficoEnergiaEletricaBean.exibePie}"/>
-	<p:barChart id="basic" value="#{graficoEnergiaEletricaBean.barModelo}" legendPosition="ne"  
-            title="#{graficoEnergiaEletricaBean.titulo}" style="height:400px" rendered="#{graficoEnergiaEletricaBean.exibeBar}"/>
-	<p:lineChart id="category" value="#{graficoEnergiaEletricaBean.lineModelo}" legendPosition="ne"  
-    		 title="#{graficoEnergiaEletricaBean.titulo}" minY="0" style="height:800px" rendered="#{graficoEnergiaEletricaBean.exibeLine}"/>                                  
+	<p:chart type="line" model="#{graficoEnergiaEletricaBean.lineModelo}"  
+        style="height:800px" rendered="#{graficoEnergiaEletricaBean.exibeLine}"/>                                  
 </h:form>
 </div>
 </ui:define>

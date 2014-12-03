@@ -1,10 +1,11 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
+import static br.gov.model.util.Utilitarios.retiraCaracteresEspeciais;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.ejb.EJB;
@@ -28,7 +29,6 @@ import br.gov.servicos.operacao.ContratoEnergiaRepositorio;
 import br.gov.servicos.operacao.EnergiaEletricaRepositorio;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
-import static br.gov.model.util.Utilitarios.retiraCaracteresEspeciais;
 
 @ManagedBean
 @SessionScoped
@@ -73,8 +73,6 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 		this.getPaginasRetorno().put("iniciar", "ImportarEnergia.jsf");
 		this.getPaginasRetorno().put("novo", "ImportarEnergia_Cadastro.jsf");
 		this.getPaginasRetorno().put("confirmar", "ImportarEnergia_Cadastro.jsf");
-		this.getPaginasRetorno().put("editar", "ImportarEnergia_Consulta.jsf");
-		this.getPaginasRetorno().put("consultar", "ImportarEnergia_Consulta.jsf");
 		this.getPaginasRetorno().put("excluir", "ImportarEnergia.jsf");
 		this.getPaginasRetorno().put("voltar", "ImportarEnergia.jsf");
 		// Página inicial do managedBean
@@ -114,12 +112,8 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 		this.arquivo = arquivo;
 		try {
 			String arquivoAux = arquivo.getFileName();
-			Integer mes = Integer.parseInt(arquivoAux.substring(8, 10));
-			Integer ano = Integer.parseInt(arquivoAux.substring(10, 14));
-			Calendar gc = Calendar.getInstance();
-			gc.set(ano, mes - 1, 1);
-			Date dataReferencia = gc.getTime();
-			this.registro.setDataReferencia(dataReferencia);
+			String referencia = arquivoAux.substring(10, 14) + arquivoAux.substring(8, 10);
+			this.registro.setReferencia(Integer.parseInt(referencia));
 		} catch (NumberFormatException nfe) {
 			this.mostrarMensagemErro(bundle.getText("erro_nome_arquivo"));
 		} catch (Exception e) {
@@ -137,7 +131,7 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 
 	private boolean validarArquivo() {
 		try {
-			if (!fachadaProxy.getEnergiaEletricaVerificaData(this.registro.getDataReferencia())) {
+			if (!fachada.existeEnergiaEletricaNaReferencia(this.registro.getReferencia())) {
 				return true;
 			} else {
 				this.mostrarMensagemErro(bundle.getText("erro_referencia_arquivo_cadastrada"));
@@ -156,7 +150,6 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 				String diretorio = fachadaProxy.getParametroSistema(9);
 				new File(diretorio).mkdir();
 				String arquivoAux = diretorio + arquivo.getFileName();
-				;
 				copyFile(arquivoAux, arquivo.getInputstream());
 				importaArquivo(arquivoAux);
 				mostrarMensagemSucesso("Arquivo " + arquivo.getFileName() + " foi enviado.");

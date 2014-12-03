@@ -1,6 +1,5 @@
 package br.gov.pa.cosanpa.gopera.command;
 
-import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -8,15 +7,11 @@ import br.gov.pa.cosanpa.gopera.util.DadoRelatorio;
 
 public class InformacoesParaRelatorio {
 	
-	private String referencia;
+	private Integer referencia;
 	
-	private Date primeiroDiaReferencia;
-	
-	private Date primeiroDiaReferenciaInicial;
+	private Integer referenciaInicial;
 
-	private Date primeiroDiaReferenciaFinal;
-	
-	private Date ultimoDiaReferenciaFinal;
+	private Integer referenciaFinal;
 	
 	private Integer codigoRegional;
 	
@@ -30,47 +25,31 @@ public class InformacoesParaRelatorio {
 	
 	private List<String> dadosSelecionados;
 
-	public String getReferencia() {
-		return referencia;
-	}
+    public Integer getReferencia() {
+        return referencia;
+    }
 
-	public void setReferencia(String referencia) {
-		this.referencia = referencia;
-	}
+    public void setReferencia(Integer referencia) {
+        this.referencia = referencia;
+    }
 
-	public Date getPrimeiroDiaReferencia() {
-		return primeiroDiaReferencia;
-	}
+    public Integer getReferenciaInicial() {
+        return referenciaInicial;
+    }
 
-	public void setPrimeiroDiaReferencia(Date primeiroDiaReferencia) {
-		this.primeiroDiaReferencia = primeiroDiaReferencia;
-	}
+    public void setReferenciaInicial(Integer referenciaInicial) {
+        this.referenciaInicial = referenciaInicial;
+    }
 
-	public Date getPrimeiroDiaReferenciaInicial() {
-		return primeiroDiaReferenciaInicial;
-	}
+    public Integer getReferenciaFinal() {
+        return referenciaFinal;
+    }
 
-	public void setPrimeiroDiaReferenciaInicial(Date primeiroDiaReferenciaInicial) {
-		this.primeiroDiaReferenciaInicial = primeiroDiaReferenciaInicial;
-	}
+    public void setReferenciaFinal(Integer referenciaFinal) {
+        this.referenciaFinal = referenciaFinal;
+    }
 
-	public Date getPrimeiroDiaReferenciaFinal() {
-		return primeiroDiaReferenciaFinal;
-	}
-
-	public void setPrimeiroDiaReferenciaFinal(Date primeiroDiaReferenciaFinal) {
-		this.primeiroDiaReferenciaFinal = primeiroDiaReferenciaFinal;
-	}
-	
-	public Date getUltimoDiaReferenciaFinal() {
-		return ultimoDiaReferenciaFinal;
-	}
-
-	public void setUltimoDiaReferenciaFinal(Date ultimoDiaReferenciaFinal) {
-		this.ultimoDiaReferenciaFinal = ultimoDiaReferenciaFinal;
-	}
-
-	public Integer getCodigoRegional() {
+    public Integer getCodigoRegional() {
 		return codigoRegional;
 	}
 

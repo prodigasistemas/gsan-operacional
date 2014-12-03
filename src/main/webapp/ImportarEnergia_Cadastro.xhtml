@@ -28,13 +28,16 @@ xmlns:p="http://primefaces.org/ui">
 </p:dialog>
 <h:form id="form" enctype="multipart/form-data">
 <p:messages showDetail="false" autoUpdate="true" id="msg" />
+
 <p:panelGrid id="pgrCadastro">
 	<p:row>
 		<p:column style="text-align:left">
 			<h:outputLabel for="datareferencia" value="Referência *" />
 		</p:column>
 		<p:column style="text-align:left">				
-			<p:calendar styleClass="valor" value="#{importarEnergiaBean.registro.dataReferencia}" id="datareferencia" disabled="true" showOn="button" pattern="MM/yyyy" required="true" requiredMessage="Data de Referência, deve ser informado."/>
+			<h:outputText id="referencia" value="#{importarEnergiaBean.registro.referencia}">
+				<f:converter converterId="operacional.MesReferenciaConverter"/>
+			</h:outputText>
 		</p:column>
 	</p:row>
 	<p:row rendered="#{importarEnergiaBean.desabilitaForm}">
@@ -62,6 +65,7 @@ xmlns:p="http://primefaces.org/ui">
   		</p:column>
 	</p:row>
 </p:panelGrid>
+
 <p:commandButton value="Importar Arquivo" action="#{importarEnergiaBean.cadastrar}" rendered="#{importarEnergiaBean.cadastrando or importarEnergiaBean.editando}" update="form" ajax="false"/>
 <p:commandButton value="Confirmar" process="@all" actionListener="#{importarEnergiaBean.confirmar}" rendered="#{importarEnergiaBean.confirmando}" update="form"/>
 <p:commandButton value="Cancelar" action="#{importarEnergiaBean.cancelar}" rendered="#{importarEnergiaBean.confirmando}" update="form"/>

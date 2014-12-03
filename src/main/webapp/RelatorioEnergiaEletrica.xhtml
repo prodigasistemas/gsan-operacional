@@ -26,22 +26,24 @@ xmlns:p="http://primefaces.org/ui">
 				<h:outputLabel for="tipoRelatorio" value="Tipo Relatório: " />
 				<p:column style="text-align:left">          
 			        <p:selectOneMenu id="tipoRelatorio" value="#{relatorioEnergiaEletricaBean.tipoRelatorio}">
-				         <f:selectItems value="#{relatorioEnergiaEletricaBean.listaRelatorio}"/>
-				         <p:ajax listener="#{relatorioEnergiaEletricaBean.VerificaTipoRelatorio}" update="tipoExportacao, panelContent, :form:panel2" event="change" />
+						<f:selectItems value="#{relatorioEnergiaEletricaBean.tiposRelatorios}" var="t" itemValue="#{t}" itemLabel="#{managedBundle.text(t.descricao)}"> </f:selectItems>
+				        <p:ajax update="panelContent, :form:panel2" event="change" />
 			        </p:selectOneMenu>
 		        </p:column>
 	        </h:panelGrid>
 	        
 	        <h:panelGrid id="panelContent" columns="1">
 	        
-		        <h:panelGrid id="panel1" columns="2" rendered="#{relatorioEnergiaEletricaBean.tipoRelatorio != 4}">
+		        <h:panelGrid id="panel1" columns="2" rendered="#{relatorioEnergiaEletricaBean.tipoRelatorio.id != 3}">
 					<h:outputLabel for="referencia" value="Referência: *"/>
 					<p:column style="text-align:left">
-						<p:inputText value="#{relatorioEnergiaEletricaBean.referencia}" id="referencia" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência é Obrigatória"/>
+						<p:inputText value="#{relatorioEnergiaEletricaBean.referencia}" id="referencia" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência é Obrigatória">
+							<f:converter converterId="operacional.MesReferenciaConverter"/>
+						</p:inputText>
 					</p:column>
 				</h:panelGrid>
 				
-				<h:panelGrid id="panel2" columns="2" rendered="#{relatorioEnergiaEletricaBean.tipoRelatorio == 4}">
+				<h:panelGrid id="panel2" columns="2" rendered="#{relatorioEnergiaEletricaBean.tipoRelatorio.id == 3}">
 					<h:outputLabel for="regional" value="Regional: *"/>
 					<p:selectOneMenu id="regional" value="#{relatorioEnergiaEletricaBean.codigoRegional}" effect="fade" converter="selectOneConverter" required="true" requiredMessage="Regional é Obrigatória">
 						    <f:selectItems value="#{relatorioEnergiaEletricaBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
@@ -67,12 +69,16 @@ xmlns:p="http://primefaces.org/ui">
 				    
 					<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
 					<p:column style="text-align:left">
-						<p:inputText value="#{relatorioEnergiaEletricaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória"/>
+						<p:inputText value="#{relatorioEnergiaEletricaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória">
+							<f:converter converterId="operacional.MesReferenciaConverter"/>
+						</p:inputText>
 					</p:column>
 			
 					<h:outputLabel for="referenciaFinal" value="Referência Final: *"/>
 					<p:column style="text-align:left">
-						<p:inputText value="#{relatorioEnergiaEletricaBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória"/>
+						<p:inputText value="#{relatorioEnergiaEletricaBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória">
+							<f:converter converterId="operacional.MesReferenciaConverter"/>
+						</p:inputText>
 					</p:column>
 					
 					<h:outputLabel for="listaDados" value="Dados: *" />
@@ -84,15 +90,6 @@ xmlns:p="http://primefaces.org/ui">
 					
 				</h:panelGrid>
 
-				<h:panelGrid columns="2" rendered="#{relatorioEnergiaEletricaBean.exibirTipoExportacao}">
-					<h:outputLabel for="tipoExportacao" value="Tipo Exportação: " />
-					<p:column style="text-align:left">          
-				        <p:selectOneRadio id="tipoExportacao" value="#{relatorioEnergiaEletricaBean.tipoExportacao}" required="true" requiredMessage="Tipo de Exportação é Obrigatória">
-				        	<f:selectItems value="#{relatorioEnergiaEletricaBean.listaTipoExportacao}"/>  
-				        </p:selectOneRadio>
-				    </p:column>
-				</h:panelGrid>
-				
 				<h:panelGrid id="panel" columns="2">
 				    <p:column>
 						<p:commandButton value="Exibir" action="#{relatorioEnergiaEletricaBean.exibir}" ajax="false"/>

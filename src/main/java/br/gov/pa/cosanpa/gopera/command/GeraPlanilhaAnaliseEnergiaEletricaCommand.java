@@ -17,6 +17,7 @@ import br.gov.model.operacao.DadosRelatorioEnergiaEletrica;
 import br.gov.model.operacao.Mes;
 import br.gov.model.operacao.RelatorioExcel;
 import br.gov.model.util.DateUtil;
+import br.gov.model.util.Utilitarios;
 import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
 
 public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGeraPlanilha {
@@ -29,12 +30,13 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 
 	public void execute(InformacoesParaRelatorio informacoes, RelatorioEnergiaEletricaRepositorio fachadaRel) throws Exception {
 		try {
-			List<Mes> meses = new DateUtil().mesesPeriodo(informacoes.getPrimeiroDiaReferenciaInicial(), informacoes.getPrimeiroDiaReferenciaFinal());
+			List<Mes> meses = new DateUtil().mesesPeriodo(Utilitarios.converteParaDataComPrimeiroDiaMes(informacoes.getReferenciaInicial())
+			        , Utilitarios.converteParaDataComPrimeiroDiaMes(informacoes.getReferenciaFinal()));
 			
 			preencheCabecalho(meses);
 			
 			List<DadosRelatorioEnergiaEletrica> dados = fachadaRel
-					.analiseEnergiaEletrica(informacoes.getPrimeiroDiaReferenciaInicial(), informacoes.getPrimeiroDiaReferenciaFinal(),
+					.analiseEnergiaEletrica(informacoes.getReferenciaInicial(), informacoes.getReferenciaFinal(),
 							informacoes.getCodigoRegional(), informacoes.getCodigoUnidadeNegocio(), informacoes.getCodigoMunicipio(),
 							informacoes.getCodigoLocalidade());
 			

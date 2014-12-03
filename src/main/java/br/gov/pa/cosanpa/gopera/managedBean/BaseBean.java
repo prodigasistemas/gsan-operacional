@@ -16,6 +16,7 @@ import org.jboss.logging.Logger;
 
 import br.gov.model.operacao.UsuarioProxy;
 import br.gov.model.util.GenericRepository;
+import br.gov.model.util.Utilitarios;
 import br.gov.pa.cosanpa.gopera.enums.EstadoManageBeanEnum;
 import br.gov.pa.cosanpa.gopera.util.WebUtil;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
@@ -281,6 +282,10 @@ public abstract class BaseBean<T> extends BaseMensagemBean{
 	public String filtroData(Date date, String formato){
 		SimpleDateFormat formataData = new SimpleDateFormat(formato);
 	    return date != null ? formataData.format(date) : "";
+	}
+	
+	public String filtroReferencia(Integer referencia){
+	    return referencia != null ? Utilitarios.converteAnoMesParaMesAno(referencia) : "";
 	}
 	
 	public Date primeiroDiaMes(String referencia){

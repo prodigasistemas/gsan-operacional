@@ -6,17 +6,19 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.model.SelectItem;
 
 import org.jboss.logging.Logger;
-import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.PieChartModel;
+import org.primefaces.model.chart.LineChartModel;
 
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RegionalProxy;
 import br.gov.model.operacao.RelatorioEnergiaEletrica;
+import br.gov.model.operacao.TipoGraficoEnergia;
 import br.gov.model.operacao.UnidadeConsumidora;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.pa.cosanpa.gopera.util.WebBundle;
@@ -29,12 +31,10 @@ import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
 public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletrica> {
 	private static Logger logger = Logger.getLogger(GraficoEnergiaEletricaBean.class);
 
-	private RelatorioEnergiaEletrica registro = new RelatorioEnergiaEletrica();
-	private List<RelatorioEnergiaEletrica> relatorio = new ArrayList<RelatorioEnergiaEletrica>();	
-	private String referenciaInicial;
-	private String referenciaFinal;
-	private Integer tipoRelatorio;
-	private List<SelectItem> listaRelatorio = new ArrayList<SelectItem>();
+	private Integer referenciaInicial;
+	private Integer referenciaFinal;
+	private TipoGraficoEnergia tipoGrafico;
+	
 	private List<RegionalProxy> regionais = new ArrayList<RegionalProxy>();
 	private List<UnidadeNegocioProxy> unidadesNegocio = new ArrayList<UnidadeNegocioProxy>();
 	private List<MunicipioProxy> municipios = new ArrayList<MunicipioProxy>();
@@ -45,11 +45,9 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 	private Integer codigoMunicipio;
 	private Integer codigoLocalidade;
 	private List<String> unidadesConsumidorasSelecionadas;
-	private PieChartModel pieModelo;
-	private CartesianChartModel barModelo; 
-	private CartesianChartModel lineModelo;  
-	private boolean exibePie;
-	private boolean exibeBar;
+	
+
+	private LineChartModel lineModelo;  
 	private boolean exibeLine;
 	private String titulo;
 	
@@ -68,41 +66,13 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 			bundle = new WebBundle();
 		}
 		this.registro = new RelatorioEnergiaEletrica();
-		this.tipoRelatorio = 1;
-		listaRelatorio.clear();
-		SelectItem tipoRel = new SelectItem();  
-		tipoRel.setValue(1);  
-		tipoRel.setLabel(bundle.getText("consumo_kwh"));  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(2);  
-		tipoRel.setLabel(bundle.getText("total_reais"));
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(3);  
-		tipoRel.setLabel(bundle.getText("ajuste_fator_potencia"));
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(4);  
-		tipoRel.setLabel(bundle.getText("ultrapassagem_kwh"));  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(5);  
-		tipoRel.setLabel(bundle.getText("ultrapassagem_reais"));  
-		listaRelatorio.add(tipoRel);
-		exibePie = false;
-		exibeBar = false;
-		exibeLine = false;
 		return "GraficoEnergiaEletrica.jsf";
 	}	
 
     public void exibir(){
     	try{
-    		 exibePie = false;
-    		 exibeBar = false;
-             titulo = listaRelatorio.get(tipoRelatorio - 1).getLabel();
-        	 relatorio = fachadaRel.getEnergiaEletricaPeriodo(primeiroDiaMes(referenciaInicial),
-        			 	 primeiroDiaMes(referenciaFinal),
+    	    List<RelatorioEnergiaEletrica> relatorio = fachadaRel.getEnergiaEletricaPeriodo(referenciaInicial,
+        			 	 referenciaFinal,
 						 this.codigoRegional,
 						 this.codigoUnidadeNegocio,
 						 this.codigoMunicipio,
@@ -114,7 +84,12 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
     			return;
     		}
         	 
-             lineModelo = new CartesianChartModel();
+             lineModelo = new LineChartModel();
+             lineModelo.setLegendPosition("ne");
+             lineModelo.setTitle(bundle.getText(tipoGrafico.getDescricao()));
+             lineModelo.getAxes().put(AxisType.X, new CategoryAxis(bundle.getText("referencia")));
+             Axis yAxis = lineModelo.getAxis(AxisType.Y);
+             yAxis.setMin(0);
              Integer codigoUC = 0;
              ChartSeries lineUC = null; 
              for (RelatorioEnergiaEletrica rel : relatorio){
@@ -125,21 +100,21 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
             		 lineModelo.addSeries(lineUC);
             	 }
 
-        		 switch (tipoRelatorio) {
-                 case 1: //CONSUMO (KWh)
-                	 lineUC.set(rel.getReferencia(), rel.getConsumoKwh());
+        		 switch (tipoGrafico) {
+                 case CONSUMO_KWH:
+                	 lineUC.set(String.valueOf(rel.getReferencia()), rel.getConsumoKwh());
                 	 break;
-                 case 2://Valor Total R$
-                	 lineUC.set(rel.getReferencia(), rel.getTotal());
+                 case TOTAL_REAIS:
+                	 lineUC.set(String.valueOf(rel.getReferencia()), rel.getTotal());
                 	 break;
-                 case 3: //Ajuste Fator Potência 
-                	 lineUC.set(rel.getReferencia(), rel.getAjusteFatorPotencia());
+                 case AJUSTE_FATOR_POTENCIA:  
+                	 lineUC.set(String.valueOf(rel.getReferencia()), rel.getAjusteFatorPotencia());
                 	 break;
-                 case 4://Ultrapassagem Kwh
-                	 lineUC.set(rel.getReferencia(),rel.getUltrapassagemKwh());
+                 case ULTRAPASSAGEM_KWH:
+                	 lineUC.set(String.valueOf(rel.getReferencia()),rel.getUltrapassagemKwh());
                 	 break;
-                 case 5://Ultrapassagem R$
-                	 lineUC.set(rel.getReferencia(),rel.getUltrapassagemR$());
+                 case ULTRAPASSAGEM_REAIS:
+                	 lineUC.set(String.valueOf(rel.getReferencia()),rel.getUltrapassagemR$());
                 	 break;
         		 }
              }
@@ -270,59 +245,31 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 		this.localidades = localidades;
 	}
 	
-	public String getReferenciaInicial() {
-		return referenciaInicial;
-	}
+	public Integer getReferenciaInicial() {
+        return referenciaInicial;
+    }
 
-	public void setReferenciaInicial(String referenciaInicial) {
-		this.referenciaInicial = referenciaInicial;
-	}
+    public void setReferenciaInicial(Integer referenciaInicial) {
+        this.referenciaInicial = referenciaInicial;
+    }
 
-	public String getReferenciaFinal() {
-		return referenciaFinal;
-	}
+    public Integer getReferenciaFinal() {
+        return referenciaFinal;
+    }
 
-	public void setReferenciaFinal(String referenciaFinal) {
-		this.referenciaFinal = referenciaFinal;
-	}
+    public void setReferenciaFinal(Integer referenciaFinal) {
+        this.referenciaFinal = referenciaFinal;
+    }
+    
+    public TipoGraficoEnergia[] getTiposGraficos(){
+        return TipoGraficoEnergia.values();
+    }
 
-	public Integer getTipoRelatorio() {
-		return tipoRelatorio;
-	}
+	public LineChartModel getLineModelo() {
+        return lineModelo;
+    }
 
-	public void setTipoRelatorio(Integer tipoRelatorio) {
-		this.tipoRelatorio = tipoRelatorio;
-	}
-	
-	public List<SelectItem> getListaRelatorio() {
-		return listaRelatorio;
-	}
-
-	public void setListaRelatorio(List<SelectItem> listaRelatorio) {
-		this.listaRelatorio = listaRelatorio;
-	}
-	
-	public PieChartModel getPieModelo() {
-		return pieModelo;
-	}
-	
-	public CartesianChartModel getbarModelo() {  
-	   return barModelo;  
-	} 
-	
-	public CartesianChartModel getlineModelo() {  
-		   return lineModelo;  
-	} 
-
-	public boolean getExibePie() {
-		return exibePie;
-	}
-
-	public boolean getExibeBar() {
-		return exibeBar;
-	}
-	
-	public boolean getExibeLine() {
+    public boolean getExibeLine() {
 		return exibeLine;
 	}	
 	
@@ -333,4 +280,12 @@ public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletric
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+
+    public TipoGraficoEnergia getTipoGrafico() {
+        return tipoGrafico;
+    }
+
+    public void setTipoGrafico(TipoGraficoEnergia tipoGrafico) {
+        this.tipoGrafico = tipoGrafico;
+    }    
 }

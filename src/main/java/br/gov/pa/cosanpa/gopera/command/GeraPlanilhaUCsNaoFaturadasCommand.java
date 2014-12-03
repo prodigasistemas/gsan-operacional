@@ -51,21 +51,7 @@ public class GeraPlanilhaUCsNaoFaturadasCommand extends AbstractCommandGeraPlani
     		    this.addInteiro(sheet, 0, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getCodigoUC());
     		    // Segunda coluna
     		    this.addLabel(sheet, 1, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getNomeUC());
-    		    // Terceira coluna
-    		    this.addLabel(sheet, 2, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getFatura());
-    		    //Quarta coluna
-    		    this.addNumero(sheet, 3, i, relatorioExcel.getRelatorioEnergiaEletrica().get(j).getValorTotal());
-    		    //Totaliza Resultado
-    		    //total += relatorioExcel.getRelatorioEnergiaEletrica().get(j).getValorTotal();
-    		    }
-    		
-    		//Adiciona Totalizador
-    		Label totalGeral2 = new Label(2, contador + 1, "Total Geral:", fontBold3);
-    		sheet.addCell(totalGeral2);
-    		
-    		jxl.write.Number numero2;
-    	    numero2 = new jxl.write.Number(3, contador + 1, total, fontBold3);
-    	    sheet.addCell(numero2);
+    		}
 		} catch (Exception e) {
 			logger.error("Erro na exportacao", e);
 			throw new Exception("Erro na exportacao", e);

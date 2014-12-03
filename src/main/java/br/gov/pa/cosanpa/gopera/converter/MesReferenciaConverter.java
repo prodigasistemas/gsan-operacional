@@ -16,7 +16,10 @@ public class MesReferenciaConverter implements Converter {
     }
 
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return converteAnoMesParaMesAno(Integer.valueOf(String.valueOf(value)));
+        if (value != null)
+            return converteAnoMesParaMesAno(Integer.valueOf(String.valueOf(value)));
+        else
+            return "";
     }
 
 }

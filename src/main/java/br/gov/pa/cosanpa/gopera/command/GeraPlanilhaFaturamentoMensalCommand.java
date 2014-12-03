@@ -13,6 +13,7 @@ import org.jboss.logging.Logger;
 
 import br.gov.model.operacao.EnergiaEletricaDados;
 import br.gov.model.operacao.RelatorioExcel;
+import br.gov.model.util.Utilitarios;
 import br.gov.pa.cosanpa.gopera.exception.UnidadeConsumidoraNaoRelacionada;
 import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
 
@@ -29,7 +30,7 @@ public class GeraPlanilhaFaturamentoMensalCommand extends AbstractCommandGeraPla
 	@Override
 	public void execute(InformacoesParaRelatorio informacoes, RelatorioEnergiaEletricaRepositorio fachadaRel) throws Exception {
 		try {
-			energiaEletricaDados = fachadaRel.getEnergiaEletricaDados(informacoes.getPrimeiroDiaReferencia());
+			energiaEletricaDados = fachadaRel.getEnergiaEletricaDados(informacoes.getReferencia());
 
 			int i = 0, j = 0;
 			// Adiciona data de referencia
@@ -101,7 +102,7 @@ public class GeraPlanilhaFaturamentoMensalCommand extends AbstractCommandGeraPla
 					//throw new UnidadeConsumidoraNaoRelacionada();
 				}
 				this.addInteiro(sheet, 52, j, this.energiaEletricaDados.get(i).getUnidadeConsumidora().getCodigo());
-				this.addLabel(sheet, 53, j, informacoes.getReferencia());
+				this.addLabel(sheet, 53, j, Utilitarios.converteAnoMesParaMesAno(informacoes.getReferencia()));
 				this.addLabel(sheet, 54, j, "COSANPA");
 				// Consumo Kwh
 				Double consumoKwh = this.energiaEletricaDados.get(i).getC_Kwh_Cv() + this.energiaEletricaDados.get(i).getC_Kwh_FS()

@@ -32,38 +32,33 @@
 						paginatorPosition="bottom" rows="10"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
-						<p:column headerText="Opções" width="90" style="text-align:left">
+						<p:column width="90" style="text-align:left">
 							<f:facet name="header">
-								<h:outputText class="tabela" value="Opções" />
+								<h:outputText class="tabela" value="#{m.opcoes}" />
 							</f:facet>
-							<p:commandButton styleClass="imagemVisualizar" value="" title="Consultar" action="#{importarEnergiaDadosBean.consultar}" ajax="false">
-								<f:setPropertyActionListener value="#{var}" target="#{importarEnergiaDadosBean.energia}" />
-							</p:commandButton>
-							<p:commandButton styleClass="imagemEditar" value="" title="Alterar" action="#{importarEnergiaDadosBean.alterar}" ajax="false">
-								<f:setPropertyActionListener value="#{var}" target="#{importarEnergiaDadosBean.energia}" />
-							</p:commandButton>
 							<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":consulta" oncomplete="PF('cd').show()">
 								<f:setPropertyActionListener value="#{var.codigo}" target="#{importarEnergiaBean.pk}" />
 							</p:commandButton>
 						</p:column>
 
-						<p:column styleClass="data" filterBy="#{importarEnergiaBean.filtroData(var.dataReferencia,'MM/yyyy')}" headerText="Referência" filterMatchMode="contains"
+						<p:column styleClass="data" filterBy="#{importarEnergiaBean.filtroReferencia(var.referencia)}" filterMatchMode="exact"
 							style="text-align:left">
 							<f:facet name="header">
-								<h:outputText class="tabela" value="Referência" />
+								<h:outputText class="tabela" value="#{m.referencia}" />
 							</f:facet>
-							<h:outputText value="#{var.dataReferencia}">
-								<f:convertDateTime pattern="MM/yyyy" />
+							<h:outputText value="#{var.referencia}">
+								<f:converter converterId="operacional.MesReferenciaConverter"/>
 							</h:outputText>
 						</p:column>
 
-						<p:column filterBy="#{var.qtdUC}" headerText="Qtd UC" filterMatchMode="contains" style="text-align:left">
+						<p:column filterBy="#{var.qtdUC}" filterMatchMode="contains" style="text-align:left">
 							<f:facet name="header">
 								<h:outputText class="tabela" value="Qtd UC" />
 							</f:facet>
 							<h:outputText value="#{var.qtdUC}" />
 						</p:column>
-						<p:column filterBy="#{var.valorTotal} " headerText="Valor Total Arquivo" filterMatchMode="contains" style="text-align:left">
+						
+						<p:column filterBy="#{var.valorTotal} " filterMatchMode="contains" style="text-align:left">
 							<f:facet name="header">
 								<h:outputText class="tabela" value="Valor Total Arquivo" />
 							</f:facet>
