@@ -154,19 +154,19 @@ xmlns:p="http://primefaces.org/ui">
 
 	<div class='campos_cadastro'>
 		<div>
-			<h:outputLabel for="paradasEnergia" class="label_maior" value="#{m.horas_paradas_energia}: "/>
+			<h:outputLabel for="medicaoEnergia" class="label_maior" value="#{m.horas_paradas_energia}: "/>
 			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorEnergia}" id="medicaoEnergia" maxlength="10" disabled="#{horasBean.desabilitaForm}">
          		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
 			</p:inputText>
 		</div>
 		<div>
-			<h:outputLabel for="paradasManutencao" class="label_maior" value="#{m.horas_paradas_manutencao}: "/>
+			<h:outputLabel for="medicaoManutencao" class="label_maior" value="#{m.horas_paradas_manutencao}: "/>
 			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorManutencao}" id="medicaoManutencao" maxlength="10" disabled="#{horasBean.desabilitaForm}">
          		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
 			</p:inputText>
 		</div>
 		<div>
-			<h:outputLabel for="paradasControle" class="label_maior" value="#{m.horas_paradas_controle}: "/>
+			<h:outputLabel for="medicaoControle" class="label_maior" value="#{m.horas_paradas_controle}: "/>
 			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorControle}" id="medicaoControle" maxlength="10" disabled="#{horasBean.desabilitaForm}">
          		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
 			</p:inputText>
