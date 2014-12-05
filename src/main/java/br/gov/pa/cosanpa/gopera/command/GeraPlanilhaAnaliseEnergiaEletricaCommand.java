@@ -1,7 +1,6 @@
 package br.gov.pa.cosanpa.gopera.command;
 
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.util.List;
 
 import jxl.biff.CellReferenceHelper;
@@ -13,12 +12,12 @@ import jxl.write.biff.RowsExceededException;
 
 import org.jboss.logging.Logger;
 
-import br.gov.model.operacao.DadosRelatorioEnergiaEletrica;
 import br.gov.model.operacao.Mes;
 import br.gov.model.operacao.RelatorioExcel;
 import br.gov.model.util.DateUtil;
 import br.gov.model.util.Utilitarios;
 import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
+import br.gov.servicos.operacao.to.DadosRelatorioEnergiaEletrica;
 
 public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGeraPlanilha {
 
@@ -48,23 +47,23 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 			int mergeMunicipio = 0;
 			int mergeLocalidade = 0;
 			for(DadosRelatorioEnergiaEletrica item: dados){
-				if (item.getId().getIdMunicipio() != municipio){
+				if (item.getIdMunicipio() != municipio){
 					if (mergeMunicipio != 0)
 						sheet.mergeCells(0, rowDados - mergeMunicipio, 0, rowDados - 1);
-					municipio = item.getId().getIdMunicipio();
+					municipio = item.getIdMunicipio();
 					this.addLabel(sheet, 0, rowDados, item.getNomeMunicipio());
 					mergeMunicipio = 0;
 				}
-				if (item.getId().getIdLocalidade() != localidade){
+				if (item.getIdLocalidade() != localidade){
 					if (mergeLocalidade != 0)
 						sheet.mergeCells(1, rowDados - mergeLocalidade, 1, rowDados - 1);
-					localidade = item.getId().getIdLocalidade();
+					localidade = item.getIdLocalidade();
 					this.addLabel(sheet, 1, rowDados, item.getNomeLocalidade());
 					mergeLocalidade = 0;
 				}
-				if (item.getId().getUc() != uc){
-					uc = item.getId().getUc();
-					this.addInteiro(sheet, 2, rowDados, item.getId().getUc());
+				if (item.getUc() != uc){
+					uc = item.getUc();
+					this.addInteiro(sheet, 2, rowDados, item.getUc());
 					
 					for (String info : informacoes.getDadosSelecionados()) {
 						this.addLabel(sheet, 3, rowDados, informacoes.getMapDados().get(info).getLabel());
@@ -79,14 +78,14 @@ public class GeraPlanilhaAnaliseEnergiaEletricaCommand extends AbstractCommandGe
 				}
 				
 				for (Mes mes : meses) {
-					if (item.getId().getMes().equals(mes.getMesAno()))
+					if (item.getReferencia() == mes.getReferencia())
 						colMeses = 3 + mes.getNumeral();
 				}
 						
 				for (int linha = 0; linha < informacoes.getDadosSelecionados().size(); linha++) {
 					String dado = informacoes.getDadosSelecionados().get(linha);
 					Method metodo  = DadosRelatorioEnergiaEletrica.class.getMethod("get" + informacoes.getMapDados().get(dado).getNome());
-					BigDecimal valor = (BigDecimal) metodo.invoke(item);
+					Double valor = (Double) metodo.invoke(item);
 					this.addNumero(sheet, colMeses, rowDados - informacoes.getDadosSelecionados().size() + linha, valor.doubleValue());
 				}
 			}

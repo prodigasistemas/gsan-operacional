@@ -14,7 +14,7 @@ import java.util.TreeMap;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +49,7 @@ import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletrica> {
 
 	private static Logger logger = Logger.getLogger(RelatorioEnergiaEletricaBean.class);
@@ -152,18 +152,18 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 			
 			FacesContext.getCurrentInstance().responseComplete();
 		}
-		catch(BaseRuntimeException e){
-			mostrarMensagemErro(bundle.getText(e.getMessage()));
-			logger.error("Erro ao exibir Relatorio", e);
-		}
 		catch (Exception e) {
-			mostrarMensagemErro(bundle.getText("erro_exibir_relatorio"));
+		    if (e.getCause() instanceof BaseRuntimeException){
+	            mostrarMensagemErro(bundle.getText(e.getMessage()));		        
+		    }else{
+		        mostrarMensagemErro(bundle.getText("erro_exibir_relatorio"));
+		    }
 			logger.error("Erro ao exibir Relatorio", e);
 		}
 	}
 
 	// Método responsável por fazer a escrita, a inserção dos dados na planilha
-	public boolean geraPlanilha(RelatorioExcel relatorioExcel) throws IOException, WriteException, JXLException, Exception {
+	private boolean geraPlanilha(RelatorioExcel relatorioExcel) throws IOException, WriteException, JXLException, Exception {
 		// carrega planilha pre existente
 		relatorioExcel.setArquivo(new File(relatorioExcel.getCaminho() + "/" + relatorioExcel.getNomeArquivoExistente()));
 		String diretorio = fachadaProxy.getParametroSistema(9);
