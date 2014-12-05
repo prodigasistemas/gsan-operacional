@@ -7,208 +7,216 @@ xmlns:f="http://java.sun.com/jsf/core"
 xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/template.xhtml">   
-    <ui:define name="centro"> 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-</h:head>
-<h:body>
-<div class="geral">
-<br />
-<h:form id="form" prependId="true">
-<p:messages autoUpdate="true" id="msg" />
-</h:form>
-<table>
-	<tr>
-		<td class="caminho">#{m.voce_esta_aqui}:</td>
-		<td class="sessao"> Movimento </td>
-		<td class="sessao"> &raquo; Horas Trabalhadas </td>
-		<td class="pagina"> &raquo; EAB</td>
-	</tr>
-</table>
+<ui:define name="centro">
+<f:view>
+	<f:metadata>
+		<f:viewParam name="tipoEstacao" value="#{horasBean.tipoEstacao}"/>
+	</f:metadata>
+	 
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	</h:head>
 
-<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
-	<p:commandButton value="#{m.sim}" actionListener="#{horasBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
-	<p:commandButton value="#{m.nao}" onclick="PF('cd').hide();" type="button" />
-</p:confirmDialog>
-
-<h:form id="formConsulta" prependId="false">
-<p:panel rendered="#{horasBean.visualizando}">
-	<p:dataTable var="var" id="tabela" value="#{horasBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
-	  	<p:column headerText="#{m.opcoes}" width="90" style="text-align:left">
-			<p:commandButton styleClass="imagemVisualizar" value="" title="#{m.consultar}" action="#{horasBean.consultar}" ajax="false">
-				<f:setPropertyActionListener value="#{var}" target="#{horasBean.selecionadoLista}" />
-			</p:commandButton>
-			<p:commandButton styleClass="imagemEditar" value="" title="#{m.alterar}" action="#{horasBean.alterar}" ajax="false">
-				<f:setPropertyActionListener value="#{var}" target="#{horasBean.selecionadoLista}" />
-			</p:commandButton>
-			<p:commandButton styleClass="imagemExcluir" value="" title="#{m.excluir}" update=":formConsulta" oncomplete="PF('cd').show()">
-				<f:setPropertyActionListener value="#{var.id}" target="#{horasBean.pk}" />
-			</p:commandButton>
-		</p:column>
-				
-		<p:column filterBy="#{var.nomeEstacao}" headerText="#{horasBean.tipoEstacao}" filterMatchMode="contains" style="text-align:left">
-			<h:outputText value="#{var.nomeEstacao}" />
-		</p:column>					
-
-		<p:column filterBy="#{var.referencia}" styleClass="data" headerText="#{m.referencia}" filterMatchMode="contains" style="text-align:left">
-			<h:outputText value="#{var.referencia}">
-				<f:converter converterId="operacional.MesReferenciaConverter"/>
-			</h:outputText>
-		</p:column>
-	</p:dataTable>
-	<p:column>
-		<p:commandButton value="Novo" action="#{horasBean.novo}" update=":formCadastro,:formConsulta"/>
-	</p:column>
-	</p:panel>
-	<script type="text/javascript">
-		$(function(){
-			$(".data input").setMask('99/9999');
-			});
-	</script>		
-	
-</h:form>
-
-<h:form id="formCadastro">
-<p:panel id="pgrCadastro" rendered="#{!horasBean.visualizando}">
-	<div class='campos_cadastro'>
-		<div>
-			<h:outputLabel for="regional" value="#{m.regional} *"/>
-			<p:selectOneMenu id="regional" value="#{horasBean.cadastro.cdRegional}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
-					<f:selectItem itemLabel="Selecione" itemValue="" />
-				    <f:selectItems value="#{horasBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			         <p:ajax update="unidadenegocio, municipio, localidade, estacao, horasSistema" event="change" />  
-		    </p:selectOneMenu>
-		</div>
+	<h:body>
+		<div class="geral">
+		<br />
+		<h:form id="form" prependId="true">
+		<h:inputHidden value="#{horasBean.tipoEstacao}"/>
+		<p:messages autoUpdate="true" id="msg" />
+		<table>
+			<tr>
+				<td class="caminho">#{m.voce_esta_aqui}:</td>
+				<td class="sessao"> Movimento </td>
+				<td class="sessao"> &raquo; Horas Trabalhadas </td>
+				<td class="pagina"> &raquo; #{horasBean.tipoEstacao}</td>
+			</tr>
+		</table>
+		</h:form>
 		
-		<div>
-			<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio} *" />
-		    <p:selectOneMenu id="unidadenegocio" value="#{horasBean.cadastro.cdUnidadeNegocio}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
-		    		<f:selectItem itemLabel="Selecione" itemValue="" />
-			        <f:selectItems value="#{horasBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			        <p:ajax update="municipio, localidade, estacao, horasSistema" event="change" />  
-		    </p:selectOneMenu> 
-		</div>
+		<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+			<p:commandButton value="#{m.sim}" actionListener="#{horasBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+			<p:commandButton value="#{m.nao}" onclick="PF('cd').hide();" type="button" />
+		</p:confirmDialog>
 		
-		<div>
-			<h:outputLabel for="municipio" value="#{m.municipio} *" />
-		    <p:selectOneMenu id="municipio" value="#{horasBean.cadastro.cdMunicipio}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
-		    		<f:selectItem itemLabel="Selecione" itemValue="" />
-			        <f:selectItems value="#{horasBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			        <p:ajax update="localidade, estacao, horasSistema" event="change" />  
-		    </p:selectOneMenu>
-		</div>
+		<h:form id="formConsulta" prependId="false">
+		<p:panel rendered="#{horasBean.visualizando}">
+			<p:dataTable var="var" id="tabela" value="#{horasBean.listaConsumo}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+			  	<p:column headerText="#{m.opcoes}" width="90" style="text-align:left">
+					<p:commandButton styleClass="imagemVisualizar" value="" title="#{m.consultar}" action="#{horasBean.consultar}" ajax="false">
+						<f:setPropertyActionListener value="#{var}" target="#{horasBean.selecionadoLista}" />
+					</p:commandButton>
+					<p:commandButton styleClass="imagemEditar" value="" title="#{m.alterar}" action="#{horasBean.alterar}" ajax="false">
+						<f:setPropertyActionListener value="#{var}" target="#{horasBean.selecionadoLista}" />
+					</p:commandButton>
+					<p:commandButton styleClass="imagemExcluir" value="" title="#{m.excluir}" update=":formConsulta" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{var.id}" target="#{horasBean.pk}" />
+					</p:commandButton>
+				</p:column>
+						
+				<p:column filterBy="#{var.nomeEstacao}" headerText="#{horasBean.tipoEstacao}" filterMatchMode="contains" style="text-align:left">
+					<h:outputText value="#{var.nomeEstacao}" />
+				</p:column>					
 		
-		<div>
-			<h:outputLabel for="localidade" value="#{m.localidade} *" />
-		    <p:selectOneMenu id="localidade" value="#{horasBean.cadastro.cdLocalidade}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
-		    		<f:selectItem itemLabel="Selecione" itemValue="" />
-			        <f:selectItems value="#{horasBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			        <p:ajax update="estacao, horasSistema" event="change" />  
-		    </p:selectOneMenu>
-		</div>
-		
-		<div>
-			<h:outputLabel for="estacao" value="#{horasBean.tipoEstacao} *"/>
-			<p:selectOneMenu id="estacao" value="#{horasBean.cadastro.cdUnidadeOperacional}" converter="selectOneConverter" effect="fade" disabled="#{horasBean.desabilitaForm or horasBean.editando}" required="true" requiredMessage="EEAB, deve ser informado.">
-				<f:selectItem itemLabel="Selecione" itemValue="" /> 
-	         	<f:selectItems value="#{horasBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/>
-	         	<p:ajax listener="#{horasBean.carregarCMB}" update="tabela, horasSistema" event="change"/>  
-    		</p:selectOneMenu>
-		</div>
-		
-		<div>
-			<h:outputLabel for="referencia" value="#{m.referencia} *"/>
-			<p:inputText value="#{horasBean.cadastro.referencia}" id="referencia" style="width: 80px" disabled="#{horasBean.desabilitaForm or horasBean.editando}" size="8" required="true" requiredMessage="#{m.referencia_obrigatoria}">
-				<f:converter converterId="operacional.MesReferenciaConverter"/>
-	         	<p:ajax update="horasSistema, horasMes" event="change"/> 				
-			</p:inputText>				
-		</div>
-	</div>
-	
-	<div>
-		<p:dataTable var="var" id="tabela" value="#{horasBean.cadastro.cmbs}" paginator="false" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Nenhum Registro Encontrado">
-	        <f:facet name="header">  
-	            Conjunto Motor-Bomba
-	        </f:facet> 			
-			<p:column style="text-align:left">
-		  		<f:facet name="header">
-					<h:outputText class="tabela" value="CMB"/>
-				</f:facet>
-                <h:outputText value="#{var.cmb}"/>
-			</p:column>					
-			<p:column style="text-align:right">
-		  		<f:facet name="header">
-					<h:outputText class="tabela" value="#{m.registro_consumo} (horas)"/>
-				</f:facet>	
-				<p:inputText style="width: 80px" value="#{var.medicao}" id="medicao" maxlength="10" disabled="#{horasBean.desabilitaForm}" required="true" requiredMessage="Valor da Medição de CMB, deve ser informado.">
-	         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-				</p:inputText>
-				<script type="text/javascript">
-					$(function(){
-						$("input[id*=medicao]").setMask("simple-decimal-us");					
-						});
-				</script>	
+				<p:column filterBy="#{var.referencia}" styleClass="data" headerText="#{m.referencia}" filterMatchMode="contains" style="text-align:left">
+					<h:outputText value="#{var.referencia}">
+						<f:converter converterId="operacional.MesReferenciaConverter"/>
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			<p:column>
+				<p:commandButton value="Novo" action="#{horasBean.novo}" update=":formCadastro,:formConsulta"/>
 			</p:column>
-		</p:dataTable>
-	</div>
-
-	<div class='campos_cadastro'>
-		<div>
-			<h:outputLabel for="medicaoEnergia" class="label_maior" value="#{m.horas_paradas_energia}: "/>
-			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorEnergia}" id="medicaoEnergia" maxlength="10" disabled="#{horasBean.desabilitaForm}">
-         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-			</p:inputText>
+			</p:panel>
+			<script type="text/javascript">
+				$(function(){
+					$(".data input").setMask('99/9999');
+					});
+			</script>		
+			
+		</h:form>
+		
+		<h:form id="formCadastro">
+		<p:panel id="pgrCadastro" rendered="#{!horasBean.visualizando}">
+			<div class='campos_cadastro'>
+				<div>
+					<h:outputLabel for="regional" value="#{m.regional} *"/>
+					<p:selectOneMenu id="regional" value="#{horasBean.cadastro.cdRegional}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+						    <f:selectItems value="#{horasBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					         <p:ajax update="unidadenegocio, municipio, localidade, estacao, horasSistema" event="change" />  
+				    </p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio} *" />
+				    <p:selectOneMenu id="unidadenegocio" value="#{horasBean.cadastro.cdUnidadeNegocio}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
+				    		<f:selectItem itemLabel="Selecione" itemValue="" />
+					        <f:selectItems value="#{horasBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					        <p:ajax update="municipio, localidade, estacao, horasSistema" event="change" />  
+				    </p:selectOneMenu> 
+				</div>
+				
+				<div>
+					<h:outputLabel for="municipio" value="#{m.municipio} *" />
+				    <p:selectOneMenu id="municipio" value="#{horasBean.cadastro.cdMunicipio}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
+				    		<f:selectItem itemLabel="Selecione" itemValue="" />
+					        <f:selectItems value="#{horasBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					        <p:ajax update="localidade, estacao, horasSistema" event="change" />  
+				    </p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="localidade" value="#{m.localidade} *" />
+				    <p:selectOneMenu id="localidade" value="#{horasBean.cadastro.cdLocalidade}" disabled="#{horasBean.confirmando or horasBean.editando or horasBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
+				    		<f:selectItem itemLabel="Selecione" itemValue="" />
+					        <f:selectItems value="#{horasBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					        <p:ajax update="estacao, horasSistema" event="change" />  
+				    </p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="estacao" value="#{horasBean.tipoEstacao} *"/>
+					<p:selectOneMenu id="estacao" value="#{horasBean.cadastro.cdUnidadeOperacional}" converter="selectOneConverter" effect="fade" disabled="#{horasBean.desabilitaForm or horasBean.editando}" required="true" requiredMessage="EEAB, deve ser informado.">
+						<f:selectItem itemLabel="Selecione" itemValue="" /> 
+			         	<f:selectItems value="#{horasBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/>
+			         	<p:ajax listener="#{horasBean.carregarCMB}" update="tabela, horasSistema" event="change"/>  
+		    		</p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="referencia" value="#{m.referencia} *"/>
+					<p:inputText value="#{horasBean.cadastro.referencia}" id="referencia" style="width: 80px" disabled="#{horasBean.desabilitaForm or horasBean.editando}" size="8" required="true" requiredMessage="#{m.referencia_obrigatoria}">
+						<f:converter converterId="operacional.MesReferenciaConverter"/>
+			         	<p:ajax update="horasSistema, horasMes" event="change"/> 				
+					</p:inputText>				
+				</div>
+			</div>
+			
+			<div>
+				<p:dataTable var="var" id="tabela" value="#{horasBean.cadastro.cmbs}" paginator="false" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Nenhum Registro Encontrado">
+			        <f:facet name="header">  
+			            Conjunto Motor-Bomba
+			        </f:facet> 			
+					<p:column style="text-align:left">
+				  		<f:facet name="header">
+							<h:outputText class="tabela" value="CMB"/>
+						</f:facet>
+		                <h:outputText value="#{var.cmb}"/>
+					</p:column>					
+					<p:column style="text-align:right">
+				  		<f:facet name="header">
+							<h:outputText class="tabela" value="#{m.registro_consumo} (horas)"/>
+						</f:facet>	
+						<p:inputText style="width: 80px" value="#{var.medicao}" id="medicao" maxlength="10" disabled="#{horasBean.desabilitaForm}" required="true" requiredMessage="Valor da Medição de CMB, deve ser informado.">
+			         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+						</p:inputText>
+						<script type="text/javascript">
+							$(function(){
+								$("input[id*=medicao]").setMask("simple-decimal-us");					
+								});
+						</script>	
+					</p:column>
+				</p:dataTable>
+			</div>
+		
+			<div class='campos_cadastro'>
+				<div>
+					<h:outputLabel for="medicaoEnergia" class="label_maior" value="#{m.horas_paradas_energia}: "/>
+					<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorEnergia}" id="medicaoEnergia" maxlength="10" disabled="#{horasBean.desabilitaForm}">
+		         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+					</p:inputText>
+				</div>
+				<div>
+					<h:outputLabel for="medicaoManutencao" class="label_maior" value="#{m.horas_paradas_manutencao}: "/>
+					<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorManutencao}" id="medicaoManutencao" maxlength="10" disabled="#{horasBean.desabilitaForm}">
+		         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+					</p:inputText>
+				</div>
+				<div>
+					<h:outputLabel for="medicaoControle" class="label_maior" value="#{m.horas_paradas_controle}: "/>
+					<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorControle}" id="medicaoControle" maxlength="10" disabled="#{horasBean.desabilitaForm}">
+		         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
+					</p:inputText>
+				</div>
+			</div>
+			
+			
+			<div align="right">
+				<h:outputLabel for="horasSistema" class="tabela" value="#{m.total_horas_cmb}: "/>
+				<h:outputText class="tabela" id="horasSistema" value="#{horasBean.horasSistema}" style="width:80px; display:inline-block; text-align: right">
+					<f:convertNumber pattern="#0.00"/>
+				</h:outputText>
+			</div>
+			
+			<div align="right" style="margin-top:10px">
+				<h:outputLabel for="horasMes" class="tabela" value="#{m.total_horas_mes}: "/>
+				<h:outputText id="horasMes" class="tabela" value="#{horasBean.horasMes}" style="width:80px; display:inline-block; text-align: right">
+					<f:convertNumber pattern="#0.00"/>
+				</h:outputText>
+			</div>
+			
+			<div>
+				<p:commandButton value="Cadastrar" action="#{horasBean.cadastrar}" rendered="#{horasBean.cadastrando or horasBean.editando}" update="formCadastro"/>
+				<p:commandButton value="Confirmar" action="#{horasBean.confirmar}" rendered="#{horasBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Cancelar" action="#{horasBean.cancelar}" rendered="#{horasBean.confirmando}" update="formCadastro"/>
+				<p:commandButton value="Limpar" rendered="#{horasBean.cadastrando}" type="reset" />
+				<p:commandButton process="@this" value="Voltar" action="#{horasBean.voltar}" rendered="#{!horasBean.confirmando}" update=":formCadastro,:formConsulta"/>
+			</div>
+		</p:panel>
+		<script type="text/javascript">
+			$(function(){
+				options = {
+					    monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+					};	
+				$("input[id*=referencia]").monthpicker(options);						
+		
+				$("input[id*=medicao]").setMask("simple-decimal-us");				
+				});
+		</script>
+		</h:form>
 		</div>
-		<div>
-			<h:outputLabel for="medicaoManutencao" class="label_maior" value="#{m.horas_paradas_manutencao}: "/>
-			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorManutencao}" id="medicaoManutencao" maxlength="10" disabled="#{horasBean.desabilitaForm}">
-         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-			</p:inputText>
-		</div>
-		<div>
-			<h:outputLabel for="medicaoControle" class="label_maior" value="#{m.horas_paradas_controle}: "/>
-			<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorControle}" id="medicaoControle" maxlength="10" disabled="#{horasBean.desabilitaForm}">
-         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-			</p:inputText>
-		</div>
-	</div>
-	
-	
-	<div align="right">
-		<h:outputLabel for="horasSistema" class="tabela" value="#{m.total_horas_cmb}: "/>
-		<h:outputText class="tabela" id="horasSistema" value="#{horasBean.horasSistema}" style="width:80px; display:inline-block; text-align: right">
-			<f:convertNumber pattern="#0.00"/>
-		</h:outputText>
-	</div>
-	
-	<div align="right" style="margin-top:10px">
-		<h:outputLabel for="horasMes" class="tabela" value="#{m.total_horas_mes}: "/>
-		<h:outputText id="horasMes" class="tabela" value="#{horasBean.horasMes}" style="width:80px; display:inline-block; text-align: right">
-			<f:convertNumber pattern="#0.00"/>
-		</h:outputText>
-	</div>
-	
-	<div>
-		<p:commandButton value="Cadastrar" action="#{horasBean.cadastrar}" rendered="#{horasBean.cadastrando or horasBean.editando}" update="formCadastro"/>
-		<p:commandButton value="Confirmar" action="#{horasBean.confirmar}" rendered="#{horasBean.confirmando}" update="formCadastro"/>
-		<p:commandButton value="Cancelar" action="#{horasBean.cancelar}" rendered="#{horasBean.confirmando}" update="formCadastro"/>
-		<p:commandButton value="Limpar" rendered="#{horasBean.cadastrando}" type="reset" />
-		<p:commandButton process="@this" value="Voltar" action="#{horasBean.voltar}" rendered="#{!horasBean.confirmando}" update=":formCadastro,:formConsulta"/>
-	</div>
-</p:panel>
-<script type="text/javascript">
-	$(function(){
-		options = {
-			    monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-			};	
-		$("input[id*=referencia]").monthpicker(options);						
-
-		$("input[id*=medicao]").setMask("simple-decimal-us");				
-		});
-</script>
-</h:form>
-</div>
-</h:body>
+	</h:body>
+</f:view>
 </ui:define>
 </ui:composition>
 </html>

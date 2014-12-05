@@ -7,6 +7,16 @@
 	<display-name>gsan-operacional</display-name>
 
 	<context-param>
+        <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+    
+	<context-param>
 		<param-name>primefaces.skin</param-name>
 		<param-value>none</param-value>
 	</context-param>

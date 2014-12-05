@@ -10,9 +10,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.jboss.logging.Logger;
 import org.primefaces.model.LazyDataModel;
@@ -37,7 +38,7 @@ import br.gov.servicos.operacao.to.HorasCadastroTO;
 import br.gov.servicos.operacao.to.HorasListagemTO;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class HorasBean extends BaseBean<Hora>{
 
 	private static Logger logger = Logger.getLogger(HorasBean.class); 
@@ -138,35 +139,36 @@ public class HorasBean extends BaseBean<Hora>{
 		return null;
 	}
 	
-	public String iniciarHoras(String tipo) {
-		this.tipoEstacao = tipo;
-		fachada = this.repositorio;		
-		atualizarListas();
-		this.registro = new Hora();
-		visualizar();
-		this.getPaginasRetorno().put("iniciar", "Horas");
-		return this.getPaginasRetorno().get("iniciar");
+	@PostConstruct
+	public void init(){
+        fachada = this.repositorio;     
+        atualizarListas();
+        this.registro = new Hora();
+        visualizar();	    
 	}
-
+	
 	public String novo() {
 		this.cadastro = new HorasCadastroTO();
-		return super.novo();
+		super.novo();
+		return null;
 	}
 	
 	public String consultar() {
 		carregar();
-		return super.consultar();
+		super.consultar();
+		return null;
 	}
 	
     public String cancelar() {
         this.estadoAtual =  this.estadoAnterior;
         setDesabilitaForm(false);
-        return paginasRetorno.get("cancelar") != null ? paginasRetorno.get("cancelar") : "";
+        return null;
     }
 	
 	public String alterar() {
 		carregar();
-		return super.alterar();
+		super.alterar();
+		return null;
 	}
 	
 	public void carregarCMB(){

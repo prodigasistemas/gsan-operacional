@@ -70,9 +70,15 @@
 								<p:menuitem value="Importar Arquivo Energia El&eacute;trica" action="#{importarEnergiaBean.iniciar}" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Horas Trabalhadas">
-								<p:menuitem value="EAB - #{m.estacao_agua_bruta}" action="#{horasBean.iniciarHoras('EAB')}" ajax="false"/>
-								<p:menuitem value="ETA - #{m.estacao_tratamento_agua}" action="#{horasBean.iniciarHoras('ETA')}" ajax="false"/>
-								<p:menuitem value="EAT - #{m.estacao_agua_tratada}" action="#{horasBean.iniciarHoras('EAT')}" ajax="false"/>
+								<p:menuitem value="EAB - #{m.estacao_agua_bruta}" outcome="/Horas" ajax="false">
+									<f:param name="tipoEstacao" value="EAB"/>
+								</p:menuitem>
+								<p:menuitem value="ETA - #{m.estacao_tratamento_agua}" outcome="/Horas" ajax="false">
+									<f:param name="tipoEstacao" value="ETA"/>
+								</p:menuitem>
+								<p:menuitem value="EAT - #{m.estacao_agua_tratada}" outcome="/Horas" ajax="false">
+									<f:param name="tipoEstacao" value="EAT"/>
+								</p:menuitem>
 								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{horasPendenteBean.iniciar}" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Volume de &Aacute;gua">

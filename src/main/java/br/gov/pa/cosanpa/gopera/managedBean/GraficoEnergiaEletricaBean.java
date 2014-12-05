@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.jboss.logging.Logger;
 import org.primefaces.model.chart.Axis;
@@ -27,7 +27,7 @@ import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class GraficoEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletrica> {
 	private static Logger logger = Logger.getLogger(GraficoEnergiaEletricaBean.class);
 
