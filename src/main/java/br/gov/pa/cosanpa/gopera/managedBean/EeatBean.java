@@ -191,7 +191,7 @@ public class EeatBean extends BaseBean<EEAT> {
 		this.cmbMca = cmbMca;
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -203,7 +203,7 @@ public class EeatBean extends BaseBean<EEAT> {
 		return this.getPaginasRetorno().get("iniciar");		
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new EEAT();
 		medidorEntrada = new MacroMedidor();
@@ -220,13 +220,13 @@ public class EeatBean extends BaseBean<EEAT> {
 		return super.novo();
 	}
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -298,7 +298,7 @@ public class EeatBean extends BaseBean<EEAT> {
 		}
 	}
 	
-	@Override
+	
 	public String cadastrar() {
 		registro.setVolumeUtil(Double.parseDouble(volumeUtil.replace(".", "").replace(",", ".")));
 		registro.setAlturaUtil(Double.parseDouble(alturaUtil.replace(".", "").replace(",", ".")));
@@ -311,7 +311,7 @@ public class EeatBean extends BaseBean<EEAT> {
 		return super.cadastrar();
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

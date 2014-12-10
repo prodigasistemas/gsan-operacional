@@ -158,7 +158,7 @@ public class EeabBean extends BaseBean<EEAB> {
 		}
 	}
 
-	@Override
+	
 	public String cadastrar() {
 		registro.setVolumeUtil(Double.parseDouble(volumeUtil.replace(".", "").replace(",", ".")));
 		registro.setAlturaUtil(Double.parseDouble(alturaUtil.replace(".", "").replace(",", ".")));

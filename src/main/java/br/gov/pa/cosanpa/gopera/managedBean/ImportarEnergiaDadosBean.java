@@ -484,7 +484,7 @@ public class ImportarEnergiaDadosBean extends BaseBean<EnergiaEletricaDados>{
 			listaDados = new LazyDataModel<EnergiaEletricaDados>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<EnergiaEletricaDados> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<EnergiaEletricaDados> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters, energia.getCodigo());
@@ -498,12 +498,12 @@ public class ImportarEnergiaDadosBean extends BaseBean<EnergiaEletricaDados>{
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(EnergiaEletricaDados dados) {
 					return dados.getCodigo();
 				}
 				
-				@Override
+				
 				public EnergiaEletricaDados getRowData(String dadosId) {
 					if (dadosId != null && !dadosId.equals("") && !dadosId.equals("null")) {
 						Integer id = Integer.valueOf(dadosId);
@@ -520,14 +520,14 @@ public class ImportarEnergiaDadosBean extends BaseBean<EnergiaEletricaDados>{
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		super.novo();
 		estadoEdicao = true;
 		return "ImportarEnergiaDados_Consulta.jsf";		
 	}
 	
-	@Override
+	
 	public String consultar() {
 		this.setFachada(this.fachada);
 		iniciarLazy();
@@ -537,7 +537,7 @@ public class ImportarEnergiaDadosBean extends BaseBean<EnergiaEletricaDados>{
 		return "ImportarEnergia_Consulta.jsf";
 	}	
 
-	@Override
+	
 	public String alterar() {
 		this.setFachada(this.fachada);
 		iniciarLazy();

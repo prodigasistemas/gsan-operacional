@@ -153,7 +153,7 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 			FacesContext.getCurrentInstance().responseComplete();
 		}
 		catch (Exception e) {
-		    if (e.getCause() instanceof BaseRuntimeException){
+		    if (e instanceof BaseRuntimeException || e.getCause() instanceof BaseRuntimeException){
 	            mostrarMensagemErro(bundle.getText(e.getMessage()));		        
 		    }else{
 		        mostrarMensagemErro(bundle.getText("erro_exibir_relatorio"));
@@ -163,7 +163,7 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 	}
 
 	// Método responsável por fazer a escrita, a inserção dos dados na planilha
-	private boolean geraPlanilha(RelatorioExcel relatorioExcel) throws IOException, WriteException, JXLException, Exception {
+	private boolean geraPlanilha(RelatorioExcel relatorioExcel) throws Exception {
 		// carrega planilha pre existente
 		relatorioExcel.setArquivo(new File(relatorioExcel.getCaminho() + "/" + relatorioExcel.getNomeArquivoExistente()));
 		String diretorio = fachadaProxy.getParametroSistema(9);

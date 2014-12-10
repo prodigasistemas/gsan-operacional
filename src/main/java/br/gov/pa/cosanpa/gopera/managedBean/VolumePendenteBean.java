@@ -20,7 +20,7 @@ public class VolumePendenteBean extends BaseBean{
 	private ProxyOperacionalRepositorio fachadaProxy;
 	protected List<LancamentoPendente> lista = new ArrayList<LancamentoPendente>();
 
-	@Override
+	
 	public List<LancamentoPendente> getLista() {
 		return lista;
 	}

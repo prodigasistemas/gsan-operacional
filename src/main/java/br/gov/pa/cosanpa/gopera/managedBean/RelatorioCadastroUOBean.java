@@ -142,7 +142,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 		this.localidadeProxy = localidadeProxy;
 	}
 
-	@Override
+	
 	public String iniciar(){
 		//UNIDADES OPERACIONAIS
 		tipoRelatorio = 1;

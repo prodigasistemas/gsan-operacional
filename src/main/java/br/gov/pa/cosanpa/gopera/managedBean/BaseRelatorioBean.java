@@ -152,7 +152,6 @@ public class BaseRelatorioBean<T> extends BaseBean<T> {
  		return sendBuf;
  	}
 
-	@Override
 	public String iniciar() {
 		try{
 	 		WritableFont wf = new WritableFont(WritableFont.TAHOMA, 10);

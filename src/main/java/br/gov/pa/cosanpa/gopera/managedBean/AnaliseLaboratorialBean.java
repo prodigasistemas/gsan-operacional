@@ -99,7 +99,6 @@ public class AnaliseLaboratorialBean extends BaseBean<AnaliseClinica> {
 		return this.localidades;
 	}
 	
-	@Override
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -150,13 +149,13 @@ public class AnaliseLaboratorialBean extends BaseBean<AnaliseClinica> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new AnaliseClinica();
 		return super.novo();
 	}
 
-	@Override
+	
 	public String cadastrar() {
 		try {
 			//Verifica se não está cadastrado para o mes de referencia corrente
@@ -182,7 +181,7 @@ public class AnaliseLaboratorialBean extends BaseBean<AnaliseClinica> {
 		return null;
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

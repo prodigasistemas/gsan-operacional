@@ -41,7 +41,7 @@ public class MacroMedidorBean extends BaseBean<MacroMedidor> {
 		this.dataAfericao = dataAfericao;
 	}
 
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -53,19 +53,19 @@ public class MacroMedidorBean extends BaseBean<MacroMedidor> {
 		return this.getPaginasRetorno().get("iniciar");		
 	}
 
-	@Override
+	
 	public String novo() {
 		this.registro = new MacroMedidor();
 		return super.novo();
 	}	
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -79,7 +79,7 @@ public class MacroMedidorBean extends BaseBean<MacroMedidor> {
 		}
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

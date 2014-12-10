@@ -156,7 +156,7 @@ public class RelatorioEsgotoBean extends BaseRelatorioBean<RelatorioGerencial> {
 		this.referenciaFinal = referenciaFinal;
 	}
 
-	@Override
+	
 	public String iniciar(){
 		tipoExportacao = 1;	
 		tipoAgrupamento = 5;

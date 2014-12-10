@@ -145,7 +145,7 @@ public class IndicadorBean extends BaseRelatorioBean<Indicador> {
 		}
     }
 
-	@Override
+	
 	public String iniciar() {
 		return null;
 	}

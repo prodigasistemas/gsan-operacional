@@ -148,7 +148,7 @@ public class EeatVolumeBean extends BaseBean<EEATVolume> {
 			listaConsumo = new LazyDataModel<EEATVolume>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<EEATVolume> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<EEATVolume> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -161,12 +161,12 @@ public class EeatVolumeBean extends BaseBean<EEATVolume> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(EEATVolume consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public EEATVolume getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -183,7 +183,7 @@ public class EeatVolumeBean extends BaseBean<EEATVolume> {
 	    }
 	}
 	
-	@Override
+	
 	public String cadastrar() {
 		try {
 			//Verifica se não está cadastrado para o mes de referencia corrente

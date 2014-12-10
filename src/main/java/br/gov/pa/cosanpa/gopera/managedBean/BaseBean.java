@@ -47,8 +47,6 @@ public abstract class BaseBean<T> extends BaseMensagemBean{
 	}
 	
 	
-	abstract public String iniciar();
-	
 	protected void salvar(T obj) throws Exception {
 		fachada.salvar(obj);
 	}
@@ -244,7 +242,7 @@ public abstract class BaseBean<T> extends BaseMensagemBean{
 	
 	public String voltar() {
 		this.setEstado(EstadoManageBeanEnum.VISUALIZANDO);
-		return paginasRetorno.get("voltar") != null ? paginasRetorno.get("voltar") : "";
+		return paginasRetorno.get("voltar") != null ? paginasRetorno.get("voltar") : null;
 	}
 	
 	public Map<String, String> getPaginasRetorno() {

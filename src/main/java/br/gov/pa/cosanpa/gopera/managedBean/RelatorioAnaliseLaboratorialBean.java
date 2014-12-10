@@ -49,7 +49,7 @@ public class RelatorioAnaliseLaboratorialBean extends BaseRelatorioBean<Relatori
 	private String referenciaInicial;
 	private String referenciaFinal;
 
-	@Override
+	
 	public String iniciar(){
 		tipoExportacao = 1;	
 		tipoAgrupamento = 5;

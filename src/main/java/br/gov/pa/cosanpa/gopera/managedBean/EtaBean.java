@@ -192,7 +192,7 @@ public class EtaBean extends BaseBean<ETA> {
 		this.cmbMca = cmbMca;
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -204,7 +204,7 @@ public class EtaBean extends BaseBean<ETA> {
 		return this.getPaginasRetorno().get("iniciar");		
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new ETA();
 		medidorEntrada = new MacroMedidor();
@@ -221,13 +221,13 @@ public class EtaBean extends BaseBean<ETA> {
 		return super.novo();
 	}
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -300,7 +300,7 @@ public class EtaBean extends BaseBean<ETA> {
 		}
 	}
 	
-	@Override
+	
 	public String cadastrar() {
 		registro.setVolumeUtil(Double.parseDouble(volumeUtil.replace(".", "").replace(",", ".")));
 		registro.setAlturaUtil(Double.parseDouble(alturaUtil.replace(".", "").replace(",", ".")));
@@ -313,7 +313,7 @@ public class EtaBean extends BaseBean<ETA> {
 		return super.cadastrar();
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

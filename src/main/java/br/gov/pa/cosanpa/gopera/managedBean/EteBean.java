@@ -95,7 +95,7 @@ public class EteBean extends BaseBean<ETE> {
 		return this.localidades;
 	}
 
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachadaETE);
@@ -114,7 +114,7 @@ public class EteBean extends BaseBean<ETE> {
 			listaConsumo = new LazyDataModel<ETE>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<ETE> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<ETE> listaLazy = fachadaETE.obterListaLazy(startingAt, maxPerPage, filters);
@@ -127,12 +127,12 @@ public class EteBean extends BaseBean<ETE> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(ETE consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public ETE getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -149,19 +149,19 @@ public class EteBean extends BaseBean<ETE> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new ETE();
 		return super.novo();
 	}
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 	
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -175,7 +175,7 @@ public class EteBean extends BaseBean<ETE> {
 		}
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

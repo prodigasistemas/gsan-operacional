@@ -27,7 +27,7 @@ public class IndicadorGeracaoBean extends BaseBean<Indicador> {
 		this.referencia = referencia;
 	}
 
-	@Override
+	
 	public String iniciar() {
 		return "IndicadoresGeracao.jsf";
 	}

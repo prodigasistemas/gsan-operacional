@@ -55,7 +55,7 @@ public class RelatorioCadastroVABean extends BaseRelatorioBean<RelatorioGerencia
 		this.listaRelatorio = listaRelatorio;
 	}
 
-	@Override
+	
 	public String iniciar(){
 		//VOLUME DE ÁGUA	
 		tipoRelatorio = 1;

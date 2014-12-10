@@ -49,7 +49,7 @@ public class RelatorioCadastroPQBean extends BaseRelatorioBean<RelatorioGerencia
 	
 	private Logger logger = Logger.getLogger(RelatorioCadastroPQBean.class);
 	
-	@Override
+	
 	public String iniciar(){
 		if (bundle == null){
 			bundle = new WebBundle();

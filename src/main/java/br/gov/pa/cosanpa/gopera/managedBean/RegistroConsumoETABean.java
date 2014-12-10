@@ -192,20 +192,20 @@ public class RegistroConsumoETABean extends BaseBean<RegistroConsumoETA> {
 		}	
 	}
 
-	@Override
+	
 	public String novo() {
 		this.registrosConsumoSelecionados.clear();
 		this.registro = new RegistroConsumoETA();
 		return super.novo();
 	}
 	
-	@Override	
+		
 	public String consultar() {
 		consultarRegistroConsumo();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		consultarRegistroConsumo();
 		return super.alterar();
@@ -247,7 +247,7 @@ public class RegistroConsumoETABean extends BaseBean<RegistroConsumoETA> {
 		this.registrosConsumoSelecionados = registrosConsumoSelecionados;
 	}
 
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -266,7 +266,7 @@ public class RegistroConsumoETABean extends BaseBean<RegistroConsumoETA> {
 			listaConsumo = new LazyDataModel<RegistroConsumoETA>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<RegistroConsumoETA> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<RegistroConsumoETA> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -279,12 +279,12 @@ public class RegistroConsumoETABean extends BaseBean<RegistroConsumoETA> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(RegistroConsumoETA consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public RegistroConsumoETA getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);

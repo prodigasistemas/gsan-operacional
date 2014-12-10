@@ -83,7 +83,7 @@ public class RsoBean extends BaseBean<RSO> {
 		this.cmbMca = cmbMca;
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -95,7 +95,7 @@ public class RsoBean extends BaseBean<RSO> {
 		return this.getPaginasRetorno().get("iniciar");		
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new RSO();
 		volumeUtil = "0,00";
@@ -104,13 +104,13 @@ public class RsoBean extends BaseBean<RSO> {
 		return super.novo();
 	}
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -130,7 +130,7 @@ public class RsoBean extends BaseBean<RSO> {
 		}
 	}
 	
-	@Override
+	
 	public String cadastrar() {
 		//VALIDANDO CMB
 		if (!validaCMB()) return null;
@@ -138,7 +138,7 @@ public class RsoBean extends BaseBean<RSO> {
 		return super.cadastrar();
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setVolumeUtil(Double.parseDouble(volumeUtil.replace(".", "").replace(",", ".")));

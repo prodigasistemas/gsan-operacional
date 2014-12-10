@@ -120,7 +120,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 		return this.listaLocalidade= new ArrayList<LocalidadeProxy>();
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -139,7 +139,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 			listaDados = new LazyDataModel<UnidadeConsumidora>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<UnidadeConsumidora> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<UnidadeConsumidora> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -152,12 +152,12 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(UnidadeConsumidora dados) {
 					return dados.getCodigo();
 				}
 				
-				@Override
+				
 				public UnidadeConsumidora getRowData(String dadosId) {
 					if (dadosId != null && !dadosId.equals("") && !dadosId.equals("null")) {
 						Integer id = Integer.valueOf(dadosId);
@@ -174,7 +174,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new UnidadeConsumidora();
 		this.setPercentual("0,00");
@@ -182,13 +182,13 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 		return super.novo();
 	}
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -203,7 +203,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 		}
 	}
 
-	@Override
+	
 	public String cadastrar() {
 		if (validarPercentualGeral()){
 			super.cadastrar();
@@ -212,7 +212,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 	}
 
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setRegionalProxy(fachadaProxy.getRegionalUnidadeNegocio(registro.getUnidadeNegocioProxy().getCodigo()));

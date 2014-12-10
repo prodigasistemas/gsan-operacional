@@ -4,80 +4,135 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/template.xhtml">
-	<ui:define name="centro">
-		<h:head>
-			<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-		</h:head>
-		<h:body>
-			<div class="geral">
-				<h:form id="form" prependId="true">
-					<p:messages showDetail="true" autoUpdate="true" id="msg" />
-				</h:form>
-				<table>
-					<tr>
-						<td class="caminho">#{m.voce_esta_aqui}:</td>
-						<td class="sessao">#{m.movimento}</td>
-						<td class="sessao">&raquo; #{m.energia_eletrica}</td>
-						<td class="pagina">&raquo; #{m.importar_arq_energia}</td>
-					</tr>
-				</table>
+<ui:define name="centro">
+<f:view>
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	</h:head>
+	<h:body>
+		<div class="geral">
+			<h:form id="form" prependId="true">
+				<p:messages showDetail="true" autoUpdate="true" id="msg" />
+			</h:form>
+			<table>
+				<tr>
+					<td class="caminho">#{m.voce_esta_aqui}:</td>
+					<td class="sessao">#{m.movimento}</td>
+					<td class="sessao">&raquo; #{m.energia_eletrica}</td>
+					<td class="pagina">&raquo; #{m.importar_arq_energia}</td>
+				</tr>
+			</table>
 
-				<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert" widgetVar="cd">
-					<p:commandButton value="Sim" actionListener="#{importarEnergiaBean.excluir}" update=":consulta" oncomplete="PF('cd').hide()"/>
-					<p:commandButton value="Não" onclick="PF('cd').hide();" type="button" />
-				</p:confirmDialog>
+			<p:confirmDialog message="#{m.aviso_confirmar_exclusao_registro}" appendToBody="true" header="#{m.exclusao_registro}" severity="alert" widgetVar="cd">
+				<p:commandButton value="#{m.sim}" actionListener="#{importarEnergiaBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+				<p:commandButton value="#{m.nao}" onclick="PF('cd').hide();" type="button" />
+			</p:confirmDialog>
 
-				<h:form id="consulta" prependId="false">
-					<p:dataTable var="var" id="tabela" value="#{importarEnergiaBean.lista}" filteredValue="#{importarEnergiaBean.filtro}" paginator="true"
-						paginatorPosition="bottom" rows="10"
-						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
-						<p:column width="90" style="text-align:left">
-							<f:facet name="header">
-								<h:outputText class="tabela" value="#{m.opcoes}" />
-							</f:facet>
-							<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":consulta" oncomplete="PF('cd').show()">
-								<f:setPropertyActionListener value="#{var.codigo}" target="#{importarEnergiaBean.pk}" />
-							</p:commandButton>
-						</p:column>
-
-						<p:column styleClass="data" filterBy="#{importarEnergiaBean.filtroReferencia(var.referencia)}" filterMatchMode="exact"
-							style="text-align:left">
-							<f:facet name="header">
-								<h:outputText class="tabela" value="#{m.referencia}" />
-							</f:facet>
-							<h:outputText value="#{var.referencia}">
-								<f:converter converterId="operacional.MesReferenciaConverter"/>
-							</h:outputText>
-						</p:column>
-
-						<p:column filterBy="#{var.qtdUC}" filterMatchMode="contains" style="text-align:left">
-							<f:facet name="header">
-								<h:outputText class="tabela" value="Qtd UC" />
-							</f:facet>
-							<h:outputText value="#{var.qtdUC}" />
-						</p:column>
-						
-						<p:column filterBy="#{var.valorTotal} " filterMatchMode="contains" style="text-align:left">
-							<f:facet name="header">
-								<h:outputText class="tabela" value="Valor Total Arquivo" />
-							</f:facet>
-							<h:outputText value="#{var.valorTotal}">
-								<f:convertNumber type="currency" />
-							</h:outputText>
-						</p:column>
-					</p:dataTable>
-					<p:column>
-						<p:commandButton value="Novo" action="#{importarEnergiaBean.novo}" ajax="false" />
-						<script type="text/javascript">
-		$(function(){
-			$(".data input").setMask('99/9999'); 	
-			});
-	</script>
+			<h:form id="formConsulta" prependId="false">
+			<p:panel rendered="#{importarEnergiaBean.visualizando}">
+				<p:dataTable var="var" id="tabela" value="#{importarEnergiaBean.lista}" lazy="true" filteredValue="#{importarEnergiaBean.filtro}" paginator="true"
+					paginatorPosition="bottom" rows="10"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+					<p:column width="90" style="text-align:left">
+						<f:facet name="header">
+							<h:outputText class="tabela" value="#{m.opcoes}" />
+						</f:facet>
+						<p:commandButton styleClass="imagemExcluir" value="" title="Excluir" update=":formConsulta" oncomplete="PF('cd').show()">
+							<f:setPropertyActionListener value="#{var.codigo}" target="#{importarEnergiaBean.pk}" />
+						</p:commandButton>
 					</p:column>
-				</h:form>
-			</div>
-		</h:body>
-	</ui:define>
+
+					<p:column styleClass="data" filterBy="#{importarEnergiaBean.filtroReferencia(var.referencia)}" filterMatchMode="exact"
+						style="text-align:left">
+						<f:facet name="header">
+							<h:outputText class="tabela" value="#{m.referencia}" />
+						</f:facet>
+						<h:outputText value="#{var.referencia}">
+							<f:converter converterId="operacional.MesReferenciaConverter"/>
+						</h:outputText>
+					</p:column>
+
+					<p:column filterBy="#{var.qtdUC}" filterMatchMode="contains" style="text-align:left">
+						<f:facet name="header">
+							<h:outputText class="tabela" value="Qtd UC" />
+						</f:facet>
+						<h:outputText value="#{var.qtdUC}" />
+					</p:column>
+					
+					<p:column filterBy="#{var.valorTotal} " filterMatchMode="contains" style="text-align:left">
+						<f:facet name="header">
+							<h:outputText class="tabela" value="Valor Total Arquivo" />
+						</f:facet>
+						<h:outputText value="#{var.valorTotal}">
+							<f:convertNumber type="currency" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<p:column>
+					<p:commandButton value="Novo" action="#{importarEnergiaBean.novo}" ajax="false" />
+					<script type="text/javascript">
+						$(function(){
+							$(".data input").setMask('99/9999');
+						});
+					</script>
+				</p:column>
+			</p:panel>
+			</h:form>
+			
+			
+			<h:form id="formCadastro" enctype="multipart/form-data">
+			<p:panelGrid id="pgrCadastro" rendered="#{!importarEnergiaBean.visualizando}">
+				<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+				<p:dialog modal="true" widgetVar="statusDialog" header="Importando Arquivo..." 
+				        draggable="false" closable="false">
+					<p:graphicImage value="resources/images/ajaxloadingbar.gif" />
+				</p:dialog>
+				<p:row>
+					<p:column style="text-align:left">
+						<h:outputLabel for="referencia" value="#{m.referencia} *" />
+					</p:column>
+					<p:column style="text-align:left">				
+						<h:outputText id="referencia" value="#{importarEnergiaBean.registro.referencia}">
+							<f:converter converterId="operacional.MesReferenciaConverter"/>
+						</h:outputText>
+					</p:column>
+				</p:row>
+				<p:row rendered="#{importarEnergiaBean.desabilitaForm}">
+					<p:column style="text-align:left">
+						<h:outputLabel for="arquivoAux" value="Arquivo *"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{importarEnergiaBean.arquivo.fileName}" id="arquivoAux" disabled="true" />
+			  		</p:column>
+				</p:row>
+				<p:row rendered="#{!importarEnergiaBean.desabilitaForm}">
+					<p:column style="text-align:left">
+						<h:outputLabel for="arquivo" value="Arquivo *"/>
+					</p:column>
+					<p:column>
+					    <p:fileUpload id="arquivo" 
+					    value="#{importarEnergiaBean.arquivo}"  
+			            mode="simple"   
+			            label="Selecionar Arquivo"
+			            uploadLabel="Importar Arquivo"    
+			            cancelLabel="Cancelar"
+			            invalidFileMessage="#{m.erro_arquivo_invalido}!"
+			            allowTypes="/(\.|\/)(xls|xlsx)$/"
+			            description="Selecione"/>
+			  		</p:column>
+				</p:row>
+			</p:panelGrid>
+			
+			<p:commandButton value="Importar Arquivo" action="#{importarEnergiaBean.cadastrar}" rendered="#{importarEnergiaBean.cadastrando or importarEnergiaBean.editando}" update="formCadastro" ajax="false"/>
+			<p:commandButton value="Confirmar" process="@all" actionListener="#{importarEnergiaBean.confirmar}" rendered="#{importarEnergiaBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Cancelar" action="#{importarEnergiaBean.cancelar}" rendered="#{importarEnergiaBean.confirmando}" update="formCadastro"/>
+			<p:commandButton value="Limpar" rendered="#{importarEnergiaBean.cadastrando}" type="reset"/>
+			<p:commandButton process="@this" value="Voltar" action="#{importarEnergiaBean.voltar}" rendered="#{!importarEnergiaBean.confirmando and !importarEnergiaBean.visualizando}" update=":formCadastro,:formConsulta"/>
+			</h:form>
+		</div>
+	</h:body>
+</f:view>
+</ui:define>
 </ui:composition>
 </html>

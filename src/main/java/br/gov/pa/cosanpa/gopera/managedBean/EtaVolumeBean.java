@@ -131,7 +131,7 @@ public class EtaVolumeBean extends BaseBean<ETAVolume> {
 		this.volumeAux = volumeAux;
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -150,7 +150,7 @@ public class EtaVolumeBean extends BaseBean<ETAVolume> {
 			listaConsumo = new LazyDataModel<ETAVolume>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<ETAVolume> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<ETAVolume> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -163,12 +163,12 @@ public class EtaVolumeBean extends BaseBean<ETAVolume> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(ETAVolume consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public ETAVolume getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -185,20 +185,20 @@ public class EtaVolumeBean extends BaseBean<ETAVolume> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new ETAVolume();
 		volumeAux = "0,00";
 		return super.novo();
 	}
 
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 	
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -246,7 +246,7 @@ public class EtaVolumeBean extends BaseBean<ETAVolume> {
 		}
 	}
 	
-	@Override
+	
 	public String cadastrar() {
 		try {
 			//Verifica se não está cadastrado para o mes de referencia corrente
@@ -264,7 +264,7 @@ public class EtaVolumeBean extends BaseBean<ETAVolume> {
 		return null;
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			//Volume

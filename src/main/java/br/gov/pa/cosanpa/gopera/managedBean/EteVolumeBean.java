@@ -132,7 +132,7 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 		return listaETE;
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -151,7 +151,7 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 			listaConsumo = new LazyDataModel<ETEVolume>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<ETEVolume> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<ETEVolume> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -164,12 +164,12 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(ETEVolume consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public ETEVolume getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -186,7 +186,7 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new ETEVolume();
 		this.setVolumeColetado("0,00");
@@ -194,13 +194,13 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 		return super.novo();
 	}
 
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 	
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -217,7 +217,7 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 		}
 	}
 	
-	@Override
+	
 	public String cadastrar() {
 		try {
 			//Verifica se não está cadastrado para o mes de referencia corrente
@@ -235,7 +235,7 @@ public class EteVolumeBean extends BaseBean<ETEVolume> {
 		return null;
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			this.registro.setVolumeColetado(Double.parseDouble(this.getVolumeColetado().replace(".", "").replace(",", ".")));

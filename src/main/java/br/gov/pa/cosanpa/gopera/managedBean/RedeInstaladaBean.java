@@ -91,7 +91,7 @@ public class RedeInstaladaBean extends BaseBean<RedeInstalada> {
 		return this.localidades;
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -110,7 +110,7 @@ public class RedeInstaladaBean extends BaseBean<RedeInstalada> {
 			listaConsumo = new LazyDataModel<RedeInstalada>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<RedeInstalada> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<RedeInstalada> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -123,12 +123,12 @@ public class RedeInstaladaBean extends BaseBean<RedeInstalada> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(RedeInstalada consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public RedeInstalada getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -145,13 +145,13 @@ public class RedeInstaladaBean extends BaseBean<RedeInstalada> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.registro = new RedeInstalada();
 		return super.novo();
 	}
 
-	@Override
+	
 	public String cadastrar() {
 		try {
 			//Verifica se não está cadastrado para o mes de referencia corrente
@@ -173,7 +173,7 @@ public class RedeInstaladaBean extends BaseBean<RedeInstalada> {
 		return null;
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

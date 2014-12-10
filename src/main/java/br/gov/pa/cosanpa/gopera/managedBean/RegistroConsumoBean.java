@@ -59,14 +59,14 @@ public class RegistroConsumoBean extends BaseBean<RegistroConsumo> {
 		this.produtosSelecionados = produtosSelecionados;
 	}
 	
-	@Override
+	
 	public String novo() {
 		limparLista();
 		this.registro = new RegistroConsumo();
 		return super.novo();
 	}
 
-	@Override
+	
 	public String confirmar() {
 		try {
 			adicionarProdutos();
@@ -98,13 +98,13 @@ public class RegistroConsumoBean extends BaseBean<RegistroConsumo> {
 		}
 	}
 
-	@Override	
+		
 	public String consultar() {
 		consultarProdutos();
 		return super.consultar();
 	}
 
-	@Override	
+		
 	public String alterar() {
 		consultarProdutos();
 		return super.alterar();

@@ -20,7 +20,7 @@ public class ParametroBean extends BaseBean<Parametro> {
 		
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());
@@ -32,7 +32,7 @@ public class ParametroBean extends BaseBean<Parametro> {
 		return null;
 	}
 
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);

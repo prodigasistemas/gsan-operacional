@@ -271,7 +271,7 @@ public class ConsumoEATProdutoBean extends BaseBean<ConsumoEAT> {
 			listaConsumo = new LazyDataModel<ConsumoEAT>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<ConsumoEAT> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<ConsumoEAT> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -284,12 +284,12 @@ public class ConsumoEATProdutoBean extends BaseBean<ConsumoEAT> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(ConsumoEAT consumo) {
 					return consumo.getCodigo();
 				}
 				
-				@Override
+				
 				public ConsumoEAT getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -306,7 +306,7 @@ public class ConsumoEATProdutoBean extends BaseBean<ConsumoEAT> {
 	    }
 	}
 
-	@Override
+	
 	public String novo(){
 		try{
 			dataBase = null;
@@ -320,13 +320,13 @@ public class ConsumoEATProdutoBean extends BaseBean<ConsumoEAT> {
 		return super.novo();		
 	}
 	
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 	
-	@Override
+	
 	public String alterar(){
 		try{
 			carregar();
@@ -338,7 +338,7 @@ public class ConsumoEATProdutoBean extends BaseBean<ConsumoEAT> {
 		return super.alterar();
 	}
 	
-	@Override
+	
 	public String cancelar(){
 		return super.cancelarLazy();
 	}
@@ -361,7 +361,7 @@ public class ConsumoEATProdutoBean extends BaseBean<ConsumoEAT> {
 		this.datas = datas;
 	}
 
-	@Override
+	
 	public String confirmar() {
 		try {
 			if (adicionarDados()){

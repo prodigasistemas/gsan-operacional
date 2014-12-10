@@ -67,7 +67,7 @@
 								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{consumoPendenteBean.iniciar}" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Energia El&eacute;trica">
-								<p:menuitem value="Importar Arquivo Energia El&eacute;trica" action="#{importarEnergiaBean.iniciar}" ajax="false" />
+								<p:menuitem value="Importar Arquivo Energia El&eacute;trica" outcome="/ImportarEnergia" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Horas Trabalhadas">
 								<p:menuitem value="EAB - #{m.estacao_agua_bruta}" outcome="/Horas" ajax="false">

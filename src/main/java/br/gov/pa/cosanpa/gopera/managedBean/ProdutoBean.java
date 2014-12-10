@@ -28,7 +28,7 @@ public class ProdutoBean extends BaseBean<Produto> {
 		
 	}
 	
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -46,7 +46,7 @@ public class ProdutoBean extends BaseBean<Produto> {
 		return this.getPaginasRetorno().get("iniciar");		
 	}
 
-	@Override
+	
 	public String confirmar() {
 		try {
 			registro.setUsuario(usuarioProxy.getCodigo());

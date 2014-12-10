@@ -187,20 +187,20 @@ public class RegistroConsumoSistemaAbastecimentoBean extends BaseBean<RegistroCo
 		}			
 	}
 
-	@Override
+	
 	public String novo() {
 		this.registrosConsumoSelecionados.clear();
 		this.registro = new RegistroConsumoSistemaAbastecimento();
 		return super.novo();
 	}
 	
-	@Override	
+		
 	public String consultar() {
 		consultarRegistroConsumo();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		consultarRegistroConsumo();
 		return super.alterar();
@@ -242,7 +242,7 @@ public class RegistroConsumoSistemaAbastecimentoBean extends BaseBean<RegistroCo
 		this.registrosConsumoSelecionados = registrosConsumoSelecionados;
 	}
 
-	@Override
+	
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);

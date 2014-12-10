@@ -59,7 +59,6 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 		
 	}
 	
-	@Override
 	public String iniciar() {
 		// Fachada do EJB
 		this.setFachada(this.fachada);
@@ -78,7 +77,7 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 			listaContrato = new LazyDataModel<ContratoEnergia>() {
 				private static final long serialVersionUID = 1L;
 
-				@Override
+				
 				public List<ContratoEnergia> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
 						List<ContratoEnergia> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
@@ -91,12 +90,12 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 					return null;
 				}
 				
-				@Override
+				
 				public Object getRowKey(ContratoEnergia contrato) {
 					return contrato.getCodigo();
 				}
 				
-				@Override
+				
 				public ContratoEnergia getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
@@ -113,7 +112,7 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 	    }
 	}
 	
-	@Override
+	
 	public String novo() {
 		this.tensaoNominal = "0,00";
 		this.tensaoContratada = "0,00";
@@ -131,13 +130,13 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 		return super.novo();
 	}
 
-	@Override
+	
 	public String consultar() {
 		carregar();
 		return super.consultar();
 	}
 
-	@Override
+	
 	public String alterar() {
 		carregar();
 		return super.alterar();
@@ -170,7 +169,7 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 		}			
 	}
 	
-	@Override
+	
 	public String confirmar() {
 		try {
 			SimpleDateFormat f24h = new SimpleDateFormat("HH:mm");  

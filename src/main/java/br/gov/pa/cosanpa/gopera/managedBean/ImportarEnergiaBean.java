@@ -6,20 +6,24 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-import jxl.read.biff.BiffException;
 
 import org.jboss.logging.Logger;
 import org.primefaces.model.UploadedFile;
 
+import br.gov.model.exception.BaseRuntimeException;
+import br.gov.model.exception.UnidadesConsumidorasNaoLocalizadas;
 import br.gov.model.operacao.ContratoEnergia;
 import br.gov.model.operacao.EnergiaEletrica;
 import br.gov.model.operacao.EnergiaEletricaDados;
@@ -31,7 +35,7 @@ import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 
 	private static final Logger logger = Logger.getLogger(ImportarEnergiaBean.class);
@@ -63,105 +67,130 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 	public void setEnergiaDados(EnergiaEletricaDados energiaDados) {
 		this.energiaDados = energiaDados;
 	}
-
-	public String iniciar() {
-		// Fachada do EJB
-		this.setFachada(this.fachada);
-		// Cria uma nova instância do registro para um novo cadastro
-		this.registro = new EnergiaEletrica();
-		// Páginas de mudança de estados
-		this.getPaginasRetorno().put("iniciar", "ImportarEnergia.jsf");
-		this.getPaginasRetorno().put("novo", "ImportarEnergia_Cadastro.jsf");
-		this.getPaginasRetorno().put("confirmar", "ImportarEnergia_Cadastro.jsf");
-		this.getPaginasRetorno().put("excluir", "ImportarEnergia.jsf");
-		this.getPaginasRetorno().put("voltar", "ImportarEnergia.jsf");
-		// Página inicial do managedBean
-		return this.getPaginasRetorno().get("iniciar");
+	
+	@PostConstruct
+	public void init(){
+	    this.setFachada(this.fachada);
+	    atualizarListas();
+	    this.registro = new EnergiaEletrica();
 	}
-
+	
 	public String novo() {
 		this.registro = new EnergiaEletrica();
-		return super.novo();
+		super.novo();
+		return null;
 	}
-
+	
 	public String consultar() {
 		carregar();
-		return super.consultar();
+		super.consultar();
+		return null;
 	}
 
-	
 	public String alterar() {
 		carregar();
-		return super.alterar();
-	}
-
-	public void carregar() {
-		try {
-			this.registro = fachada.obterEnergia(this.registro.getCodigo());
-		} catch (Exception e) {
-			this.mostrarMensagemErro(bundle.getText("erro_carregar_informacoes_arquivo"));
-			logger.error(bundle.getText("erro_carregar_informacoes_arquivo"), e);
-		}
-	}
-
-	public UploadedFile getArquivo() {
-		return arquivo;
-	}
-
-	public void setArquivo(UploadedFile arquivo) {
-		this.arquivo = arquivo;
-		try {
-			String arquivoAux = arquivo.getFileName();
-			String referencia = arquivoAux.substring(10, 14) + arquivoAux.substring(8, 10);
-			this.registro.setReferencia(Integer.parseInt(referencia));
-		} catch (NumberFormatException nfe) {
-			this.mostrarMensagemErro(bundle.getText("erro_nome_arquivo"));
-		} catch (Exception e) {
-			this.mostrarMensagemErro(bundle.getText("erro_carga_arquivo"));
-            logger.error(bundle.getText("erro_carga_arquivo"), e);			
-		}
+		super.alterar();
+		return null;
 	}
 
 	public String cadastrar() {
-		if (validarArquivo()) {
-			return super.cadastrar();
-		}
-		return "";
+	    try {
+    		if (arquivoValido()) {
+    			super.cadastrar();
+    		}
+        } catch (Exception e) {
+            logger.error(bundle.getText("erro_validacao_arquivo"), e);
+            this.mostrarMensagemErro(bundle.getText("erro_validacao_arquivo"));
+        }
+		
+		return null;
 	}
+	
+	public String confirmar() {
+        try {
+            if (arquivo != null) {
+                String diretorio = fachadaProxy.getParametroSistema(9);
+                new File(diretorio).mkdir();
+                String nomeArquivo = diretorio + arquivo.getFileName();
+                
+                registro.setNomeArquivo(nomeArquivo);
 
-	private boolean validarArquivo() {
-		try {
-			if (!fachada.existeEnergiaEletricaNaReferencia(this.registro.getReferencia())) {
-				return true;
-			} else {
-				this.mostrarMensagemErro(bundle.getText("erro_referencia_arquivo_cadastrada"));
-				return false;
-			}
-		} catch (Exception e) {
-			logger.error(bundle.getText("erro_validacao_arquivo"), e);
-			this.mostrarMensagemErro(bundle.getText("erro_validacao_arquivo"));
+                copyFile(nomeArquivo, arquivo.getInputstream());
+                
+                List<EnergiaEletricaDados> dados = importaArquivo(nomeArquivo, this.registro);
+                
+                validarDados(dados);
+                
+                mostrarMensagemSucesso("Arquivo " + arquivo.getFileName() + " foi enviado.");
+                
+                super.confirmar();
+            }
+        } catch (Exception e) {
+            if (e instanceof BaseRuntimeException || e.getCause() instanceof BaseRuntimeException){
+                mostrarMensagemErro(e.getMessage());
+                logger.error(e.getMessage(), e);
+            }else{
+                mostrarMensagemErro(bundle.getText("erro_envio_arquivo"));
+                logger.error(bundle.getText("erro_envio_arquivo"), e);          
+            }
+        }
+        return null;
+    }	
+
+
+    /************************************************
+	 * PRIVATE METHODS
+	 ************************************************/
+	private void validarDados(List<EnergiaEletricaDados> lista) throws Exception{
+	    Double valorTotal = 0.0;
+	    
+	    StringBuilder unidadesNaoLocalizadas = new StringBuilder();
+	    
+	    for (EnergiaEletricaDados dados : lista) {
+            
+            UnidadeConsumidora unidadeConsumidora = fachadaUC.obterUnidadeConsumidoraUC(dados.getCodigoUC());
+            dados.setUnidadeConsumidora(unidadeConsumidora);
+            if (unidadeConsumidora != null) {
+                ContratoEnergia contrato = fachadaContrato.obterContratoVigente(unidadeConsumidora.getCodigo());
+                dados.setContrato(contrato);
+                if (contrato == null)
+                    mostrarMensagemAviso(bundle.getText("aviso_contrato_nao_localizado") + dados.getCodigoUC());
+            } else {
+                unidadesNaoLocalizadas.append(dados.getCodigoUC() + "  ");
+            }
+            dados.setEnergiaEletrica(this.registro);
+            valorTotal += dados.getVlr_Total();
+        }
+	    
+	    if (unidadesNaoLocalizadas.length() != 0){
+	        throw new UnidadesConsumidorasNaoLocalizadas(unidadesNaoLocalizadas.toString());
+	    }
+	    
+        registro.setQtdUC(lista.size());
+        registro.setValorTotal(valorTotal);
+        registro.setUsuario(usuarioProxy.getCodigo());
+        registro.setUltimaAlteracao(new Date());	    
+	}
+	
+    private void carregar() {
+        try {
+            this.registro = fachada.obterEnergia(this.registro.getCodigo());
+        } catch (Exception e) {
+            this.mostrarMensagemErro(bundle.getText("erro_carregar_informacoes_arquivo"));
+            logger.error(bundle.getText("erro_carregar_informacoes_arquivo"), e);
+        }
+    }
+	
+	private boolean arquivoValido() throws Exception {
+		if (arquivo != null && registro.getReferencia() != null){
+		    if (!fachada.existeEnergiaEletricaNaReferencia(registro.getReferencia())) {
+		        return true;
+		    } else {
+		        this.mostrarMensagemErro(bundle.getText("erro_referencia_arquivo_cadastrada"));
+		        return false;
+		    }
 		}
 		return false;
-	}
-
-	public String confirmar() {
-		try {
-			if (arquivo != null) {
-				String diretorio = fachadaProxy.getParametroSistema(9);
-				new File(diretorio).mkdir();
-				String arquivoAux = diretorio + arquivo.getFileName();
-				copyFile(arquivoAux, arquivo.getInputstream());
-				importaArquivo(arquivoAux);
-				mostrarMensagemSucesso("Arquivo " + arquivo.getFileName() + " foi enviado.");
-			}
-		} catch (BiffException e) {
-            mostrarMensagemErro(bundle.getText("erro_importacao_arquivo"));
-            logger.error(bundle.getText("erro_importacao_arquivo"), e);
-		} catch (Exception e) {
-		    mostrarMensagemErro(bundle.getText("erro_envio_arquivo"));
-		    logger.error(bundle.getText("erro_envio_arquivo"), e);			
-		}
-		return "";
 	}
 
 	private void copyFile(String fileName, java.io.InputStream inputStream) throws IOException {
@@ -178,14 +207,12 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 		out.close();
 	}
 
-	private void importaArquivo(String nomeArquivo) throws Exception {
+	private List<EnergiaEletricaDados> importaArquivo(String nomeArquivo, EnergiaEletrica energia) throws Exception {
 		Workbook workbook = Workbook.getWorkbook(new File(nomeArquivo));
 		Sheet sheet = workbook.getSheet(0);
-		Double valorTotal = 0.0;
-		Integer qtdUC = 0;
 		int linhas = sheet.getRows();
-		this.registro.getDados().clear();
 		EnergiaEletricaDados dados;
+		List<EnergiaEletricaDados> dadosEnergia = new ArrayList<EnergiaEletricaDados>();
 		for (int i = 1; i < linhas; i++) {
 			dados = new EnergiaEletricaDados();
 
@@ -351,31 +378,33 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 				dados.setVlr_ERe_Pt(Double.parseDouble(VLR_ENER_P.replace(".", "").replace(",", ".")));
 				dados.setVlr_Total(Double.parseDouble(VLR_EMISS.replace(".", "").replace(",", ".")));
 
-				UnidadeConsumidora unidadeConsumidora = fachadaUC.obterUnidadeConsumidoraUC(dados.getCodigoUC());
-				dados.setUnidadeConsumidora(unidadeConsumidora);
-				if (unidadeConsumidora != null) {
-					ContratoEnergia contrato = fachadaContrato.obterContratoVigente(unidadeConsumidora.getCodigo());
-					dados.setContrato(contrato);
-					if (contrato == null)
-						mostrarMensagemAviso(bundle.getText("aviso_contrato_nao_localizado") + dados.getCodigoUC());
-				} else {
-					dados.setContrato(null);
-					logger.info(bundle.getText("aviso_unidade_cons_nao_localizada") + dados.getCodigoUC());
-					mostrarMensagemAviso(bundle.getText("aviso_unidade_cons_nao_localizada") + dados.getCodigoUC());
-				}
 				dados.setEnergiaEletrica(this.registro);
-				// Totalizando Arquivo
-				valorTotal = valorTotal + Double.parseDouble(VLR_EMISS.replace(".", "").replace(",", "."));
-				qtdUC = qtdUC + 1;
-				this.registro.getDados().add(dados);
+				dadosEnergia.add(dados);
 			}
 		}
 		workbook.close();
-		registro.setQtdUC(qtdUC);
-		registro.setValorTotal(valorTotal);
-		registro.setNomeArquivo(nomeArquivo);
-		registro.setUsuario(usuarioProxy.getCodigo());
-		registro.setUltimaAlteracao(new Date());
-		super.confirmar();
+		
+		return dadosEnergia;
 	}
+	
+    /************************************************
+     * GETTERS AND SETTERS
+     ************************************************/
+    public UploadedFile getArquivo() {
+        return arquivo;
+    }
+
+    public void setArquivo(UploadedFile arquivo) {
+        this.arquivo = arquivo;
+        try {
+            String arquivoAux = arquivo.getFileName();
+            String referencia = arquivoAux.substring(10, 14) + arquivoAux.substring(8, 10);
+            this.registro.setReferencia(Integer.parseInt(referencia));
+        } catch (NumberFormatException nfe) {
+            this.mostrarMensagemErro(bundle.getText("erro_nome_arquivo"));
+        } catch (Exception e) {
+            this.mostrarMensagemErro(bundle.getText("erro_carga_arquivo"));
+            logger.error(bundle.getText("erro_carga_arquivo"), e);          
+        }
+    }	
 }

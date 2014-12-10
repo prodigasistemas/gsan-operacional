@@ -50,7 +50,7 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 	private MunicipioProxy municipioProxy = new MunicipioProxy();
 	private LocalidadeProxy localidadeProxy = new LocalidadeProxy(); 
 	
-	@Override
+	
 	public String iniciar(){
 		if (bundle == null){
 			bundle = new WebBundle();
