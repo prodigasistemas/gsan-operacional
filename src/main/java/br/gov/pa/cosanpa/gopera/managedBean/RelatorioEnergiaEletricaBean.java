@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -19,12 +20,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
-import jxl.JXLException;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
 
 import org.jboss.logging.Logger;
 
@@ -37,6 +36,7 @@ import br.gov.model.operacao.RelatorioEnergiaEletrica;
 import br.gov.model.operacao.RelatorioExcel;
 import br.gov.model.operacao.TipoRelatorioEnergia;
 import br.gov.model.operacao.UnidadeNegocioProxy;
+import br.gov.model.util.FormatoData;
 import br.gov.model.util.Utilitarios;
 import br.gov.pa.cosanpa.gopera.command.GeraPlanilhaAnaliseEnergiaEletricaCommand;
 import br.gov.pa.cosanpa.gopera.command.GeraPlanilhaFaturamentoMensalCommand;
@@ -44,9 +44,13 @@ import br.gov.pa.cosanpa.gopera.command.GeraPlanilhaUCNaoCadastradaCommand;
 import br.gov.pa.cosanpa.gopera.command.GeraPlanilhaUCsNaoFaturadasCommand;
 import br.gov.pa.cosanpa.gopera.command.InformacoesParaRelatorio;
 import br.gov.pa.cosanpa.gopera.util.DadoRelatorio;
+import br.gov.pa.cosanpa.gopera.util.DadosExcel;
+import br.gov.pa.cosanpa.gopera.util.GeradorExcel;
 import br.gov.pa.cosanpa.gopera.util.WebBundle;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
+import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
+import br.gov.servicos.operacao.to.ContratoUnidadeConsumidoraTO;
 
 @ManagedBean
 @ViewScoped
@@ -74,6 +78,9 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 
 	@EJB
 	private RelatorioEnergiaEletricaRepositorio fachadaRel;
+	
+	@EJB
+	private UnidadeConsumidoraRepositorio unidadeConsumidoraRepositorio; 
 	
 	@EJB
 	private ProxyOperacionalRepositorio fachadaProxy;
@@ -104,21 +111,60 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 	public void exibir() {
 		try {
 			switch (tipoRelatorio) {
-			case UCS_NAO_CADASTRADAS: // UC´s NÃO CADASTRADAS
-                relatorio = fachadaRel.getEnergiaEletricaUC(referencia, this.tipoRelatorio, 0, 0, 0, 0);
+			case UCS_SEM_CONTRATO:
+			    List<ContratoUnidadeConsumidoraTO> lista = unidadeConsumidoraRepositorio.unidadesConsumidorasSemVigenciaContratual(Calendar.getInstance().getTime());
+			    
+			    if (lista.size() == 0) {
+			        mostrarMensagemAviso(bundle.getText("aviso_nao_existem_unidades_consumidoras_sem_contrato"));
+			        return;
+			    }else{
+			        DadosExcel excel = new DadosExcel() {
+                        
+                        public String tituloRelatorio() {
+                            return bundle.getText(tipoRelatorio.getDescricao());
+                        }
+                        
+                        public String nomeArquivo() {
+                            return tipoRelatorio.getDescricao();
+                        }
+                        
+                        public List<String[]> dados() {
+                            List<String[]> linhas = new ArrayList<String[]>();
+                            for (ContratoUnidadeConsumidoraTO uc : lista) {
+                                String[] linha = new String[2];
+                                linha[0] = String.valueOf(uc.getCodigoUC());
+                                linha[1] = Utilitarios.formataData(uc.getDataFimContrato(), FormatoData.DIA_MES_ANO);
+                                linhas.add(linha);
+                            }
+                            return linhas;
+                        }
+                        
+                        public String[] cabecalho() {
+                            return new String[]{bundle.getText("unidade_consumidora")
+                                    , bundle.getText("fim_contrato")};
+                        }
+                    };
+                    
+			        GeradorExcel gerador = new GeradorExcel(excel);
+			        gerador.geraPlanilha();
+			    }
+			    
+			    return;
+			case UCS_NAO_CADASTRADAS:
+                relatorio = fachadaRel.getEnergiaEletricaUC(referencia, this.tipoRelatorio);
 				if (relatorio.size() == 0) {
 					mostrarMensagemErro(bundle.getText("erro_nao_existe_retorno_filtro"));
 					return;
 				}
 				break;
-			case UCS_NAO_FATURADAS: // UC´S NÃO FATURADAS
-                relatorio = fachadaRel.getEnergiaEletricaUC(referencia, this.tipoRelatorio, 0, 0, 0, 0);
+			case UCS_NAO_FATURADAS:
+                relatorio = fachadaRel.getEnergiaEletricaUC(referencia, this.tipoRelatorio);
 				if (relatorio.size() == 0) {
 					mostrarMensagemErro(bundle.getText("erro_nao_existe_retorno_filtro"));
 					return;
 				}
 				break;
-			case FATURAMENTO_MENSAL: // FATURAMENTO MENSAL
+			case FATURAMENTO_MENSAL:
                 energiaEletricaDados.clear();
                 energiaEletricaDados = fachadaRel.getEnergiaEletricaDados(referencia);			    
 				if (energiaEletricaDados.size() == 0) {
@@ -126,7 +172,7 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 					return;
 				}
 				break;
-			case ANALISE_ENERGIA_ELETRICA: // ANALISE ENERGIA ELETRICA
+			case ANALISE_ENERGIA_ELETRICA:
                 this.setReferencia(referenciaFinal);
 				break;
 			}

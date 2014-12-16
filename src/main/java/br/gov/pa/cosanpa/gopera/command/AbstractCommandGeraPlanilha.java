@@ -39,6 +39,8 @@ public abstract class AbstractCommandGeraPlanilha {
 	
 	public abstract void execute(InformacoesParaRelatorio informacoes, RelatorioEnergiaEletricaRepositorio fachadaRel) throws Exception;
 	
+	public AbstractCommandGeraPlanilha() {
+    }
 	public AbstractCommandGeraPlanilha(RelatorioExcel relatorioExcel, WritableSheet sheet) {
 		prepare();
 		this.relatorioExcel = relatorioExcel;

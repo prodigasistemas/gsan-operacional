@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.sql.DataSource;
 
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -25,12 +25,13 @@ import org.jboss.logging.Logger;
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RelatorioGerencial;
+import br.gov.model.operacao.TipoRelatorioCadastroEnergia;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.pa.cosanpa.gopera.util.WebBundle;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencial> {
 	private static Logger logger = Logger.getLogger(RelatorioCadastroEEBean.class);
 
@@ -44,31 +45,21 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 	private List<MunicipioProxy> listaMunicipio = new ArrayList<MunicipioProxy>();
 	private List<LocalidadeProxy> listaLocalidade = new ArrayList<LocalidadeProxy>();
 	
-	private Integer tipoRelatorio;
-	private List<SelectItem> listaRelatorio = new ArrayList<SelectItem>();
+	private TipoRelatorioCadastroEnergia tipoRelatorio;
 	private UnidadeNegocioProxy unidadeNegocioProxy = new UnidadeNegocioProxy();
 	private MunicipioProxy municipioProxy = new MunicipioProxy();
 	private LocalidadeProxy localidadeProxy = new LocalidadeProxy(); 
 	
 	
-	public String iniciar(){
+	@PostConstruct
+	public void init(){
+	    super.iniciar();
+	    
 		if (bundle == null){
 			bundle = new WebBundle();
 		}
 		
-		//ENERGIA ELÉTRICA
-		tipoRelatorio = 1;
 		tipoExportacao = 1;	
-		listaRelatorio.clear();
-		SelectItem tipoRel = new SelectItem();  
-		tipoRel.setValue(1);  
-		tipoRel.setLabel(bundle.getText("unidade_consumidora"));  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(2);  
-		tipoRel.setLabel(bundle.getText("contrato_energia_eletrica"));  
-		listaRelatorio.add(tipoRel);
-		return "RelatorioCadastroEE.jsf";
 	}	
 
 	public void exibir() throws SQLException{
@@ -80,13 +71,13 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 
     		//VERIFICA FILTRO
     		StringBuilder filtroRelatorio = new StringBuilder();
-			if (unidadeNegocioProxy.getCodigo() != 0) {
+			if (unidadeNegocioProxy != null && unidadeNegocioProxy.getCodigo() != null) {
 				sqlFiltro = sqlFiltro + " AND A.uneg_id = " + unidadeNegocioProxy.getCodigo();
 	    		filtroRelatorio.append(bundle.getText("unid_negocio"))
 	    		.append(": ")
 	    		.append(fachadaProxy.getUnidadeNegocio(this.unidadeNegocioProxy.getCodigo()).getNome());
 			}
-			if (municipioProxy.getCodigo() != 0) {
+			if (municipioProxy != null && municipioProxy.getCodigo() != null) {
 				sqlFiltro = sqlFiltro + " AND A.muni_id = " + municipioProxy.getCodigo();
 	    		filtroRelatorio.append("  ")
 	    		.append(bundle.getText("municipio"))
@@ -94,7 +85,7 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 	    		.append(fachadaProxy.getMunicipio(this.municipioProxy.getCodigo()).getNome());
 	    		
 			}
-			if (localidadeProxy.getCodigo() != 0) {
+			if (localidadeProxy != null && localidadeProxy.getCodigo() != null) {
 				sqlFiltro = sqlFiltro + " AND A.loca_id = " + localidadeProxy.getCodigo();
 	    		filtroRelatorio.append("  ")
 	    		.append(bundle.getText("localidade"))
@@ -103,7 +94,7 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 			} 
     		
 			switch (tipoRelatorio) {
-			case 1: //Unidade Consumidora
+			case UNIDADE_CONSUMIDORA:
 				nomeRelatorio = bundle.getText("rel_cad_unid_consumidora");
 				nomeArquivo = "cadastroUnidadeConsumidora";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
@@ -117,7 +108,7 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 				    + " WHERE 1 = 1 " + sqlFiltro
 				    + " ORDER BY uneg_nmunidadenegocio, muni_nmmunicipio, loca_nmlocalidade, ucon_uc";
 				break;
-			case 2: //Contrato de Energia Eletrica
+			case CONTRATO_ENERGIA:
 				nomeRelatorio = bundle.getText("rel_cad_contrato_energia");
 				nomeArquivo = "cadastroContratoEnergiaEletrica";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
@@ -195,28 +186,21 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 		return this.listaLocalidade= new ArrayList<LocalidadeProxy>();
 	}
 	
-	public Integer getTipoRelatorio() {
-		return tipoRelatorio;
-	}
 
-	public void setTipoRelatorio(Integer tipoRelatorio) {
-		this.tipoRelatorio = tipoRelatorio;
-	}
+	public TipoRelatorioCadastroEnergia getTipoRelatorio() {
+        return tipoRelatorio;
+    }
 
-	public Integer getTipoExportacao() {
+    public void setTipoRelatorio(TipoRelatorioCadastroEnergia tipoRelatorio) {
+        this.tipoRelatorio = tipoRelatorio;
+    }
+
+    public Integer getTipoExportacao() {
 		return tipoExportacao;
 	}
 
 	public void setTipoExportacao(Integer tipoExportacao) {
 		this.tipoExportacao = tipoExportacao;
-	}
-
-	public List<SelectItem> getListaRelatorio() {
-		return listaRelatorio;
-	}
-
-	public void setListaRelatorio(List<SelectItem> listaRelatorio) {
-		this.listaRelatorio = listaRelatorio;
 	}
 
 	public UnidadeNegocioProxy getUnidadeNegocioProxy() {
@@ -242,5 +226,8 @@ public class RelatorioCadastroEEBean extends BaseRelatorioBean<RelatorioGerencia
 	public void setLocalidadeProxy(LocalidadeProxy localidadeProxy) {
 		this.localidadeProxy = localidadeProxy;
 	}
+	
+	public TipoRelatorioCadastroEnergia[] getTiposRelatorios(){
+	    return TipoRelatorioCadastroEnergia.values();
+	}
 }
-

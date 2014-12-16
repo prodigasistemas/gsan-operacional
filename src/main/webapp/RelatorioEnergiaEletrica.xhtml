@@ -34,7 +34,7 @@ xmlns:p="http://primefaces.org/ui">
 	        
 	        <h:panelGrid id="panelContent" columns="1">
 	        
-		        <h:panelGrid id="panel1" columns="2" rendered="#{relatorioEnergiaEletricaBean.tipoRelatorio.id != 3}">
+		        <h:panelGrid id="panel1" columns="2" rendered="#{relatorioEnergiaEletricaBean.tipoRelatorio.id != 3 and relatorioEnergiaEletricaBean.tipoRelatorio.id != 4}">
 					<h:outputLabel for="referencia" value="Referência: *"/>
 					<p:column style="text-align:left">
 						<p:inputText value="#{relatorioEnergiaEletricaBean.referencia}" id="referencia" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência é Obrigatória">
