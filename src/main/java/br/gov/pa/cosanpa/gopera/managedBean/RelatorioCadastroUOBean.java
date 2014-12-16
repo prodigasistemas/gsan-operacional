@@ -14,9 +14,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -30,11 +29,12 @@ import net.sf.jasperreports.engine.JasperPrint;
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RelatorioGerencial;
+import br.gov.model.operacao.TipoRelatorioCadastroUnidadeOperacional;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencial> {
 
 	@Resource(lookup="java:/jboss/datasources/GsanDS")
@@ -47,9 +47,8 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 	private List<MunicipioProxy> listaMunicipio = new ArrayList<MunicipioProxy>();
 	private List<LocalidadeProxy> listaLocalidade = new ArrayList<LocalidadeProxy>();
 	
-	private Integer tipoRelatorio;
-	private Integer tipoExportacao;
-	private List<SelectItem> listaRelatorio = new ArrayList<SelectItem>();
+	private TipoRelatorioCadastroUnidadeOperacional tipoRelatorio;
+	private Integer tipoExportacao = 1;
 	private JasperPrint jasperPrint;
 	private String nomeRelatorio;
 	private String nomeArquivo;
@@ -59,118 +58,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 	private MunicipioProxy municipioProxy = new MunicipioProxy();
 	private LocalidadeProxy localidadeProxy = new LocalidadeProxy();
 
-	public List<UnidadeNegocioProxy> getListaUnidadeNegocio() {
-		try {
-				this.listaUnidadeNegocio =  fachadaProxy.getListaUnidadeNegocio(0);
-				return listaUnidadeNegocio;
-			} catch (Exception e) {
-				mostrarMensagemErro("Erro ao consultar sistema externo.");
-			}
-		return listaUnidadeNegocio = new ArrayList<UnidadeNegocioProxy>();
-	}
-
-	public List<MunicipioProxy> getListaMunicipio() {
-		if (this.getUnidadeNegocioProxy().getCodigo() != null) {
-			try {
-				this.listaMunicipio =  fachadaProxy.getListaMunicipio(0, this.getUnidadeNegocioProxy().getCodigo());
-				return this.listaMunicipio;
-			} catch (Exception e) {
-				mostrarMensagemErro("Erro ao consultar sistema externo.");
-			}
-		}
-		return this.listaMunicipio = new ArrayList<MunicipioProxy>();
-	}
-
-	public List<LocalidadeProxy> getListaLocalidade() {
-		if (this.getMunicipioProxy().getCodigo() != null) {
-			try {
-				this.listaLocalidade =  fachadaProxy.getListaLocalidade(0, this.getUnidadeNegocioProxy().getCodigo(), this.getMunicipioProxy().getCodigo());
-				return this.listaLocalidade;
-			} catch (Exception e) {
-				mostrarMensagemErro("Erro ao consultar sistema externo.");
-			}
-		}
-		return this.listaLocalidade= new ArrayList<LocalidadeProxy>();
-	}
 	
-	public Integer getTipoRelatorio() {
-		return tipoRelatorio;
-	}
-
-	public void setTipoRelatorio(Integer tipoRelatorio) {
-		this.tipoRelatorio = tipoRelatorio;
-	}
-
-	public Integer getTipoExportacao() {
-		return tipoExportacao;
-	}
-
-	public void setTipoExportacao(Integer tipoExportacao) {
-		this.tipoExportacao = tipoExportacao;
-	}
-
-	public List<SelectItem> getListaRelatorio() {
-		return listaRelatorio;
-	}
-
-	public void setListaRelatorio(List<SelectItem> listaRelatorio) {
-		this.listaRelatorio = listaRelatorio;
-	}
-
-
-	public UnidadeNegocioProxy getUnidadeNegocioProxy() {
-		return unidadeNegocioProxy;
-	}
-
-	public void setUnidadeNegocioProxy(UnidadeNegocioProxy unidadeNegocioProxy) {
-		this.unidadeNegocioProxy = unidadeNegocioProxy;
-	}
-
-	public MunicipioProxy getMunicipioProxy() {
-		return municipioProxy;
-	}
-
-	public void setMunicipioProxy(MunicipioProxy municipioProxy) {
-		this.municipioProxy = municipioProxy;
-	}
-
-	public LocalidadeProxy getLocalidadeProxy() {
-		return localidadeProxy;
-	}
-
-	public void setLocalidadeProxy(LocalidadeProxy localidadeProxy) {
-		this.localidadeProxy = localidadeProxy;
-	}
-
-	
-	public String iniciar(){
-		//UNIDADES OPERACIONAIS
-		tipoRelatorio = 1;
-		tipoExportacao = 1;
-		listaRelatorio.clear();
-		SelectItem tipoRel = new SelectItem();  
-		tipoRel.setValue(1);  
-		tipoRel.setLabel("EAB");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(2);  
-		tipoRel.setLabel("ETA");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(3);  
-		tipoRel.setLabel("EAT");  
-		listaRelatorio.add(tipoRel);		
-		tipoRel = new SelectItem();
-		tipoRel.setValue(4);  
-		tipoRel.setLabel("RSO");  
-		listaRelatorio.add(tipoRel);
-		tipoRel = new SelectItem();
-		tipoRel.setValue(5);  
-		tipoRel.setLabel("ETE");  
-		listaRelatorio.add(tipoRel);		
-		return "RelatorioCadastroUO.jsf";
-	}	
-
     public void exibir() throws SQLException{
     	String sql = "", sqlFiltro = "";
     	Connection con = null;
@@ -182,21 +70,21 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
     		
     		//VERIFICA FILTRO
     		filtroRelatorio = "";
-			if (unidadeNegocioProxy.getCodigo() != 0) {
+			if (unidadeNegocioProxy != null && unidadeNegocioProxy.getCodigo() != null) {
 				sqlFiltro = sqlFiltro + " AND A.uneg_id = " + unidadeNegocioProxy.getCodigo();
 	    		filtroRelatorio = filtroRelatorio + " Und Negócio: " + fachadaProxy.getUnidadeNegocio(this.unidadeNegocioProxy.getCodigo()).getNome();
 			}
-			if (municipioProxy.getCodigo() != 0) {
+			if (municipioProxy != null && municipioProxy.getCodigo() != null) {
 				sqlFiltro = sqlFiltro + " AND A.muni_id = " + municipioProxy.getCodigo();
 	    		filtroRelatorio = filtroRelatorio + " Município: " + fachadaProxy.getMunicipio(this.municipioProxy.getCodigo()).getNome();
 			}
-			if (localidadeProxy.getCodigo() != 0) {
+			if (localidadeProxy != null && localidadeProxy.getCodigo() != null) {
 				sqlFiltro = sqlFiltro + " AND A.loca_id = " + localidadeProxy.getCodigo();
 	    		filtroRelatorio = filtroRelatorio + " Localidade: " + fachadaProxy.getLocalidade(this.localidadeProxy.getCodigo()).getNome();
 			}    		
     		
 			switch (tipoRelatorio) {
-			case 1: //EAB
+			case EAB:
 				nomeRelatorio = "Cadastro de EAB";
 				nomeArquivo = "cadastroEAB";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
@@ -215,7 +103,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 					+ " WHERE 1 = 1" + sqlFiltro
 				    + " ORDER BY eeab_nome ";
 				break;
-			case 2: //ETA
+			case ETA:
 				nomeRelatorio = "Cadastro de ETA";
 				nomeArquivo = "cadastroETA";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
@@ -234,7 +122,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 					+ " WHERE 1 = 1" + sqlFiltro
 					+ " ORDER BY eta_nome";
 				break;
-			case 3: //EAT
+			case EAT:
 				nomeRelatorio = "Cadastro de EAT";
 				nomeArquivo = "cadastroEAT";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
@@ -254,30 +142,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 					+ " WHERE 1 = 1" + sqlFiltro
 				    + " ORDER BY eeat_nome";
 				break;
-			case 4: //RSO
-				nomeRelatorio = "Cadastro de RSO";
-				nomeArquivo = "cadastroRSO";
-				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
-				sql = "SELECT DISTINCT rso_id, rso_nome, eeat_nome,"
-			        + "	      rso_volumeutil, rso_alturautil, rso_capacidade,"
-			        + "		  rso_cmb, rso_cmbmodelo, rso_cmbvazao, rso_cmbpotencia, rso_cmbmca,"
-			        + "	      mmed_idleitura, mmed_dtinstalacao, mmed_tag"
-					+ "  FROM operacao.rso D"
-					+ " INNER JOIN operacao.eeat E ON D.eeat_id = E.eeat_id" 
-					+ " INNER JOIN operacao.macro_medidor F ON D.mmed_identrada = F.mmed_id"
-					+ "  LEFT JOIN operacao.unidade_consumidora_operacional C ON C.ucop_idoperacional = D.rso_id AND C.ucop_tipooperacional = 4"
-					+ "  LEFT JOIN operacao.unidade_consumidora B ON B.ucon_id = C.ucon_id "
-					+ "  LEFT JOIN (SELECT DISTINCT A.greg_id, A.greg_nmregional, B.uneg_id, B.uneg_nmunidadenegocio," 
-					+ "				   		        E.muni_id, E.muni_nmmunicipio, C.loca_id, C.loca_nmlocalidade"
-					+ "	  	          FROM cadastro.gerencia_regional A "
-					+ "			     INNER JOIN cadastro.unidade_negocio B ON A.greg_id = B.greg_id" 
-					+ "			     INNER JOIN cadastro.localidade C ON A.greg_id = C.greg_id AND B.uneg_id = C.uneg_ID" 
-					+ "				 INNER JOIN cadastro.setor_comercial D ON C.loca_id = D.loca_id "
-					+ "				 INNER JOIN cadastro.municipio E ON D.muni_id = E.muni_id) AS A ON A.uneg_id = B.uneg_id AND A.muni_id = B.muni_id AND A.loca_id = B.loca_id"
-					+ " WHERE 1 = 1" + sqlFiltro					
-					+ " ORDER BY rso_nome";
-				break;
-			case 5: //ETE
+			case ETE:
 				nomeRelatorio = "Cadastro de ETE";
 				nomeArquivo = "cadastroETE";
 				reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports/" + nomeArquivo + ".jasper");
@@ -348,7 +213,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
  		WritableSheet sheet = wb.getSheet(0);
 	 	
 		switch (tipoRelatorio) {
-		case 1: //EAB
+		case EAB:
 			//Nome Planilha
 			sheet.setName("Cadastro EAB");
 			//Titulo			
@@ -458,7 +323,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 			}
 
 			break;
-		case 2: //ETA
+		case ETA:
 			//Nome Planilha
 			sheet.setName("Cadastro ETA");
 			//Titulo			
@@ -556,7 +421,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 			}
 
 			break;
-		case 3: //EAT
+		case EAT:
 			//Nome Planilha
 			sheet.setName("Cadastro EAT");
 			//Titulo			
@@ -665,60 +530,7 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 				linha++;
 			}
 			break;
-		case 4: //RSO
-			//Nome Planilha
-			sheet.setName("Cadastro RSO");
-			//Titulo			
-			addLabel(sheet, 0, 0, "CADASTRO DE RSO", wcfLabelBold);
-			sheet.mergeCells(0, 0, 5, 0);
-			//Filtro
-			addLabel(sheet, 0, 1, filtroRelatorio, wcfLabelLeft);
-			sheet.mergeCells(0, 1, 5, 1);
-			//Dados
-			while (rs.next()) {
-				addLabel(sheet, 0, linha, "RSO:", wcfLabelHeader);
-				addLabel(sheet, 1, linha, rs.getString("rso_nome") , wcfLabelHeader);
-				addLabel(sheet, 2, linha, bundle.getText("estacao_agua_tratada"), wcfLabelHeader);
-				addLabel(sheet, 3, linha, rs.getString("eeat_nome") , wcfLabelHeader);
-				linha++;				
-				addLabel(sheet, 1, linha, bundle.getText("volume_util"), wcfLabel);
-				addLabel(sheet, 2, linha, bundle.getText("altura_util"), wcfLabel);
-				addLabel(sheet, 3, linha, "Capacidade", wcfLabel);
-				linha++;
-				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("rso_volumeutil")) , wcfNumero);
-				addNumero(sheet, 2, linha, Double.parseDouble(rs.getString("rso_alturautil")) , wcfNumero);
-				addNumero(sheet, 3, linha, Double.parseDouble(rs.getString("rso_capacidade")) , wcfNumero);
-				linha++;
-				addLabel(sheet, 1, linha, "CMB - Conjunto Motor-Bomba", wcfLabelBold);
-				sheet.mergeCells(1, linha, 5, linha);
-				linha++;
-				addLabel(sheet, 1, linha, "Qtd", wcfLabel);
-				addLabel(sheet, 2, linha, "Modelo", wcfLabel);
-				addLabel(sheet, 3, linha, bundle.getText("vazao"), wcfLabel);
-				addLabel(sheet, 4, linha, bundle.getText("potencia"), wcfLabel);
-				addLabel(sheet, 5, linha, "MCA", wcfLabel);
-				linha++;
-				addNumero(sheet, 1, linha, Double.parseDouble(rs.getString("rso_cmb")) , wcfInteiro);
-				addLabel(sheet, 2, linha, rs.getString("rso_cmbmodelo") , wcfLabel);
-				addNumero(sheet, 3, linha, Double.parseDouble(rs.getString("rso_cmbvazao")) , wcfNumero);
-				addNumero(sheet, 4, linha, Double.parseDouble(rs.getString("rso_cmbpotencia")) , wcfInteiro);
-				addNumero(sheet, 5, linha, Double.parseDouble(rs.getString("rso_cmbmca")) , wcfNumero);
-				linha++;
-				addLabel(sheet, 1, linha, bundle.getText("medidor_saida"), wcfLabelBold);
-				sheet.mergeCells(1, linha, 3, linha);
-				linha++;
-				addLabel(sheet, 1, linha, "Medidor", wcfLabel);
-				addLabel(sheet, 2, linha, bundle.getText("data_instalacao"), wcfLabel);
-				addLabel(sheet, 3, linha, "TAG", wcfLabel);
-				addLabel(sheet, 1, linha, rs.getString("mmed_idleitura") , wcfLabel);
-				if (rs.getString("mmed_dtinstalacao") != null){
-					addLabel(sheet, 2, linha, formataDataPadrao.format(formataDataSQL.parse(rs.getString("mmed_dtinstalacao"))) , wcfLabel);
-				}	
-				addLabel(sheet, 3, linha, rs.getString("mmed_tag") , wcfLabel);
-				linha++;
-			}
-			break;
-		case 5: //ETA
+		case ETE:
 			//Nome Planilha
 			sheet.setName("Cadastro ETE");
 			//Titulo			
@@ -737,6 +549,87 @@ public class RelatorioCadastroUOBean extends BaseRelatorioBean<RelatorioGerencia
 		}	
 		//REALIZA DOWNLOAD DA PLANILHA
     	downloadFile(wb);
+    }
+    
+    
+    public TipoRelatorioCadastroUnidadeOperacional getTipoRelatorio() {
+        return tipoRelatorio;
+    }
+
+    public void setTipoRelatorio(TipoRelatorioCadastroUnidadeOperacional tipoRelatorio) {
+        this.tipoRelatorio = tipoRelatorio;
+    }
+
+    public Integer getTipoExportacao() {
+        return tipoExportacao;
+    }
+
+    public void setTipoExportacao(Integer tipoExportacao) {
+        this.tipoExportacao = tipoExportacao;
+    }
+
+    public UnidadeNegocioProxy getUnidadeNegocioProxy() {
+        return unidadeNegocioProxy;
+    }
+
+    public void setUnidadeNegocioProxy(UnidadeNegocioProxy unidadeNegocioProxy) {
+        this.unidadeNegocioProxy = unidadeNegocioProxy;
+    }
+
+    public MunicipioProxy getMunicipioProxy() {
+        return municipioProxy;
+    }
+
+    public void setMunicipioProxy(MunicipioProxy municipioProxy) {
+        this.municipioProxy = municipioProxy;
+    }
+
+    public LocalidadeProxy getLocalidadeProxy() {
+        return localidadeProxy;
+    }
+
+    public void setLocalidadeProxy(LocalidadeProxy localidadeProxy) {
+        this.localidadeProxy = localidadeProxy;
+    }
+
+    
+    public List<UnidadeNegocioProxy> getListaUnidadeNegocio() {
+        try {
+                this.listaUnidadeNegocio =  fachadaProxy.getListaUnidadeNegocio(0);
+                return listaUnidadeNegocio;
+            } catch (Exception e) {
+                mostrarMensagemErro("Erro ao consultar sistema externo.");
+            }
+        return listaUnidadeNegocio = new ArrayList<UnidadeNegocioProxy>();
+    }
+
+    public List<MunicipioProxy> getListaMunicipio() {
+        if (this.getUnidadeNegocioProxy().getCodigo() != null) {
+            try {
+                this.listaMunicipio =  fachadaProxy.getListaMunicipio(0, this.getUnidadeNegocioProxy().getCodigo());
+                return this.listaMunicipio;
+            } catch (Exception e) {
+                mostrarMensagemErro("Erro ao consultar sistema externo.");
+            }
+        }
+        return this.listaMunicipio = new ArrayList<MunicipioProxy>();
+    }
+
+    public List<LocalidadeProxy> getListaLocalidade() {
+        if (this.getMunicipioProxy().getCodigo() != null) {
+            try {
+                this.listaLocalidade =  fachadaProxy.getListaLocalidade(0, this.getUnidadeNegocioProxy().getCodigo(), this.getMunicipioProxy().getCodigo());
+                return this.listaLocalidade;
+            } catch (Exception e) {
+                mostrarMensagemErro("Erro ao consultar sistema externo.");
+            }
+        }
+        return this.listaLocalidade= new ArrayList<LocalidadeProxy>();
+    }
+    
+    
+    public TipoRelatorioCadastroUnidadeOperacional[] getTiposRelatorios(){
+        return TipoRelatorioCadastroUnidadeOperacional.values();
     }
 }
 

@@ -24,7 +24,7 @@ xmlns:p="http://primefaces.org/ui">
 	<h:panelGrid id="cadastro" columns="2">
 		<h:outputLabel for="tipoRelatorio" value="#{m.tipo_relatorio}: "/>
         <p:selectOneMenu id="tipoRelatorio" value="#{relatorioCadastroUOBean.tipoRelatorio}">
-	         <f:selectItems value="#{relatorioCadastroUOBean.listaRelatorio}"/>
+	        <f:selectItems value="#{relatorioCadastroUOBean.tiposRelatorios}" var="t" itemValue="#{t}" itemLabel="#{managedBundle.text(t.descricao)}"/>
         </p:selectOneMenu>
 
 		<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio} *"/>
