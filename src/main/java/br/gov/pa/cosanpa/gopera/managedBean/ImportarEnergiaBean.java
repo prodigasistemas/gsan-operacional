@@ -162,7 +162,7 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 	    if (unidadesNaoLocalizadas.length() != 0){
 	        throw new UnidadesConsumidorasNaoLocalizadas(unidadesNaoLocalizadas.toString());
 	    }
-	    
+	    registro.getDados().addAll(lista);
         registro.setQtdUC(lista.size());
         registro.setValorTotal(valorTotal);
         registro.setUsuario(usuarioProxy.getCodigo());
