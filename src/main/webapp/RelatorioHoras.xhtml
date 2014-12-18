@@ -14,7 +14,7 @@ xmlns:p="http://primefaces.org/ui">
 	<tr>
 		<td class="caminho">Você está aqui:</td>
 		<td class="sessao"> Relatório </td>
-		<td class="pagina"> &raquo; Horas Trabalhadas</td>
+		<td class="pagina"> &raquo; #{m.horas_sistema}</td>
 	</tr>
 </table>
 
@@ -23,71 +23,69 @@ xmlns:p="http://primefaces.org/ui">
 	<div class='campos_cadastro'>
 		<div>
 			<h:outputLabel for="regional" value="#{m.regional}: "/>
-			<p:selectOneMenu id="regional" value="#{relatorioHorasBean.cadastros.codigoRegional}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{relatorioHorasBean.cadastros.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-				<p:ajax update="unidadenegocio,municipio,localidade,unidadeoperacional" event="change" />  
+			<p:selectOneMenu id="regional" value="#{relatorioHorasBean.to.codigoRegional}" effect="fade" converter="selectOneConverter">
+				<f:selectItems value="#{consultasCadastroBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				<p:ajax update="unidadenegocio,municipio, localidade, unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
 		<div>
 			<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio}: " />
-		    <p:selectOneMenu id="unidadenegocio" value="#{relatorioHorasBean.cadastros.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{relatorioHorasBean.cadastros.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-				<p:ajax update="municipio,localidade,unidadeoperacional" event="change" />  
+		    <p:selectOneMenu id="unidadenegocio" value="#{relatorioHorasBean.to.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter">
+				<f:selectItems value="#{consultasCadastroBean.unidadesNegocio(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				<p:ajax update="municipio, localidade, unidadeoperacional" event="change" />  
 		    </p:selectOneMenu> 
 		</div>
 		
 		<div>
 			<h:outputLabel for="municipio" value="#{m.municipio}: " />
-		    <p:selectOneMenu id="municipio" value="#{relatorioHorasBean.cadastros.codigoMunicipio}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{relatorioHorasBean.cadastros.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-			    <p:ajax update="localidade,unidadeoperacional" event="change" />  
+		    <p:selectOneMenu id="municipio" value="#{relatorioHorasBean.to.codigoMunicipio}" effect="fade" converter="selectOneConverter">
+				<f:selectItems value="#{consultasCadastroBean.municipios(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+				<p:ajax update="localidade, unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
 		<div>
 			<h:outputLabel for="localidade" value="#{m.localidade}: " />
-		    <p:selectOneMenu id="localidade" value="#{relatorioHorasBean.cadastros.codigoLocalidade}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{relatorioHorasBean.cadastros.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		    <p:selectOneMenu id="localidade" value="#{relatorioHorasBean.to.codigoLocalidade}" effect="fade" converter="selectOneConverter">
+				<f:selectItems value="#{consultasCadastroBean.localidades(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
 			    <p:ajax update="unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
 		<div>
 			<h:outputLabel for="tipounidadeoperacional" value="#{m.tipo_unidade_operacional}: " />
-		    <p:selectOneMenu id="tipounidadeoperacional" value="#{relatorioHorasBean.cadastros.tipoUnidadeOperacional}" effect="fade" >
+		    <p:selectOneMenu id="tipounidadeoperacional" value="#{relatorioHorasBean.to.tipoUnidadeOperacional}" effect="fade" >
 	    		<f:selectItem itemLabel="Selecione..." itemValue="0"/>
 		        <f:selectItem itemLabel="EAB" itemValue="1"/>
 		        <f:selectItem itemLabel="ETA" itemValue="2"/>
 		        <f:selectItem itemLabel="EAT" itemValue="3"/>
+			    <p:ajax update="unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>	
 		</div>
 		
 		<div>
 			<h:outputLabel for="unidadeoperacional" value="Unidade Operacional: " />
-		    <p:selectOneMenu id="unidadeoperacional" value="#{relatorioHorasBean.cadastros.codigoUnidadeOperacional}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Unidade Operacional é Obrigatória" >
-		        <f:selectItems value="#{relatorioHorasBean.cadastros.unidadesOperacionais}" var="x" itemLabel="#{x.descricao}" itemValue="#{x.codigo}"/>
+		    <p:selectOneMenu id="unidadeoperacional" value="#{relatorioHorasBean.to.codigoUnidadeOperacional}" effect="fade" converter="selectOneConverter" >
+		        <f:selectItems value="#{consultasCadastroBean.estacoesOperacionais(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.pk.id}"/>
 		    </p:selectOneMenu>	    
 		</div>
-		 
+		
 		<div>
 			<h:outputLabel for="referenciaInicial" value="#{m.referencia_inicial}: *"/>
-			<p:inputText value="#{relatorioHorasBean.to.referenciaInicial}" id="referenciaInicial" style="width: 80px" size="8" required="true" requiredMessage="#{m.aviso_referencia_inicial_obrigatoria}"/>
+			<p:inputText value="#{relatorioHorasBean.to.referenciaInicial}" id="referenciaInicial" style="width: 80px" size="8" required="true" requiredMessage="#{m.aviso_referencia_inicial_obrigatoria}">
+				<f:converter converterId="operacional.MesReferenciaConverter"/>
+			</p:inputText>
 		</div>
 		 
 
 		<div>
 			<h:outputLabel for="referenciaFinal" value="#{m.referencia_final}: *"/>
-			<p:inputText value="#{relatorioHorasBean.to.referenciaFinal}" id="referenciaFinal" style="width: 80px" size="8" required="true" requiredMessage="#{m.aviso_referencia_final_obrigatoria}"/>
+			<p:inputText value="#{relatorioHorasBean.to.referenciaFinal}" id="referenciaFinal" style="width: 80px" size="8" required="true" requiredMessage="#{m.aviso_referencia_final_obrigatoria}">
+				<f:converter converterId="operacional.MesReferenciaConverter"/>
+			</p:inputText>
 		</div>
     
-		<div>
-			<h:outputLabel for="tipoExportacao" value="#{m.tipo_exportacao}: " />
-	        <p:selectOneRadio id="tipoExportacao" value="#{relatorioHorasBean.tipoExportacao}">
-	        	<f:selectItems value="#{relatorioHorasBean.tiposExportacao}"/>  
-	        </p:selectOneRadio>
-		</div>
-                
 		<div>
 			<p:commandButton value="Exibir" action="#{relatorioHorasBean.exibir}" ajax="false"/>
 		</div>
