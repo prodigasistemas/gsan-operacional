@@ -226,9 +226,8 @@ xmlns:p="http://primefaces.org/ui">
 					<h:outputText value="EAB" rendered="#{var.tipoUnidadeOperacional == 1}" />
 					<h:outputText value="ETA" rendered="#{var.tipoUnidadeOperacional == 2}" />
 					<h:outputText value="EAT" rendered="#{var.tipoUnidadeOperacional == 3}" />
-					<h:outputText value="RSO" rendered="#{var.tipoUnidadeOperacional == 4}" />		
-					<h:outputText value="RESIDÊNCIA" rendered="#{var.tipoUnidadeOperacional == 5}" />
-					<h:outputText value="ESCRITÓRIO" rendered="#{var.tipoUnidadeOperacional == 6}" />
+					<h:outputText value="#{m.residencia}" rendered="#{var.tipoUnidadeOperacional == 5}" />
+					<h:outputText value="#{m.escritorio}" rendered="#{var.tipoUnidadeOperacional == 6}" />
 				</p:column>					
 				<p:column headerText="Descrição" style="text-align:left">
 			  		<f:facet name="header">

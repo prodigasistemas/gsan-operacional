@@ -50,7 +50,7 @@ import br.gov.pa.cosanpa.gopera.util.WebBundle;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.RelatorioEnergiaEletricaRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
-import br.gov.servicos.operacao.to.ContratoUnidadeConsumidoraTO;
+import br.gov.servicos.operacao.to.UnidadeConsumidoraSemContratoTO;
 
 @ManagedBean
 @ViewScoped
@@ -112,7 +112,7 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 		try {
 			switch (tipoRelatorio) {
 			case UCS_SEM_CONTRATO:
-			    List<ContratoUnidadeConsumidoraTO> lista = unidadeConsumidoraRepositorio.unidadesConsumidorasSemVigenciaContratual(Calendar.getInstance().getTime());
+			    List<UnidadeConsumidoraSemContratoTO> lista = unidadeConsumidoraRepositorio.unidadesConsumidorasAtivasSemContrato();
 			    
 			    if (lista.size() == 0) {
 			        mostrarMensagemAviso(bundle.getText("aviso_nao_existem_unidades_consumidoras_sem_contrato"));
@@ -130,18 +130,18 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
                         
                         public List<String[]> dados() {
                             List<String[]> linhas = new ArrayList<String[]>();
-                            for (ContratoUnidadeConsumidoraTO uc : lista) {
-                                String[] linha = new String[2];
-                                linha[0] = String.valueOf(uc.getCodigoUC());
-                                linha[1] = Utilitarios.formataData(uc.getDataFimContrato(), FormatoData.DIA_MES_ANO);
-                                linhas.add(linha);
-                            }
+                            
+                            lista.forEach(e -> linhas.add(e.toArray()));
+                            
                             return linhas;
                         }
                         
                         public String[] cabecalho() {
-                            return new String[]{bundle.getText("unidade_consumidora")
-                                    , bundle.getText("fim_contrato")};
+                            return new String[]{bundle.getText("codigo_uc")
+                                    , bundle.getText("unidade_consumidora")
+                                    , bundle.getText("unidade_negocio")
+                                    , bundle.getText("localidade")
+                                    };
                         }
                     };
                     
