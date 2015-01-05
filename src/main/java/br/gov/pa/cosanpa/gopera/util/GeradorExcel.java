@@ -3,7 +3,10 @@ package br.gov.pa.cosanpa.gopera.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,8 +53,6 @@ public class GeradorExcel {
             
             negrito = new WritableCellFormat(tahoma11);
             negrito.setAlignment(Alignment.LEFT);
-            negrito.setBorder(Border.TOP, BorderLineStyle.MEDIUM);
-            negrito.setBorder(Border.BOTTOM, BorderLineStyle.MEDIUM);
         } catch (Exception e) {
             
         }
@@ -115,8 +116,9 @@ public class GeradorExcel {
     }
 
     private void adicionaTitulo(WritableSheet sheet) throws Exception {
-        Label nmRelatorio = new Label(1, 0, excel.tituloRelatorio(), negrito);
-        sheet.addCell(nmRelatorio);
+        sheet.addCell(new Label(1, 0, excel.tituloRelatorio(), negrito));
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        sheet.addCell(new Label(3, 0, "Data: " + format.format(new Date()), negrito));
     }
 
     private void addLabel(WritableSheet planilha, int coluna, int linha, String s) throws Exception {
