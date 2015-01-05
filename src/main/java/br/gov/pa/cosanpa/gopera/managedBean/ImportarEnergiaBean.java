@@ -147,7 +147,7 @@ public class ImportarEnergiaBean extends BaseBean<EnergiaEletrica> {
 	    StringBuilder unidadesNaoLocalizadas = new StringBuilder();
 	    
 	    for (EnergiaEletricaDados dados : lista) {
-            UnidadeConsumidora unidadeConsumidora = fachadaUC.obterUnidadeConsumidoraUC(dados.getCodigoUC());
+            UnidadeConsumidora unidadeConsumidora = fachadaUC.obterUnidadeConsumidoraPorCodigo(dados.getCodigoUC());
             dados.setUnidadeConsumidora(unidadeConsumidora);
             if (unidadeConsumidora != null) {
                 ContratoEnergia contrato = fachadaContrato.obterContratoVigente(unidadeConsumidora.getCodigo());

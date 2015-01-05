@@ -215,10 +215,15 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 	
 	public String confirmar() {
 		try {
-			registro.setRegionalProxy(fachadaProxy.getRegionalUnidadeNegocio(registro.getUnidadeNegocioProxy().getCodigo()));
-			registro.setUsuario(usuarioProxy.getCodigo());
-			registro.setUltimaAlteracao(new Date());
-			super.confirmarLazy();
+		    
+		    if (fachada.existeUnidadeConsumidora(registro.getUc())){
+		        this.mostrarMensagemErro(bundle.getText("erro_unidade_consumidora_cadastrada_com_codigo"));
+		    }else{
+		        registro.setRegionalProxy(fachadaProxy.getRegionalUnidadeNegocio(registro.getUnidadeNegocioProxy().getCodigo()));
+		        registro.setUsuario(usuarioProxy.getCodigo());
+		        registro.setUltimaAlteracao(new Date());
+		        super.confirmarLazy();
+		    }
 		} catch (Exception e) {
 			this.mostrarMensagemErro("Erro ao Salvar");
 		}
