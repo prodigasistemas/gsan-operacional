@@ -101,16 +101,17 @@ public class GeradorExcel {
         
         String[] cabecalho = excel.cabecalho();
         
-        List<String[]> dados = excel.dados();
+        List<List<String>> dados = excel.dados();
         
         for (int i = 0; i < cabecalho.length; i++){
             this.addLabel(sheet, i, 2, cabecalho[i]);
         }
         
+        
         for (int linha = 0; linha < dados.size(); linha++){
-            String[] registro = dados.get(linha);
-            for (int i = 0; i < registro.length; i++){
-                this.addLabel(sheet, i, linha + 3, registro[i]);
+            List<String> registro = dados.get(linha);
+            for (int i = 0; i < registro.size(); i++){
+                this.addLabel(sheet, i, linha + 3, registro.get(i));
             }
         }
     }

@@ -128,8 +128,8 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
                             return tipoRelatorio.getDescricao();
                         }
                         
-                        public List<String[]> dados() {
-                            List<String[]> linhas = new ArrayList<String[]>();
+                        public List<List<String>> dados() {
+                            List<List<String>> linhas = new ArrayList<List<String>>();
                             
                             lista.forEach(e -> linhas.add(e.toArray()));
                             

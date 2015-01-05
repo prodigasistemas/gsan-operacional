@@ -17,7 +17,7 @@ public abstract class DadosExcel {
     
     public abstract String[] cabecalho();
     
-    public abstract List<String[]> dados(); 
+    public abstract List<List<String>> dados(); 
     
     public DadosExcel() {
         diretorio = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/reports");

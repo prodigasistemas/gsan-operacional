@@ -1,6 +1,7 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -38,6 +39,7 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 			}
 			
 			List<HorasRelatorioTO> relatorio = relatorioHoras.consultaHoras(to);
+			final Integer qtdMaximaCmb = relatorioHoras.quantidadeMaximaCmb(to);
 			
 			if (relatorio.size() == 0){
 			    mostrarMensagemAviso(bundle.getText("erro_nao_existe_retorno_filtro"));
@@ -52,8 +54,8 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 			            return "Horas do Sistema";
 			        }
 			        
-			        public List<String[]> dados() {
-			            List<String[]> linhas = new ArrayList<String[]>();
+			        public List<List<String>> dados() {
+			            List<List<String>> linhas = new ArrayList<List<String>>();
 			            for (HorasRelatorioTO item : relatorio) {
 			                linhas.add(item.toArray());
 			            }
@@ -61,7 +63,7 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 			        }
 			        
 			        public String[] cabecalho() {
-			            return new String[]{
+			            String[] cabecalho = new String[]{
 			                    bundle.getText("gerencia_regional")
 			                    , bundle.getText("unidade_negocio")
 			                    , bundle.getText("municipio")
@@ -70,13 +72,21 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 			                    , bundle.getText("codigo_uc")
 			                    , bundle.getText("unidade_operacional")
 			                    , bundle.getText("referencia")
-			                    , bundle.getText("conjunto_motor_bomba")
 			                    , bundle.getText("total_horas_mes")
-			                    , bundle.getText("horas_trabalhadas")
+			                    , bundle.getText("conjunto_motor_bomba")
 			                    , bundle.getText("horas_paradas_energia")
 			                    , bundle.getText("horas_paradas_manutencao")
 			                    , bundle.getText("horas_paradas_controle")
+			                    , bundle.getText("horas_trabalhadas")
 			            };
+			            
+			            String[] comCmbs = Arrays.copyOf(cabecalho, cabecalho.length + qtdMaximaCmb);
+			            
+			            for(int i = cabecalho.length; i < cabecalho.length + qtdMaximaCmb; i++){
+			                comCmbs[i] = (i - cabecalho.length + 1) + " CMB";
+			            }
+			            
+			            return comCmbs;
 			        }
 			    };
 			    
