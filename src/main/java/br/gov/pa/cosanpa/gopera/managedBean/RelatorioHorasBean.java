@@ -31,11 +31,11 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 	@EJB
 	private ProxyOperacionalRepositorio fachadaProxy;
 
-	public String exibir() {
+	public void exibir() {
 		try {
 			if (!to.intervaloValido()) {
 				mostrarMensagemErro(bundle.getText("erro_intervalo_invalido"));
-				return "";
+				return;
 			}
 			
 			List<HorasRelatorioTO> relatorio = relatorioHoras.consultaHoras(to);
@@ -97,8 +97,6 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 			logger.error(bundle.getText("erro_gerar_relatorio"), e);
 			mostrarMensagemErro(bundle.getText("erro_gerar_relatorio"));
 		}
-
-		return null;
 	}
 
 	public ConsultaHorasTO getTo() {

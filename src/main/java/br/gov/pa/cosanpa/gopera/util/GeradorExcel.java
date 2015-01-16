@@ -63,7 +63,7 @@ public class GeradorExcel {
     public void geraPlanilha() throws Exception {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpServletResponse response = (HttpServletResponse) context.getResponse();
-        response.setHeader("Content-Disposition", "attachment;filename=\""  + excel.nomeArquivo() + ".xls"+  "\"");
+        response.setHeader("Content-Disposition", "inline;filename=\""  + excel.nomeArquivo() + ".xls"+  "\"");
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("ISO-8859-1");
         OutputStream output = response.getOutputStream();
