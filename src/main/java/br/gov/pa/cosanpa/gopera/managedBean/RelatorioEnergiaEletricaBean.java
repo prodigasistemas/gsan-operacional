@@ -119,6 +119,13 @@ public class RelatorioEnergiaEletricaBean extends BaseBean<RelatorioEnergiaEletr
 			        return;
 			    }else{
 			        DadosExcel excel = new DadosExcel() {
+	                    public String periodo() {
+	                        return "";
+	                    }
+			            
+	                    public String filtro(){
+	                        return "";
+	                    }
                         
                         public String tituloRelatorio() {
                             return bundle.getText(tipoRelatorio.getDescricao());

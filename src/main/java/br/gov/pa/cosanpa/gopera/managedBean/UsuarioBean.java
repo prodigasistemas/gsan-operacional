@@ -13,6 +13,8 @@ import org.jboss.logging.Logger;
 
 import br.gov.model.operacao.LancamentoPendente;
 import br.gov.model.operacao.UsuarioProxy;
+import br.gov.pa.cosanpa.gopera.servicos.ConsumoProdutoBO;
+import br.gov.pa.cosanpa.gopera.servicos.HorasBO;
 import br.gov.pa.cosanpa.gopera.util.WebUtil;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 
@@ -26,6 +28,12 @@ public class UsuarioBean extends BaseBean {
 	@EJB
 	private ProxyOperacionalRepositorio fachadaProxy;
 	private UsuarioProxy usuarioProxy;
+	
+	@EJB
+	private ConsumoProdutoBO consumoBO;
+	
+	@EJB
+	private HorasBO horasBO;
 	
     public UsuarioBean() {
     	
@@ -51,7 +59,7 @@ public class UsuarioBean extends BaseBean {
     		//Setando Localização Default
 			 Locale.setDefault(new Locale("pt", "BR"));
     		//Recuperando Pendências de Produto Químico do Usuário
-			List<LancamentoPendente> pendencias = fachadaProxy.getConsumoPendenteUsuario(usuarioProxy, 1);
+			List<LancamentoPendente> pendencias = consumoBO.obterConsumosPendentes();
 			if (pendencias != null){
 				if (pendencias.size() == 0){
 					this.mostrarMensagemSucesso(bundle.getText("aviso_nao_existem_pend_prod_quimico"));
@@ -69,7 +77,7 @@ public class UsuarioBean extends BaseBean {
 				}
     		}
     		//Recuperando Pendências de Horas Trabalhadas do Usuário
-			pendencias = fachadaProxy.getHorasPendenteUsuario(usuarioProxy, 1);
+			pendencias = horasBO.obterHorasPendentes();
 			if (pendencias != null){
 				if (pendencias.size() == 0){
 					this.mostrarMensagemSucesso(bundle.getText("aviso_nao_existem_pend_horas_trab"));

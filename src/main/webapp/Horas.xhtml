@@ -133,7 +133,7 @@ xmlns:p="http://primefaces.org/ui">
 			</div>
 			
 			<div>
-				<p:dataTable var="var" id="tabela" value="#{horasBean.cadastro.cmbs}" paginator="false" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Nenhum Registro Encontrado">
+				<p:dataTable var="var" id="tabela" value="#{horasBean.cadastro.cmbs}" paginator="false" editable="true">
 			        <f:facet name="header">  
 			            Conjunto Motor-Bomba
 			        </f:facet> 			

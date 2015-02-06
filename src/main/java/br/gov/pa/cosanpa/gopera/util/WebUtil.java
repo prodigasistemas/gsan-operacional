@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,9 +89,9 @@ public class WebUtil {
 	
 	public List<String> mesesPeriodo(Date dataInicial, Date dataFinal) {
 		List<String> meses = new LinkedList<String>();
-		java.text.NumberFormat doisNumeros = java.text.NumberFormat.getInstance();
+		NumberFormat doisNumeros = NumberFormat.getInstance();
 		Date inicio = DateUtils.truncate(dataInicial, Calendar.DAY_OF_MONTH);
-		Date fim = DateUtils.truncate(dataFinal, Calendar.DAY_OF_MONTH);
+		Date fim    = DateUtils.truncate(dataFinal, Calendar.DAY_OF_MONTH);
 		doisNumeros.setMinimumIntegerDigits(2);
 		while (!inicio.after(fim)) {
 			meses.add(doisNumeros.format(DateUtils.toCalendar(inicio).get(Calendar.MONTH) + 1));

@@ -59,12 +59,15 @@
 						</p:submenu>
 						<p:submenu label="Movimento">
 							<p:submenu label="Produtos Qu&iacute;micos">
-								<p:submenu label="Consumo Produto Qu&iacute;mico">
-									<!--								<p:menuitem value="Sistema de Abastecimento" action="#{consumoProdutoBean.iniciar}" ajax="false"/> -->
-									<p:menuitem value="ETA" action="#{consumoETAProdutoBean.iniciar}" ajax="false" />
-									<p:menuitem value="EAT" action="#{consumoEATProdutoBean.iniciar}" ajax="false" />
+								<p:submenu label="#{m.consumo_produtos_quimicos}">
+									<p:menuitem value="ETA" outcome="/ConsumoProduto" ajax="false" >
+										<f:param name="tipoEstacao" value="ETA"/>									
+									</p:menuitem>
+									<p:menuitem value="EAT" outcome="/ConsumoProduto" ajax="false" >
+										<f:param name="tipoEstacao" value="EAT"/>									
+									</p:menuitem>
 								</p:submenu>
-								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{consumoPendenteBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/ConsumoPendente" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Energia El&eacute;trica">
 								<p:menuitem value="Importar Arquivo Energia El&eacute;trica" outcome="/ImportarEnergia" ajax="false" />
@@ -79,7 +82,7 @@
 								<p:menuitem value="EAT - #{m.estacao_agua_tratada}" outcome="/Horas" ajax="false">
 									<f:param name="tipoEstacao" value="EAT"/>
 								</p:menuitem>
-								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{horasPendenteBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/HorasPendente" ajax="false" />
 							</p:submenu>
 							<p:submenu label="Volume de &Aacute;gua">
 								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabVolumeBean.iniciar}" ajax="false" />
@@ -100,7 +103,7 @@
 								<p:menuitem value="Energia El&eacute;trica" outcome="/RelatorioCadastroEE"  ajax="false" />
 								<p:menuitem value="Macro Medidor" action="#{relatorioCadastroVABean.iniciar}" ajax="false" />
 							</p:submenu>
-							<p:menuitem value="Produtos Qu&iacute;micos" action="#{relatorioGerencialBean.iniciar}" ajax="false" />
+							<p:menuitem value="#{m.produtos_quimicos}" outcome="/RelatorioConsumoProdutosQuimicos" ajax="false" />
 							<p:menuitem value="Energia El&eacute;trica" action="#{relatorioEnergiaEletricaBean.iniciar}" ajax="false" />
 							<p:menuitem value="Horas Trabalhadas e Paradas" outcome="/RelatorioHoras" ajax="false"/>
 							<!--

@@ -40,9 +40,9 @@ public class ConsultasCadastroBean {
 
     public List<UnidadeNegocioProxy> unidadesNegocio(ConsultaCadastroTO to) {
         List<UnidadeNegocioProxy> unidadesNegocio = new ArrayList<UnidadeNegocioProxy>();
-        if (to.getCodigoRegional() != null) {
+        if (to.getRegional() != null) {
             try {
-                unidadesNegocio = proxy.getListaUnidadeNegocio(to.getCodigoRegional());
+                unidadesNegocio = proxy.getListaUnidadeNegocio(to.getRegional().getCodigo());
             } catch (Exception e) {
                 throw new ErroConsultaSistemaExterno(e);
             }
@@ -53,9 +53,9 @@ public class ConsultasCadastroBean {
 
     public List<MunicipioProxy> municipios(ConsultaCadastroTO to) {
         List<MunicipioProxy> municipios = new ArrayList<MunicipioProxy>();
-        if (to.getCodigoUnidadeNegocio() != null) {
+        if (to.getUnidadeNegocio() != null) {
             try {
-                municipios = proxy.getListaMunicipio(to.getCodigoRegional(), to.getCodigoUnidadeNegocio());
+                municipios = proxy.getListaMunicipio(to.getRegional().getCodigo(), to.getUnidadeNegocio().getCodigo());
             } catch (Exception e) {
                 throw new ErroConsultaSistemaExterno(e);
             }
@@ -66,9 +66,12 @@ public class ConsultasCadastroBean {
     
     public List<LocalidadeProxy> localidades(ConsultaCadastroTO to) {
         List<LocalidadeProxy> localidades = new ArrayList<LocalidadeProxy>();
-        if (to.getCodigoMunicipio() != null) {
+        if (to.getMunicipio() != null) {
             try {
-                localidades = proxy.getListaLocalidade(to.getCodigoRegional(), to.getCodigoUnidadeNegocio(), to.getCodigoMunicipio());
+                localidades = proxy.getListaLocalidade(
+                        to.getRegional().getCodigo()
+                        , to.getUnidadeNegocio().getCodigo()
+                        , to.getMunicipio().getCodigo());
             } catch (Exception e) {
                 throw new ErroConsultaSistemaExterno(e);
             }
@@ -79,18 +82,18 @@ public class ConsultasCadastroBean {
 
     public List<EstacaoOperacional> estacoesOperacionais(ConsultaCadastroTO to) {
         List<EstacaoOperacional> estacoes = new ArrayList<EstacaoOperacional>();
-        if (to.getCodigoLocalidade() != null && to.getTipoUnidadeOperacional() != null) {
+        if (to.getLocalidade() != null && to.getTipoEstacaoOperacional() != null) {
             try {
-                estacoes = estacaoOperacionalEJB.estacoes(to.getCodigoRegional()
-                        , to.getCodigoUnidadeNegocio()
-                        , to.getCodigoMunicipio()
-                        , to.getCodigoLocalidade()
-                        , to.getTipoUnidadeOperacional());
+                estacoes = estacaoOperacionalEJB.estacoes(to.getRegional().getCodigo()
+                        , to.getUnidadeNegocio().getCodigo()
+                        , to.getMunicipio().getCodigo()
+                        , to.getLocalidade().getCodigo()
+                        , to.getTipoEstacaoOperacional());
             } catch (Exception e) {
                 throw new ErroConsultaSistemaExterno(e);
             }
         }
-        estacoes.add(0, new EstacaoOperacional(-1, -1, "Selecione..."));
+        estacoes.add(0, new EstacaoOperacional(to.getTipoEstacaoOperacional(), -1, "Selecione..."));
         return estacoes;
     }    
 }

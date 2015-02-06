@@ -23,39 +23,39 @@ xmlns:p="http://primefaces.org/ui">
 	<div class='campos_cadastro'>
 		<div>
 			<h:outputLabel for="regional" value="#{m.regional}: "/>
-			<p:selectOneMenu id="regional" value="#{relatorioHorasBean.to.codigoRegional}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{consultasCadastroBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+			<p:selectOneMenu id="regional" value="#{relatorioHorasBean.to.regional}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
 				<p:ajax update="unidadenegocio,municipio, localidade, unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
 		<div>
 			<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio}: " />
-		    <p:selectOneMenu id="unidadenegocio" value="#{relatorioHorasBean.to.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{consultasCadastroBean.unidadesNegocio(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		    <p:selectOneMenu id="unidadenegocio" value="#{relatorioHorasBean.to.unidadeNegocio}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.unidadesNegocio(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
 				<p:ajax update="municipio, localidade, unidadeoperacional" event="change" />  
 		    </p:selectOneMenu> 
 		</div>
 		
 		<div>
 			<h:outputLabel for="municipio" value="#{m.municipio}: " />
-		    <p:selectOneMenu id="municipio" value="#{relatorioHorasBean.to.codigoMunicipio}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{consultasCadastroBean.municipios(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		    <p:selectOneMenu id="municipio" value="#{relatorioHorasBean.to.municipio}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.municipios(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
 				<p:ajax update="localidade, unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
 		<div>
 			<h:outputLabel for="localidade" value="#{m.localidade}: " />
-		    <p:selectOneMenu id="localidade" value="#{relatorioHorasBean.to.codigoLocalidade}" effect="fade" converter="selectOneConverter">
-				<f:selectItems value="#{consultasCadastroBean.localidades(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+		    <p:selectOneMenu id="localidade" value="#{relatorioHorasBean.to.localidade}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.localidades(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
 			    <p:ajax update="unidadeoperacional" event="change" />  
 		    </p:selectOneMenu>
 		</div>
 		
 		<div>
 			<h:outputLabel for="tipounidadeoperacional" value="#{m.tipo_unidade_operacional}: " />
-		    <p:selectOneMenu id="tipounidadeoperacional" value="#{relatorioHorasBean.to.tipoUnidadeOperacional}" effect="fade" >
+		    <p:selectOneMenu id="tipounidadeoperacional" value="#{relatorioHorasBean.to.tipoEstacaoOperacional}" effect="fade" >
 	    		<f:selectItem itemLabel="Selecione..." itemValue="0"/>
 		        <f:selectItem itemLabel="EAB" itemValue="1"/>
 		        <f:selectItem itemLabel="ETA" itemValue="2"/>
@@ -66,8 +66,8 @@ xmlns:p="http://primefaces.org/ui">
 		
 		<div>
 			<h:outputLabel for="unidadeoperacional" value="Unidade Operacional: " />
-		    <p:selectOneMenu id="unidadeoperacional" value="#{relatorioHorasBean.to.codigoUnidadeOperacional}" effect="fade" converter="selectOneConverter" >
-		        <f:selectItems value="#{consultasCadastroBean.estacoesOperacionais(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x.pk.id}"/>
+		    <p:selectOneMenu id="unidadeoperacional" value="#{relatorioHorasBean.to.estacaoOperacional}" effect="fade" converter="estacaoOperacionalConverter" >
+		        <f:selectItems value="#{consultasCadastroBean.estacoesOperacionais(relatorioHorasBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
 		    </p:selectOneMenu>	    
 		</div>
 		

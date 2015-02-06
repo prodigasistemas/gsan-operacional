@@ -21,7 +21,7 @@ public class ConverterProduto implements Converter{
         try{
         	Produto produto = new Produto();
         	Integer valor = Integer.parseInt(value);
-        	produto.getUnidadeMedidaProduto().setCodigo(valor);
+        	produto.getUnidadeMedida().setCodigo(valor);
         	return produto;
         }catch(Exception ex){
         	throw new ConverterException("Não foi possível aplicar conversão de item com valor ["+value+"] no componente ["+component.getId()+"]", ex);

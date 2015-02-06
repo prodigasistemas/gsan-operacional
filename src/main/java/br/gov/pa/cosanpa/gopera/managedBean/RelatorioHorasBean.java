@@ -1,5 +1,7 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
+import static br.gov.model.util.Utilitarios.converteAnoMesParaMesAno;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +14,6 @@ import org.jboss.logging.Logger;
 
 import br.gov.pa.cosanpa.gopera.util.DadosExcel;
 import br.gov.pa.cosanpa.gopera.util.GeradorExcel;
-import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.RelatorioHorasRepositorio;
 import br.gov.servicos.operacao.to.ConsultaHorasTO;
 import br.gov.servicos.operacao.to.HorasRelatorioTO;
@@ -28,9 +29,6 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 	
 	private ConsultaHorasTO to = new ConsultaHorasTO();
 	
-	@EJB
-	private ProxyOperacionalRepositorio fachadaProxy;
-
 	public void exibir() {
 		try {
 			if (!to.intervaloValido()) {
@@ -45,6 +43,13 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 			    mostrarMensagemAviso(bundle.getText("erro_nao_existe_retorno_filtro"));
 			}else{
 			    DadosExcel excel = new DadosExcel() {
+                    public String periodo() {
+                        return converteAnoMesParaMesAno(to.getReferenciaInicial()) + " a " + converteAnoMesParaMesAno(to.getReferenciaFinal());
+                    }
+			        
+			        public String filtro(){
+			            return to.filtroSelecionado();
+			        }
 			        
 			        public String tituloRelatorio() {
 			            return bundle.getText("horas_sistema");

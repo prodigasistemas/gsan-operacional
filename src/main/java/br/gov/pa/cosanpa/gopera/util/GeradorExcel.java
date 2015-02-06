@@ -32,6 +32,8 @@ public class GeradorExcel {
     
     private WritableCellFormat label;
     
+    private WritableCellFormat left;
+    
     private WritableCellFormat negrito;
     
     public GeradorExcel(DadosExcel excel) {
@@ -50,6 +52,12 @@ public class GeradorExcel {
             label.setVerticalAlignment(VerticalAlignment.CENTRE);
             label.setAlignment(Alignment.CENTRE);
             label.setBorder(Border.ALL, BorderLineStyle.THIN);
+            
+            left = new WritableCellFormat(tahoma10);
+            left.setWrap(false);
+            left.setVerticalAlignment(VerticalAlignment.CENTRE);
+            left.setAlignment(Alignment.LEFT);
+            left.setBorder(Border.ALL, BorderLineStyle.THIN);
             
             negrito = new WritableCellFormat(tahoma11);
             negrito.setAlignment(Alignment.LEFT);
@@ -107,6 +115,9 @@ public class GeradorExcel {
             this.addLabel(sheet, i, 2, cabecalho[i]);
         }
         
+        escreveFiltro(sheet);
+
+        escrevePeriodo(sheet);
         
         for (int linha = 0; linha < dados.size(); linha++){
             List<String> registro = dados.get(linha);
@@ -126,5 +137,18 @@ public class GeradorExcel {
         if (s == null)
             s = "";
         planilha.addCell(new Label(coluna, linha, s, label));
+    }
+    
+    private void escreveFiltro(WritableSheet planilha) throws Exception {
+        planilha.addCell(new Label(0, 1, excel.filtro(), left));
+        planilha.mergeCells(0, 1, 3, 1);
+    }
+    
+    private void escrevePeriodo(WritableSheet sheet) throws Exception {
+        String periodo = excel.periodo();
+        if (periodo != null && periodo.length() > 0){
+            this.addLabel(sheet, 4, 1, "Período: ");
+            this.addLabel(sheet, 5, 1, periodo);
+        }
     }
 }

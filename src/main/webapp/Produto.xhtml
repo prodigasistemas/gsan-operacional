@@ -59,11 +59,11 @@ xmlns:p="http://primefaces.org/ui">
 			</f:facet>
 		  	<h:outputText value="#{var.descricao}" />
 		</p:column>
-		<p:column filterBy="#{var.unidadeMedidaProduto.sigla}" headerText="Sigla" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 40px; min-width: 40px;">
+		<p:column filterBy="#{var.unidadeMedida.sigla}" headerText="Sigla" filterMatchMode="contains" style="text-align:left" filterStyle="max-width: 40px; min-width: 40px;">
 			<f:facet name="header">
 				<h:outputText class="tabela" value="Sigla"/>
 			</f:facet>
-			<h:outputText value="#{var.unidadeMedidaProduto.sigla}" />
+			<h:outputText value="#{var.unidadeMedida.sigla}" />
 		</p:column>
 	</p:dataTable>
 	<p:column>
@@ -86,7 +86,7 @@ xmlns:p="http://primefaces.org/ui">
 			<p:inputText value="#{produtoBean.registro.descricao}" id="descricao" disabled="#{produtoBean.desabilitaForm}" required="true" requiredMessage="Descrição do Produto, deve ser informado."/>
 		</p:column>
 		<p:column>
-			<p:selectOneMenu id="sigla" value="#{produtoBean.registro.unidadeMedidaProduto.codigo}" converter="selectOneConverter" effect="fade" disabled="#{produtoBean.desabilitaForm}" >
+			<p:selectOneMenu id="sigla" value="#{produtoBean.registro.unidadeMedida.codigo}" converter="selectOneConverter" effect="fade" disabled="#{produtoBean.desabilitaForm}" >
 	         	<f:selectItems value="#{produtoBean.unidadeMedidas}" var="unidade" itemLabel="#{unidade.sigla}" itemValue="#{unidade.codigo}"/>  
     		</p:selectOneMenu>
 		</p:column>

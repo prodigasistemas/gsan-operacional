@@ -17,69 +17,29 @@ xmlns:p="http://primefaces.org/ui">
 <br />
 <table>
 	<tr>
-		<td class="caminho">Você está aqui:</td>
-		<td class="sessao"> Movimento </td>
-		<td class="sessao"> Produtos Químicos </td>
-		<td class="pagina"> &raquo; Lançamentos Pendentes</td>
+		<td class="caminho">#{m.voce_esta_aqui}</td>
+		<td class="sessao"> #{m.movimento} </td>
+		<td class="sessao"> #{m.produtos_quimicos} </td>
+		<td class="pagina"> &raquo; #{m.lancamentos_pendentes} </td>
 	</tr>
 </table>
+
 <h:form id="consulta">
 	<p:messages showDetail="false" autoUpdate="true" id="msg" />
-	<p:dataTable id="dataTable" var="var" value="#{consumoPendenteBean.lista}" widgetVar="linha"  
-			paginator="true" rows="10" paginatorPosition="bottom"
-			 paginatorTemplate="{CurrentPageReport}    {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
-			 {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
-		
-		<p:column style="text-align:left" filterBy="#{var.regionalProxy.nome}" headerText="Regional" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
-			<f:facet name="header">
-				<h:outputText class="tabela" value="Regional" />
-			</f:facet>
-			  <h:outputText value="#{var.regionalProxy.nome}"/>
-		</p:column>
-
-		<p:column style="text-align:left" filterBy="#{var.unidadeNegocioProxy.nome}" headerText="Unidade de Negócio" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
-			<f:facet name="header">
-				<h:outputText class="tabela" value="Unidade de Negócio" /> 
-			</f:facet>
-			  <h:outputText value="#{var.unidadeNegocioProxy.nome}"/>
-		</p:column>
-
-		<p:column style="text-align:left" filterBy="#{var.municipioProxy.nome}" headerText="Município" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
-			<f:facet name="header">
-				<h:outputText class="tabela" value="Município" /> 
-			</f:facet>
-			  <h:outputText value="#{var.municipioProxy.nome}"/>
-		</p:column>
-
-		<p:column style="text-align:left" filterBy="#{var.localidadeProxy.nome}" headerText="Localidade" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
-			<f:facet name="header">
-				<h:outputText class="tabela" value="Localidade" /> 
-			</f:facet>
-			  <h:outputText value="#{var.localidadeProxy.nome}"/>
-		</p:column>
-
-		<p:column style="text-align:left" filterBy="#{var.unidadeOperacional}" headerText="Unidade Operacional" filterMatchMode="contains" filterStyle="max-width: 200px; min-width: 200px;">
-			<f:facet name="header">
-				<h:outputText class="tabela" value="Unidade Operacional" /> 
-			</f:facet>
-			  <h:outputText value="#{var.unidadeOperacional}"/>
-		</p:column>
-		
-		<p:column style="text-align:center" styleClass="data" filterBy="#{consumoPendenteBean.filtroData(var.dataConsumo,'dd/MM/yyyy')}" headerText="Data Consumo" filterMatchMode="contains" filterStyle="max-width: 100px; min-width: 100px;">
-			<f:facet name="header">
-				<h:outputText class="tabela" value="Data Pendente" /> 
-			</f:facet>
-			  <h:outputText value="#{var.dataConsumo}">
-			  	<f:convertDateTime pattern="dd/MM/yyyy"/>
-			  </h:outputText>			  	
-		</p:column>
-   </p:dataTable>
-	<script type="text/javascript">
-		$(function(){
-			$(".data input").setMask('date');
-			})
-	</script>	   
+	<br/>
+	<div>
+		<h:outputLabel value="#{m.unidades_com_consumo_pendente}" />
+		&nbsp;
+		<p:outputLabel value="#{consumoPendenteBean.dataPendencia}">
+			<f:convertDateTime pattern="dd/MM/yyyy"/>
+		</p:outputLabel>			  			
+	</div>
+	<br/>
+	<ui:include src="/WEB-INF/templates/listagem_pendentes.xhtml">
+		<ui:param name="listagem" value="#{consumoPendenteBean.lista}" />
+	</ui:include>
 </h:form>
+
 </div> 
 </h:body>
 </ui:define>
