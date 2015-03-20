@@ -1,7 +1,7 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
 import static br.gov.model.util.Utilitarios.formataData;
-import static br.gov.model.util.Utilitarios.formatarBigDecimalComPonto;
+import static br.gov.model.util.Utilitarios.formatarBigDecimalComVirgula;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -105,9 +105,9 @@ public class RelatorioConsumoProdutosQuimicosBean extends BaseMensagemBean{
                             while(!cal.getTime().after(to.getDataFinal())){
                                 BigDecimal qtd = ((RelatorioConsumoProdutoMensalTO) item).getQuantidadesMes().get(formataData(cal.getTime(), FormatoData.ANO_MES));
                                 if (tipoRelatorio == TipoRelatorioProdutoQuimico.FINANCEIRO && qtd != null){
-                                    cols.add(formatarBigDecimalComPonto(item.getValorUnitario().multiply(qtd)));
+                                    cols.add(formatarBigDecimalComVirgula(item.getValorUnitario().multiply(qtd)));
                                 }else{
-                                    cols.add(formatarBigDecimalComPonto(qtd));
+                                    cols.add(formatarBigDecimalComVirgula(qtd));
                                 }
                                 cal.add(Calendar.MONTH, 1);
                             }
