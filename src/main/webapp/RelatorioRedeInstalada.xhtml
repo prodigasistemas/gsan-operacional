@@ -12,65 +12,73 @@ xmlns:p="http://primefaces.org/ui">
 <br/>
 <table>
 	<tr>
-		<td class="caminho">Você está aqui:</td>
-		<td class="sessao"> Relatório </td>
-		<td class="pagina"> &raquo; Adutoras e Redes de Água</td>
+		<td class="caminho">#{m.voce_esta_aqui}:</td>
+		<td class="sessao"> #{m.relatorio} </td>
+		<td class="pagina"> &raquo; #{m.adutoras_rede_agua}</td>
 	</tr>
 </table>
 <h:form id="form" prependId="true">
+
 	<p:messages showDetail="false" autoUpdate="true" id="msg" />
-	<h:panelGrid id="cadastro" columns="2">
-		<h:outputLabel for="regional" value="Regional: "/>
-		<p:selectOneMenu id="regional" value="#{relatorioRedeInstaladaBean.registro.codigoRegional}" effect="fade" converter="selectOneConverter" required="false" requiredMessage="Regional é Obrigatória">
-			    <f:selectItems value="#{relatorioRedeInstaladaBean.listaRegional}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		         <p:ajax update="unidadenegocio,municipio,localidade" event="change" />  
-	    </p:selectOneMenu>
+	<div class='campos_cadastro'>
+		<div>
+			<h:outputLabel for="regional" value="#{m.regional}: "/>
+			<p:selectOneMenu id="regional" value="#{relatorioRedeInstaladaBean.to.regional}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
+				<p:ajax update="unidadenegocio, municipio, localidade" event="change" />  
+		    </p:selectOneMenu>
+		</div>
 		
-		<h:outputLabel for="unidadenegocio" value="Unidade de Negócio: " />
-	    <p:selectOneMenu id="unidadenegocio" value="#{relatorioRedeInstaladaBean.registro.codigoUnidadeNegocio}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Unidade de Negócio é Obrigatória">
-		        <f:selectItems value="#{relatorioRedeInstaladaBean.listaUnidadeNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		        <p:ajax update="municipio,localidade" event="change" />  
-	    </p:selectOneMenu> 
-		
-		<h:outputLabel for="municipio" value="Município: " />
-	    <p:selectOneMenu id="municipio" value="#{relatorioRedeInstaladaBean.registro.codigoMunicipio}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Município é Obrigatório" >
-		        <f:selectItems value="#{relatorioRedeInstaladaBean.listaMunicipio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-		        <p:ajax update="localidade" event="change" />  
-	    </p:selectOneMenu>
-		
-		<h:outputLabel for="localidade" value="Localidade: " />
-	    <p:selectOneMenu id="localidade" value="#{relatorioRedeInstaladaBean.registro.codigoLocalidade}" effect="fade" converter="selectOneConverter"  required="false" requiredMessage="Localidade é Obrigatória" >
-		        <f:selectItems value="#{relatorioRedeInstaladaBean.listaLocalidade}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
-	    </p:selectOneMenu>
+		<div>
+			<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio}: " />
+		    <p:selectOneMenu id="unidadenegocio" value="#{relatorioRedeInstaladaBean.to.unidadeNegocio}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.unidadesNegocio(relatorioRedeInstaladaBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
+				<p:ajax update="municipio, localidade" event="change" />  
+		    </p:selectOneMenu> 
+		</div>
 
-		<h:outputLabel for="referenciaInicial" value="Referência Inicial: *"/>
-		<p:column style="text-align:left">
-			<p:inputText value="#{relatorioRedeInstaladaBean.referenciaInicial}" id="referenciaInicial" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Inicial é Obrigatória"/>
-		</p:column>
+		<div>
+			<h:outputLabel for="municipio" value="#{m.municipio}: " />
+		    <p:selectOneMenu id="municipio" value="#{relatorioRedeInstaladaBean.to.municipio}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.municipios(relatorioRedeInstaladaBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
+				<p:ajax update="localidade" event="change" />  
+		    </p:selectOneMenu>
+		</div>
+		
+		<div>
+			<h:outputLabel for="localidade" value="#{m.localidade}: " />
+		    <p:selectOneMenu id="localidade" value="#{relatorioRedeInstaladaBean.to.localidade}" effect="fade" converter="baseEntidadeConverter">
+				<f:selectItems value="#{consultasCadastroBean.localidades(relatorioRedeInstaladaBean.to)}" var="x" itemLabel="#{x.nome}" itemValue="#{x}"/>
+		    </p:selectOneMenu>
+		</div>
+		
+		<div>
+			<h:outputLabel for="referenciaInicial" value="#{m.referencia_inicial}: *"/>
+			<p:inputText value="#{relatorioRedeInstaladaBean.to.referenciaInicial}" id="referenciaInicial" style="width: 80px" size="8" required="true" requiredMessage="#{m.aviso_referencia_inicial_obrigatoria}">
+				<f:converter converterId="operacional.MesReferenciaConverter"/>
+			</p:inputText>
+		</div>
 
-		<h:outputLabel for="referenciaFinal" value="Referência Final: *"/>
-		<p:column style="text-align:left">
-			<p:inputText value="#{relatorioRedeInstaladaBean.referenciaFinal}" id="referenciaFinal" style="width: 80px !important;" size="8" required="true" requiredMessage="Referência Final é Obrigatória"/>
-		</p:column>
+		<div>
+			<h:outputLabel for="referenciaFinal" value="#{m.referencia_final}: *"/>
+			<p:inputText value="#{relatorioRedeInstaladaBean.to.referenciaFinal}" id="referenciaFinal" style="width: 80px" size="8" required="true" requiredMessage="#{m.aviso_referencia_final_obrigatoria}">
+				<f:converter converterId="operacional.MesReferenciaConverter"/>
+			</p:inputText>
+		</div>
     
-		<h:outputLabel for="tipoExportacao" value="Tipo Exportação: " />
-        <p:selectOneRadio id="tipoExportacao" value="#{relatorioRedeInstaladaBean.tipoExportacao}">  
-            <f:selectItem itemLabel="PDF" itemValue="1" />  
-            <f:selectItem itemLabel="XLS" itemValue="2" />  
-        </p:selectOneRadio>
-                
-		<p:column>
-			<p:commandButton value="Exibir" action="#{relatorioRedeInstaladaBean.exibir}" ajax="false"/>
-		</p:column>
+		<div>
+			<p:commandButton value="Exibir" action="#{relatorioRedeInstaladaBean.exibir}" ajax="false" target="_blank"/>
+		</div>
+	</div>
+	
    <script type="text/javascript">
 	$(function(){
 		options = {
 			    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 			};	
-		$("input[id*=referencia]").monthpicker(options);
+		$("input[id*=referencia]").monthpicker(options);			
 		});
-   </script>			
-	</h:panelGrid>
+   </script>
 </h:form>
 </div>
 </ui:define>

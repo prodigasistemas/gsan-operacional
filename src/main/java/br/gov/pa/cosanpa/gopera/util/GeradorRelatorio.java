@@ -20,10 +20,10 @@ import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
-public abstract class ReportGenerator {
+public abstract class GeradorRelatorio {
 	
 	public abstract Map<String, Object> getParametros();
-	public abstract JRDataSource getReportDataSource();
+	public abstract JRDataSource getDados();
 	public abstract TipoExportacao getTipoExportacao();
 	public abstract String getNomeArquivo();
 	public abstract String getTituloRelatorio();
@@ -54,7 +54,7 @@ public abstract class ReportGenerator {
 		switch (tipo) {
 		case PDF:
 			parametros.put("exibirExcel", false);
- 	        jasperPrint = JasperFillManager.fillReport(getReportPath(), parametros, getReportDataSource());
+ 	        jasperPrint = JasperFillManager.fillReport(getReportPath(), parametros, getDados());
 
 			httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + getNomeArquivo() + ".pdf");
 			httpServletResponse.setContentType("application/pdf");
@@ -65,7 +65,7 @@ public abstract class ReportGenerator {
 		    
 		case EXCEL:
 			parametros.put("exibirExcel", true);
-			jasperPrint = JasperFillManager.fillReport(getReportPath(), parametros, getReportDataSource());
+			jasperPrint = JasperFillManager.fillReport(getReportPath(), parametros, getDados());
 			
 			httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + getNomeArquivo() + ".xls");
 			httpServletResponse.setContentType("application/vnd.ms-excel");

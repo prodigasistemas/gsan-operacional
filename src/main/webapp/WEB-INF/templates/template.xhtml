@@ -94,7 +94,7 @@
 								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteVolumeBean.iniciar}" ajax="false" />
 							</p:submenu>
 							<p:menuitem value="An&aacute;lises Laboratoriais" action="#{analiseLaboratorialBean.iniciar}" ajax="false" />
-							<p:menuitem value="Adutoras e Redes de &Aacute;gua" action="#{redeInstaladaBean.iniciar}" ajax="false" />
+							<p:menuitem value="#{m.adutoras_rede_agua}" outcome="/RedeInstalada" ajax="false" />
 						</p:submenu>
 						<p:submenu label="Relat&oacute;rios">
 							<p:submenu label="Cadastro">
@@ -111,7 +111,7 @@
 						 -->
 							<p:menuitem value="Tratamento de Esgoto" action="#{relatorioEsgotoBean.iniciar}" ajax="false" />
 							<p:menuitem value="An&aacute;lises Laboratoriais" action="#{relatorioAnaliseLaboratorialBean.iniciar}" ajax="false" />
-							<p:menuitem value="Adutoras e Redes de &Aacute;gua" action="#{relatorioRedeInstaladaBean.iniciar}" ajax="false" />
+							<p:menuitem value="#{m.adutoras_rede_agua}" outcome="/RelatorioRedeInstalada" ajax="false" />
 							<p:menuitem value="Produ&ccedil;&atilde;o e Distribui&ccedil;&atilde;o" action="#{relatorioProducaoBean.iniciar}" ajax="false" />
 						</p:submenu>
 						<p:submenu label="Gr&aacute;ficos">

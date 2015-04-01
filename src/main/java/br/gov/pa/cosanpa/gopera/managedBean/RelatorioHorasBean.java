@@ -15,7 +15,7 @@ import org.jboss.logging.Logger;
 import br.gov.pa.cosanpa.gopera.util.DadosExcel;
 import br.gov.pa.cosanpa.gopera.util.GeradorExcel;
 import br.gov.servicos.operacao.RelatorioHorasRepositorio;
-import br.gov.servicos.operacao.to.ConsultaHorasTO;
+import br.gov.servicos.operacao.to.FiltroOperacionalTO;
 import br.gov.servicos.operacao.to.HorasRelatorioTO;
 
 @ManagedBean
@@ -27,7 +27,7 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 	@EJB
 	private RelatorioHorasRepositorio relatorioHoras;
 	
-	private ConsultaHorasTO to = new ConsultaHorasTO();
+	private FiltroOperacionalTO to = new FiltroOperacionalTO();
 	
 	public void exibir() {
 		try {
@@ -104,11 +104,11 @@ public class RelatorioHorasBean extends BaseMensagemBean{
 		}
 	}
 
-	public ConsultaHorasTO getTo() {
+	public FiltroOperacionalTO getTo() {
 		return to;
 	}
 
-	public void setTo(ConsultaHorasTO to) {
+	public void setTo(FiltroOperacionalTO to) {
 		this.to = to;
 	}
 }
