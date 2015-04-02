@@ -40,25 +40,25 @@
 								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteBean.iniciar}" ajax="false" />
 								<p:menuitem value="#{m.grafico_unidades}" action="#{relacaoUnidadesBean.iniciar}" ajax="false" />
 							</p:submenu>
-							<p:submenu label="Produtos Qu&iacute;micos">
+							<p:submenu label="#{m.produtos_quimicos}">
 								<p:menuitem value="Unidade Medida" action="#{unidadeMedidaBean.iniciar}" ajax="false" />
-								<p:menuitem value="Produto Qu&iacute;mico" action="#{produtoBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.produto_quimico}" action="#{produtoBean.iniciar}" ajax="false" />
 								<p:menuitem value="Registro de Consumo" action="#{registroConsumoBean.iniciar}" ajax="false" />
 								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x ETA" action="#{registroConsumoETABean.iniciar}" ajax="false" />
 								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x EAT" action="#{registroConsumoEATBean.iniciar}" ajax="false" />
 								<p:menuitem value="#{m.tabela_precos}" action="#{precoProdutoBean.iniciar}" ajax="false" />
 							</p:submenu>
-							<p:submenu label="Energia El&eacute;trica">
-								<p:menuitem value="Unidade Consumidora" action="#{unidadeConsumidoraBean.iniciar}" ajax="false" />
-								<p:menuitem value="Contrato Energia El&eacute;trica" action="#{contratoEnergiaBean.iniciar}" ajax="false" />
+							<p:submenu label="#{m.energia_eletrica}">
+								<p:menuitem value="#{m.unidade_consumidora}" action="#{unidadeConsumidoraBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.contrato_energia_eletrica}" action="#{contratoEnergiaBean.iniciar}" ajax="false" />
 							</p:submenu>
-							<p:submenu label="Volume de &Aacute;gua">
+							<p:submenu label="#{m.volume_agua}">
 								<p:menuitem value="Macro Medidor" action="#{macroMedidorBean.iniciar}" ajax="false" />
 							</p:submenu>
-							<p:menuitem value="Par&acirc;metros" action="#{parametroBean.iniciar}" ajax="false" />
+							<p:menuitem value="#{m.parametros}" action="#{parametroBean.iniciar}" ajax="false" />
 						</p:submenu>
 						<p:submenu label="Movimento">
-							<p:submenu label="Produtos Qu&iacute;micos">
+							<p:submenu label="#{m.produtos_quimicos}">
 								<p:submenu label="#{m.consumo_produtos_quimicos}">
 									<p:menuitem value="ETA" outcome="/ConsumoProduto" ajax="false" >
 										<f:param name="tipoEstacao" value="ETA"/>									
@@ -69,10 +69,10 @@
 								</p:submenu>
 								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/ConsumoPendente" ajax="false" />
 							</p:submenu>
-							<p:submenu label="Energia El&eacute;trica">
-								<p:menuitem value="Importar Arquivo Energia El&eacute;trica" outcome="/ImportarEnergia" ajax="false" />
+							<p:submenu label="#{m.energia_eletrica}">
+								<p:menuitem value="#{m.importar_arq_energia_eletrica}" outcome="/ImportarEnergia" ajax="false" />
 							</p:submenu>
-							<p:submenu label="Horas Trabalhadas">
+							<p:submenu label="#{m.horas_trabalhadas}">
 								<p:menuitem value="EAB - #{m.estacao_agua_bruta}" outcome="/Horas" ajax="false">
 									<f:param name="tipoEstacao" value="EAB"/>
 								</p:menuitem>
