@@ -33,17 +33,17 @@
 					<p:menubar rendered="#{usuarioBean.usuarioProxy.logado}">
 						<p:submenu label="Cadastro" rendered="#{usuarioBean.usuarioProxy.administrador}">
 							<p:submenu label="#{m.unidade_operacional}">
-								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabBean.iniciar}" ajax="false" />
-								<p:menuitem value="ETA - Esta&ccedil;&atilde;o de Tratamento de &Aacute;gua" action="#{etaBean.iniciar}" ajax="false" />
-								<p:menuitem value="EAT - Esta&ccedil;&atilde;o de &Aacute;gua Tratada" action="#{eeatBean.iniciar}" ajax="false" />
-								<p:menuitem value="RSO - Rela&ccedil;&atilde;o Setor Operacional/Comercial" action="#{rsoBean.iniciar}" ajax="false" />
-								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.eab} - #{m.estacao_agua_bruta}" action="#{eeabBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.eta} - #{m.estacao_tratamento_agua}" action="#{etaBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.eat} - #{m.estacao_agua_tratada}" action="#{eeatBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.rso} - #{m.relacao_operacional_comercial}" action="#{rsoBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.ete} - #{m.estacao_tratamento_esgoto}" action="#{eteBean.iniciar}" ajax="false" />
 								<p:menuitem value="#{m.grafico_unidades}" action="#{relacaoUnidadesBean.iniciar}" ajax="false" />
 							</p:submenu>
 							<p:submenu label="#{m.produtos_quimicos}">
-								<p:menuitem value="Unidade Medida" action="#{unidadeMedidaBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.unidade_medida}" action="#{unidadeMedidaBean.iniciar}" ajax="false" />
 								<p:menuitem value="#{m.produto_quimico}" action="#{produtoBean.iniciar}" ajax="false" />
-								<p:menuitem value="Registro de Consumo" action="#{registroConsumoBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.registro_consumo}" action="#{registroConsumoBean.iniciar}" ajax="false" />
 								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x ETA" action="#{registroConsumoETABean.iniciar}" ajax="false" />
 								<p:menuitem value="Rela&ccedil;&atilde;o Registro de Consumo x EAT" action="#{registroConsumoEATBean.iniciar}" ajax="false" />
 								<p:menuitem value="#{m.tabela_precos}" action="#{precoProdutoBean.iniciar}" ajax="false" />
