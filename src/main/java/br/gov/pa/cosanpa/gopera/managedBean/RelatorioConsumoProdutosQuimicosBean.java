@@ -69,6 +69,7 @@ public class RelatorioConsumoProdutosQuimicosBean extends BaseMensagemBean{
 	        exibirRelatorioMensal();
 	        break;
 	    }
+	    to = new ConsultaConsumoProdutoTO();
 	}
 	
 	public void exibirRelatorioMensal(){
