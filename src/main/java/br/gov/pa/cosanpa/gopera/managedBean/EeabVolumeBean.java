@@ -26,6 +26,7 @@ import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.servicos.operacao.EeabRepositorio;
 import br.gov.servicos.operacao.EeabVolumeRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
+import br.gov.servicos.operacao.to.EEABVolumeTO;
 
 @ManagedBean
 @SessionScoped
@@ -45,10 +46,10 @@ public class EeabVolumeBean extends BaseBean<EEABVolume> {
 	private List<MunicipioProxy> municipios = new ArrayList<MunicipioProxy>();
 	private List<LocalidadeProxy> localidades = new ArrayList<LocalidadeProxy>();
 	private List<EEAB> listaEEAB = new ArrayList<EEAB>();
-	private LazyDataModel<EEABVolume> listaConsumo = null;
+	private LazyDataModel<EEABVolumeTO> listaConsumo = null;
 	private String volumeAux;
 	
-	public LazyDataModel<EEABVolume> getListaConsumo() {
+	public LazyDataModel<EEABVolumeTO> getListaConsumo() {
 		return listaConsumo;
 	}
 	
@@ -146,14 +147,14 @@ public class EeabVolumeBean extends BaseBean<EEABVolume> {
 	
 	private void iniciarLazy(){
 		if (listaConsumo == null) {  
-			listaConsumo = new LazyDataModel<EEABVolume>() {
+			listaConsumo = new LazyDataModel<EEABVolumeTO>() {
 				private static final long serialVersionUID = 1L;
 
 				
-				public List<EEABVolume> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+				public List<EEABVolumeTO> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
-						List<EEABVolume> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
-						setRowCount(fachada.obterQtdRegistros(filters));
+						List<EEABVolumeTO> listaLazy = fachada.obterListaLazy(filters);
+						setRowCount(listaLazy.size());
 						setPageSize(maxPerPage);						
 						return listaLazy;						
 					} catch (Exception e) {
@@ -168,11 +169,11 @@ public class EeabVolumeBean extends BaseBean<EEABVolume> {
 				}
 				
 				
-				public EEABVolume getRowData(String consumoId) {
+				public EEABVolumeTO getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
 						
-						for (EEABVolume consumo : listaConsumo) {
+						for (EEABVolumeTO consumo : listaConsumo) {
 							if(id.equals(consumo.getCodigo())){
 								return consumo;
 							}
