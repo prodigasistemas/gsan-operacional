@@ -46,10 +46,10 @@ public class EeabVolumeBean extends BaseBean<EEABVolume> {
 	private List<MunicipioProxy> municipios = new ArrayList<MunicipioProxy>();
 	private List<LocalidadeProxy> localidades = new ArrayList<LocalidadeProxy>();
 	private List<EEAB> listaEEAB = new ArrayList<EEAB>();
-	private LazyDataModel<EEABVolumeTO> listaConsumo = null;
+	private LazyDataModel<EEABVolume> listaConsumo = null;
 	private String volumeAux;
 	
-	public LazyDataModel<EEABVolumeTO> getListaConsumo() {
+	public LazyDataModel<EEABVolume> getListaConsumo() {
 		return listaConsumo;
 	}
 	
@@ -147,33 +147,32 @@ public class EeabVolumeBean extends BaseBean<EEABVolume> {
 	
 	private void iniciarLazy(){
 		if (listaConsumo == null) {  
-			listaConsumo = new LazyDataModel<EEABVolumeTO>() {
+			listaConsumo = new LazyDataModel<EEABVolume>() {
 				private static final long serialVersionUID = 1L;
 
 				
-				public List<EEABVolumeTO> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+				public List<EEABVolume> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
-						List<EEABVolumeTO> listaLazy = fachada.obterListaLazy(filters);
-						setRowCount(listaLazy.size());
+						List<EEABVolume> listaLazy = fachada.obterListaLazy(filters,maxPerPage,startingAt);
+						setRowCount(fachada.obterQtdRegistros(filters));
 						setPageSize(maxPerPage);						
-						return listaLazy;						
+						return listaLazy;					
 					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 					return null;
 				}
 				
-				
 				public Object getRowKey(EEABVolume consumo) {
 					return consumo.getCodigo();
 				}
 				
 				
-				public EEABVolumeTO getRowData(String consumoId) {
+				public EEABVolume getRowData(String consumoId) {
 					if (consumoId != null && !consumoId.equals("") && !consumoId.equals("null")) {
 						Integer id = Integer.valueOf(consumoId);
 						
-						for (EEABVolumeTO consumo : listaConsumo) {
+						for (EEABVolume consumo : listaConsumo) {
 							if(id.equals(consumo.getCodigo())){
 								return consumo;
 							}

@@ -84,12 +84,27 @@
 								</p:menuitem>
 								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/HorasPendente" ajax="false" />
 							</p:submenu>
+							
+							<p:submenu label="Volume">
+								<p:menuitem value="EAB - #{m.estacao_agua_bruta}" outcome="/Volume" ajax="false">
+									<f:param name="tipoEstacao" value="EAB"/>
+								</p:menuitem>
+								<p:menuitem value="ETA - #{m.estacao_tratamento_agua}" outcome="/Volume" ajax="false">
+									<f:param name="tipoEstacao" value="ETA"/>
+								</p:menuitem>
+								<p:menuitem value="EAT - #{m.estacao_agua_tratada}" outcome="/Volume" ajax="false">
+									<f:param name="tipoEstacao" value="EAT"/>
+								</p:menuitem>
+								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/VolumePendente" ajax="false" />
+							</p:submenu>
+							<!-- 
 							<p:submenu label="Volume de &Aacute;gua">
 								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabVolumeBean.iniciar}" ajax="false" />
 								<p:menuitem value="ETA - Esta&ccedil;&atilde;o de Tratamento de &Aacute;gua" action="#{etaVolumeBean.iniciar}" ajax="false" />
 								<p:menuitem value="EAT - Esta&ccedil;&atilde;o de &Aacute;gua Tratada" action="#{eeatVolumeBean.iniciar}" ajax="false" />
 								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{volumePendenteBean.iniciar}" ajax="false" />
 							</p:submenu>
+							 -->
 							<p:submenu label="Tratamento de Esgoto">
 								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteVolumeBean.iniciar}" ajax="false" />
 							</p:submenu>
