@@ -124,7 +124,7 @@ xmlns:p="http://primefaces.org/ui">
 						<f:selectItem itemLabel="Selecione" itemValue="" /> 
 			         	<f:selectItems value="#{volumeBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/> 
 			         
-			         	<p:ajax listener="#{volumeBean.carregarFluxoSaida}" update="tabelaFluxoSaida" event="change"/>  
+			         	<p:ajax listener="#{volumeBean.carregarMedidor}" update="tabelaFluxoSaida" event="change"/>  
 			         
 		    		</p:selectOneMenu>
 				</div>
@@ -133,9 +133,6 @@ xmlns:p="http://primefaces.org/ui">
 					<h:outputLabel for="referencia" value="#{m.referencia} *"/>
 					<p:inputText value="#{volumeBean.cadastro.referencia}" id="referencia" style="width: 80px" disabled="#{volumeBean.desabilitaForm or volumeBean.editando}" size="8" required="true" requiredMessage="#{m.referencia_obrigatoria}">
 						<f:converter converterId="operacional.MesReferenciaConverter"/>
-			         	<!-- 
-			         	<p:ajax update="horasSistema, horasMes" event="change"/> 				
-			         	 -->
 					</p:inputText>				
 				</div>
 				
@@ -143,7 +140,6 @@ xmlns:p="http://primefaces.org/ui">
 					<h:outputLabel for="datahoramedicao" value="Data/Hora Medição *" />
 					<p:calendar value="#{volumeBean.cadastro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}"
 						showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medição, deve ser informado." />
-	
 				</div>
 
 				<div>
@@ -178,20 +174,21 @@ xmlns:p="http://primefaces.org/ui">
 							<h:outputText value="#{m.tipo_medicao}" />
 						</f:facet>
 					
-						<h:outputText value="#{m.vazao}" rendered="#{medidor.tipoMedicao == 1}" styleClass="tabela_row"/>
+						<!--  h:outputText value="#{m.vazao}" rendered="#{medidor.tipoMedicao == 1}" styleClass="tabela_row"/>
 						<h:outputText value="#{m.pressao}" rendered="#{medidor.tipoMedicao == 2}" styleClass="tabela_row"/>
-						<h:outputText value="#{m.nivel}" rendered="#{medidor.tipoMedicao == 3}" styleClass="tabela_row"/>
+						<h:outputText value="#{m.nivel}" rendered="#{medidor.tipoMedicao == 3}" styleClass="tabela_row"/ -->
 					</h:column>
 					
+					<!--  
 					<h:column headerClass="tabela_column_header">
 						<f:facet name="header">
 							<h:outputText value="#{m.medicao}" />
 						</f:facet>
 						<p:inputText style="width: 80px" value="#{medidor.valorMedicaoAux}" id="vazao" maxlength="10" disabled="#{eeabVolumeBean.desabilitaForm}"
 							required="true" requiredMessage="Valor da Medição de Saída, deve ser informado." />
-					</h:column>
+					</h:column> -->
 				</h:dataTable>
-				<h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty eeabVolumeBean.registro.volumeSaida}"/>
+				<!--  <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty eeabVolumeBean.registro.volumeSaida}"/>  -->
 			</div>
 			
 			<!-- 

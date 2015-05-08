@@ -16,11 +16,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import br.gov.model.exception.ErroConsultaSistemaExterno;
-import br.gov.model.operacao.EEAB;
-import br.gov.model.operacao.EEABFonteCaptacao;
-import br.gov.model.operacao.EEABMedidor;
-import br.gov.model.operacao.EEABVolumeEntrada;
-import br.gov.model.operacao.EEABVolumeSaida;
 import br.gov.model.operacao.EstacaoOperacional;
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MedidorUnidadeOperacional;
@@ -35,7 +30,6 @@ import br.gov.servicos.operacao.MedidorUnidadeOperacionalRepositorio;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.VolumeRepositorio;
 import br.gov.servicos.operacao.to.VolumeCadastroTO;
-import br.gov.servicos.operacao.to.VolumeFluxoTO;
 import br.gov.servicos.operacao.to.VolumeListagemTO;
 
 @ManagedBean
@@ -127,13 +121,20 @@ public class VolumeBean extends BaseBean<Volume>{
 		
 	}
 	
-	private void carregar(){
+	private void carregar() {
 		try {
 			this.cadastro = repositorio.obterVolume(this.selecionadoLista.getId());
+			carregarMedidor();
 			
-			
-//			this.cadastro.getCmbs().clear();
-//			this.cadastro.getCmbs().addAll(todosCMBs.values());
+		} catch (Exception e) {
+			logger.error(bundle.getText("erro_carregar_volume"), e);
+			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
+		}
+	}
+	public void carregarMedidor(){
+		try {
+			List<MedidorUnidadeOperacional> medidores = medidorRepositorio.buscarPor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
+			this.cadastro.setMedidores(medidores);
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_volume"), e);
 			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
