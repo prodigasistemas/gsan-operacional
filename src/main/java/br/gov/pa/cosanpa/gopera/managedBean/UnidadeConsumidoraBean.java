@@ -12,11 +12,13 @@ import javax.faces.bean.SessionScoped;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import br.gov.model.operacao.EstacaoOperacional;
 import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.UnidadeConsumidora;
 import br.gov.model.operacao.UnidadeConsumidoraOperacional;
 import br.gov.model.operacao.UnidadeNegocioProxy;
+import br.gov.pa.cosanpa.gopera.enums.EstadoManageBeanEnum;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
 
@@ -37,6 +39,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 	private Integer tipoUnidadeOperacional = 1;
 	private Integer codigoUnidadeOperacional;
 	private UnidadeConsumidoraOperacional operacional;
+	private Integer ucOriginal;
 	private String percentual;
 	private LazyDataModel<UnidadeConsumidora> listaDados = null;
 	
@@ -198,6 +201,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 		try {
 			this.setPercentual("0,00");
 			this.registro = fachada.obterUnidadeConsumidora(this.registro.getCodigo());
+			this.ucOriginal = registro.getUc();
 		} catch (Exception e) {
 			this.mostrarMensagemErro("Erro ao Carregar");
 		}
@@ -215,8 +219,7 @@ public class UnidadeConsumidoraBean extends BaseBean<UnidadeConsumidora> {
 	
 	public String confirmar() {
 		try {
-		    
-		    if (fachada.existeUnidadeConsumidora(registro.getUc())){
+		    if (!ucOriginal.equals(registro.getUc()) && fachada.existeUnidadeConsumidora(registro.getUc())){
 		        this.mostrarMensagemErro(bundle.getText("erro_unidade_consumidora_cadastrada_com_codigo"));
 		    }else{
 		        registro.setRegionalProxy(fachadaProxy.getRegionalUnidadeNegocio(registro.getUnidadeNegocioProxy().getCodigo()));
