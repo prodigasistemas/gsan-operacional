@@ -124,7 +124,7 @@ xmlns:p="http://primefaces.org/ui">
 						<f:selectItem itemLabel="Selecione" itemValue="" /> 
 			         	<f:selectItems value="#{volumeBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/> 
 			         
-			         	<p:ajax listener="#{volumeBean.carregarFluxoSaida}" update="tabelaFluxoSaida" event="change"/>  
+			         	<p:ajax listener="#{volumeBean.carregarFluxosCadastro}" update="tabelaFluxoSaida" event="change"/>  
 			         
 		    		</p:selectOneMenu>
 				</div>
@@ -139,7 +139,9 @@ xmlns:p="http://primefaces.org/ui">
 				<div>
 					<h:outputLabel for="datahoramedicao" value="Data/Hora Medição *" />
 					<p:calendar value="#{volumeBean.cadastro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}"
-						showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medição, deve ser informado." />
+						showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medi��o, deve ser informado.">
+						 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" /> 
+					</p:calendar>
 				</div>
 
 				<div>
@@ -180,85 +182,29 @@ xmlns:p="http://primefaces.org/ui">
 						<f:facet name="header">
 							<h:outputText value="#{m.medicao}" />
 						</f:facet>
-						<p:inputText style="width: 80px" value="#{volume.volumeMedicao}" id="vazao" maxlength="10" disabled="#{eeabVolumeBean.desabilitaForm}"
+						<p:inputText style="width: 80px" value="#{volume.volumeMedicao}" id="vazao" maxlength="10" disabled="#{volumeBean.desabilitaForm}"
 							required="true" requiredMessage="Valor da Medição de Saída, deve ser informado." />
 					</h:column>
 				</h:dataTable>
-				<!--  <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty eeabVolumeBean.registro.volumeSaida}"/>  -->
+				  <!-- <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.registro.volumeSaida}"/> -->  
 			</div>
+
 			
-			<!-- 
+			<div class='observacoes'>
+				<h:outputLabel value="#{m.observacoes}" />
+				<h:inputTextarea value="#{volumeBean.cadastro.observacoes}" validatorMessage="#{m.erro_observacoes_excedem_255}" disabled="#{volumeBean.desabilitaForm}">
+					<f:validateLength maximum="255" />
+				</h:inputTextarea>
+			</div>
 			<div>
-				<p:dataTable var="var" id="tabela" value="#{horasBean.cadastro.cmbs}" paginator="false" editable="true">
-			        <f:facet name="header">  
-			            Conjunto Motor-Bomba
-			        </f:facet> 			
-					<p:column style="text-align:left">
-				  		<f:facet name="header">
-							<h:outputText class="tabela" value="CMB"/>
-						</f:facet>
-		                <h:outputText value="#{var.cmb}"/>
-					</p:column>					
-					<p:column style="text-align:right">
-				  		<f:facet name="header">
-							<h:outputText class="tabela" value="#{m.registro_consumo} (horas)"/>
-						</f:facet>	
-						<p:inputText style="width: 80px" value="#{var.medicao}" id="medicao" maxlength="10" disabled="#{horasBean.desabilitaForm}" required="true" requiredMessage="Valor da Medição de CMB, deve ser informado.">
-			         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-						</p:inputText>
-						<script type="text/javascript">
-							$(function(){
-								$("input[id*=medicao]").setMask("simple-decimal-us");					
-								});
-						</script>	
-					</p:column>
-				</p:dataTable>
+				<p:commandButton value="Cadastrar" action="#{volumeBean.cadastrar}" rendered="#{volumeBean.cadastrando or volumeBean.editando}"
+					update="formCadastro" />
+				<p:commandButton value="Confirmar" action="#{volumeBean.confirmar}" rendered="#{volumeBean.confirmando}" update="formCadastro" />
+				<p:commandButton value="Cancelar" action="#{volumeBean.cancelar}" rendered="#{volumeBean.confirmando}" update="formCadastro" />
+				<p:commandButton value="Limpar" rendered="#{volumeBean.cadastrando}" type="reset" />
+				<p:commandButton process="@this" value="Voltar" action="#{volumeBean.voltar}" rendered="#{!volumeBean.confirmando}"
+					update=":formCadastro,:formConsulta" />
 			</div>
-		
-			<div class='campos_cadastro'>
-				<div>
-					<h:outputLabel for="medicaoEnergia" class="label_maior" value="#{m.horas_paradas_energia}: "/>
-					<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorEnergia}" id="medicaoEnergia" maxlength="10" disabled="#{horasBean.desabilitaForm}">
-		         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-					</p:inputText>
-				</div>
-				<div>
-					<h:outputLabel for="medicaoManutencao" class="label_maior" value="#{m.horas_paradas_manutencao}: "/>
-					<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorManutencao}" id="medicaoManutencao" maxlength="10" disabled="#{horasBean.desabilitaForm}">
-		         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-					</p:inputText>
-				</div>
-				<div>
-					<h:outputLabel for="medicaoControle" class="label_maior" value="#{m.horas_paradas_controle}: "/>
-					<p:inputText style="width: 80px" value="#{horasBean.cadastro.paradaPorControle}" id="medicaoControle" maxlength="10" disabled="#{horasBean.desabilitaForm}">
-		         		<p:ajax update=":formCadastro:horasSistema" event="keyup"/>
-					</p:inputText>
-				</div>
-			</div>
-			
-			
-			<div align="right">
-				<h:outputLabel for="horasSistema" class="tabela" value="#{m.total_horas_cmb}: "/>
-				<h:outputText class="tabela" id="horasSistema" value="#{horasBean.horasSistema}" style="width:80px; display:inline-block; text-align: right">
-					<f:convertNumber pattern="#0.00"/>
-				</h:outputText>
-			</div>
-			
-			<div align="right" style="margin-top:10px">
-				<h:outputLabel for="horasMes" class="tabela" value="#{m.total_horas_mes}: "/>
-				<h:outputText id="horasMes" class="tabela" value="#{horasBean.horasMes}" style="width:80px; display:inline-block; text-align: right">
-					<f:convertNumber pattern="#0.00"/>
-				</h:outputText>
-			</div>
-			
-			<div>
-				<p:commandButton value="Cadastrar" action="#{horasBean.cadastrar}" rendered="#{horasBean.cadastrando or horasBean.editando}" update="formCadastro"/>
-				<p:commandButton value="Confirmar" action="#{horasBean.confirmar}" rendered="#{horasBean.confirmando}" update="formCadastro"/>
-				<p:commandButton value="Cancelar" action="#{horasBean.cancelar}" rendered="#{horasBean.confirmando}" update="formCadastro"/>
-				<p:commandButton value="Limpar" rendered="#{horasBean.cadastrando}" type="reset" />
-				<p:commandButton process="@this" value="Voltar" action="#{horasBean.voltar}" rendered="#{!horasBean.confirmando}" update=":formCadastro,:formConsulta"/>
-			</div>
-		-->
 		</p:panel>
 		<script type="text/javascript">
 			$(function(){

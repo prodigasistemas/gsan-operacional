@@ -3,6 +3,7 @@ package br.gov.pa.cosanpa.gopera.managedBean;
 import static br.gov.model.util.Utilitarios.converteParaDataComUltimoDiaMes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.primefaces.model.SortOrder;
 import br.gov.model.exception.ErroConsultaSistemaExterno;
 import br.gov.model.operacao.EstacaoOperacional;
 import br.gov.model.operacao.LocalidadeProxy;
+import br.gov.model.operacao.MacroMedidor;
 import br.gov.model.operacao.MedidorUnidadeOperacional;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RegionalProxy;
@@ -25,6 +27,7 @@ import br.gov.model.operacao.TipoFluxo;
 import br.gov.model.operacao.TipoUnidadeOperacional;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.model.operacao.Volume;
+import br.gov.model.operacao.VolumeFluxo;
 import br.gov.model.util.Utilitarios;
 import br.gov.servicos.operacao.EstacaoOperacionalRepositorio;
 import br.gov.servicos.operacao.MacroMedidorRepositorio;
@@ -141,26 +144,27 @@ public class VolumeBean extends BaseBean<Volume>{
 			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
 		}
 	}
-	public void carregarMedidor(){
-		try {
-			List<MedidorUnidadeOperacional> medidores = medidorRepositorio.buscarPor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
-//			this.cadastro.setMedidores(medidores);
-		} catch (Exception e) {
-			logger.error(bundle.getText("erro_carregar_volume"), e);
-			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
-		}
-	}
+//	public void carregarMedidor(){
+//		try {
+//			List<MedidorUnidadeOperacional> medidores = medidorRepositorio.buscarPor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
+//		} catch (Exception e) {
+//			logger.error(bundle.getText("erro_carregar_volume"), e);
+//			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
+//		}
+//	}
 	
 	public String cadastrar(){
 		try {
-//			if (!this.getEditando()){
-//				if(repositorio.existeMesReferencia(TipoUnidadeOperacional.valueOf(this.tipoEstacao).getId()
-//				        , this.cadastro.getCdUnidadeOperacional()
-//				        , this.cadastro.getReferencia())){
-//					this.mostrarMensagemErro(bundle.getText("erro_mes_referencia_ja_cadastrado"));
-//					return null;
-//				}
-//			}		
+			
+			if (!this.getEditando()){
+				if(repositorio.existeMesReferencia(TipoUnidadeOperacional.valueOf(this.tipoEstacao).getId()
+				        , this.cadastro.getCdUnidadeOperacional()
+				        , this.cadastro.getReferencia())){
+					this.mostrarMensagemErro(bundle.getText("erro_mes_referencia_ja_cadastrado"));
+					return null;
+				}
+			}
+			
 			if(!validaReferencia(converteParaDataComUltimoDiaMes(this.cadastro.getReferencia()))) return null;
 			return super.cadastrar();
 		} catch (Exception e) {
@@ -171,37 +175,25 @@ public class VolumeBean extends BaseBean<Volume>{
 	}
 	
 	public void carregarFluxosCadastro(){
-		/*
-		 * buscar volume 
-		 * buscar fluxos
-		 * setar fluxos no cadastro
-		 */
-		VolumeCadastroTO aux = repositorio.obterVolumePor(this.cadastro.getCdUnidadeOperacional(), TipoUnidadeOperacional.valueOf(tipoEstacao).getId());
 		try {
-			List<VolumeFluxoTO> fluxoSaida = fluxoRepositorio.obterFluxosPor(this.cadastro.getCodigo(), TipoFluxo.SAIDA);
-			System.out.println("tipo unidade: " + this.cadastro.getTipoUnidadeOperacional());
-			System.out.println("Codigo unidade: " + this.cadastro.getCdUnidadeOperacional());
-			System.out.println("Codigo: " + this.registro.getCodigo());
-			this.cadastro.getVolumeFluxo().clear();
-			for (VolumeFluxoTO volumeFluxoTO : fluxoSaida) {
-				volumeFluxoTO.setMacroMedidor(macroMedidorRepositorio.obterMacroMedidorTO(volumeFluxoTO.getIdMedidor()));	
+			List<MedidorUnidadeOperacional> medidores = medidorRepositorio.buscarPor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), this.cadastro.getCdUnidadeOperacional());
+		
+			for (MedidorUnidadeOperacional medidor: medidores) {
+				VolumeFluxoTO volumeFluxoTO = new VolumeFluxoTO(medidor.getPk().getId(), TipoFluxo.SAIDA.getId());
+				volumeFluxoTO.setMacroMedidor(macroMedidorRepositorio.obterMacroMedidorTO(volumeFluxoTO.getIdMedidor()));
+				
+				this.cadastro.getVolumeFluxo().add(volumeFluxoTO);
 			}
-			
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_volume_saida"), e);
 			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume_saida"));
 		}
-
-		
 		
 	}
 	
 	public void carregarFluxoSaida(){
 		try {
 			List<VolumeFluxoTO> fluxoSaida = fluxoRepositorio.obterFluxosPor(this.cadastro.getCodigo(), TipoFluxo.SAIDA);
-			System.out.println("tipo unidade: " + this.cadastro.getTipoUnidadeOperacional());
-			System.out.println("Codigo unidade: " + this.cadastro.getCdUnidadeOperacional());
-			System.out.println("Codigo: " + this.registro.getCodigo());
 			this.cadastro.getVolumeFluxo().clear();
 			for (VolumeFluxoTO volumeFluxoTO : fluxoSaida) {
 				volumeFluxoTO.setMacroMedidor(macroMedidorRepositorio.obterMacroMedidorTO(volumeFluxoTO.getIdMedidor()));	
@@ -219,6 +211,36 @@ public class VolumeBean extends BaseBean<Volume>{
 		return null;
 	}
 
+	public String confirmar() {
+		try {
+		    registro = new Volume();
+		    registro.setCodigo(cadastro.getCodigo());
+		    registro.setReferencia(cadastro.getReferencia());
+		    registro.setTipoEstacao(TipoUnidadeOperacional.valueOf(tipoEstacao).getId());
+		    registro.setIdEstacao(cadastro.getCdUnidadeOperacional());
+		    registro.setDataMedicao(cadastro.getDataHoraMedicao());	
+		    registro.setEstimado(cadastro.getEstimado());
+		    registro.setTotalVolume(cadastro.getVolume());
+		    registro.setUltimaAlteracao(new Date());
+		    registro.setUsuario(usuarioProxy.getCodigo());
+		    registro.setObservacoes(cadastro.getObservacoes());
+		    
+			for (VolumeFluxoTO to : cadastro.getVolumesFluxo()){
+				VolumeFluxo fluxo = new VolumeFluxo();
+				fluxo.setMacroMedidor(new MacroMedidor(to.getMacroMedidor().getId()));
+				fluxo.setTipoFluxo(TipoFluxo.SAIDA.getId());
+				fluxo.setTipoMedicao(to.getMacroMedidor().getTipoMedicao());
+				fluxo.setVolumeMedido(to.getVolumeMedicao());
+				fluxo.setVolume(registro);
+			    registro.addVolumeFluxo(fluxo);
+			}			
+			return super.confirmarLazy();
+		} catch (Exception e) {
+			this.mostrarMensagemErro("Erro ao Salvar: " + e.getMessage());
+		}
+		return null;
+	}
+	
 	public VolumeRepositorio getRepositorio() {
 		return repositorio;
 	}
