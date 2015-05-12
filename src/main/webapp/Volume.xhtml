@@ -124,7 +124,7 @@ xmlns:p="http://primefaces.org/ui">
 						<f:selectItem itemLabel="Selecione" itemValue="" /> 
 			         	<f:selectItems value="#{volumeBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/> 
 			         
-			         	<p:ajax listener="#{volumeBean.carregarMedidor}" update="tabelaFluxoSaida" event="change"/>  
+			         	<p:ajax listener="#{volumeBean.carregarFluxoSaida}" update="tabelaFluxoSaida" event="change"/>  
 			         
 		    		</p:selectOneMenu>
 				</div>
@@ -159,34 +159,30 @@ xmlns:p="http://primefaces.org/ui">
 			</div>
 			
 			<div>
-				<h:dataTable var="medidor" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.medidores}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+				<h:dataTable var="volume" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.volumesFluxo}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
 					<f:facet name="header">#{m.medidor_saida}</f:facet>
 					
 					<h:column headerClass="tabela_column_header">
 						<f:facet name="header">
 							<h:outputText value="#{m.medidor_saida}" />
 						</f:facet>
-						<h:outputText value="#{medidor.identificadorLeitura}" styleClass="tabela_row"/>
+						<h:outputText value="#{volume.macroMedidor.identificadorLeitura}" styleClass="tabela_row"/>
 					</h:column>
 					
 					<h:column headerClass="tabela_column_header">
 						<f:facet name="header">
 							<h:outputText value="#{m.tipo_medicao}" />
 						</f:facet>
-					
-						<!--  h:outputText value="#{m.vazao}" rendered="#{medidor.tipoMedicao == 1}" styleClass="tabela_row"/>
-						<h:outputText value="#{m.pressao}" rendered="#{medidor.tipoMedicao == 2}" styleClass="tabela_row"/>
-						<h:outputText value="#{m.nivel}" rendered="#{medidor.tipoMedicao == 3}" styleClass="tabela_row"/ -->
+						<h:outputText value="#{volume.macroMedidor.descricaoTipoMedicao}" styleClass="tabela_row"/>
 					</h:column>
 					
-					<!--  
 					<h:column headerClass="tabela_column_header">
 						<f:facet name="header">
 							<h:outputText value="#{m.medicao}" />
 						</f:facet>
-						<p:inputText style="width: 80px" value="#{medidor.valorMedicaoAux}" id="vazao" maxlength="10" disabled="#{eeabVolumeBean.desabilitaForm}"
+						<p:inputText style="width: 80px" value="#{volume.volumeMedicao}" id="vazao" maxlength="10" disabled="#{eeabVolumeBean.desabilitaForm}"
 							required="true" requiredMessage="Valor da Medição de Saída, deve ser informado." />
-					</h:column> -->
+					</h:column>
 				</h:dataTable>
 				<!--  <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty eeabVolumeBean.registro.volumeSaida}"/>  -->
 			</div>

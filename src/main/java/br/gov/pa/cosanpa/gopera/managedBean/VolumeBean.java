@@ -21,15 +21,19 @@ import br.gov.model.operacao.LocalidadeProxy;
 import br.gov.model.operacao.MedidorUnidadeOperacional;
 import br.gov.model.operacao.MunicipioProxy;
 import br.gov.model.operacao.RegionalProxy;
+import br.gov.model.operacao.TipoFluxo;
 import br.gov.model.operacao.TipoUnidadeOperacional;
 import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.model.operacao.Volume;
 import br.gov.model.util.Utilitarios;
 import br.gov.servicos.operacao.EstacaoOperacionalRepositorio;
+import br.gov.servicos.operacao.MacroMedidorRepositorio;
 import br.gov.servicos.operacao.MedidorUnidadeOperacionalRepositorio;
 import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
+import br.gov.servicos.operacao.VolumeFluxoRepositorio;
 import br.gov.servicos.operacao.VolumeRepositorio;
 import br.gov.servicos.operacao.to.VolumeCadastroTO;
+import br.gov.servicos.operacao.to.VolumeFluxoTO;
 import br.gov.servicos.operacao.to.VolumeListagemTO;
 
 @ManagedBean
@@ -46,6 +50,12 @@ public class VolumeBean extends BaseBean<Volume>{
 	
 	@EJB
 	private EstacaoOperacionalRepositorio estacaoRepositorio;
+	
+	@EJB
+	private MacroMedidorRepositorio macroMedidorRepositorio;
+	
+	@EJB
+	private VolumeFluxoRepositorio fluxoRepositorio;
 	
 	@EJB
 	private MedidorUnidadeOperacionalRepositorio medidorRepositorio;
@@ -124,7 +134,7 @@ public class VolumeBean extends BaseBean<Volume>{
 	private void carregar() {
 		try {
 			this.cadastro = repositorio.obterVolume(this.selecionadoLista.getId());
-			carregarMedidor();
+			carregarFluxoSaida();
 			
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_volume"), e);
@@ -134,7 +144,7 @@ public class VolumeBean extends BaseBean<Volume>{
 	public void carregarMedidor(){
 		try {
 			List<MedidorUnidadeOperacional> medidores = medidorRepositorio.buscarPor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
-			this.cadastro.setMedidores(medidores);
+//			this.cadastro.setMedidores(medidores);
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_volume"), e);
 			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
@@ -160,15 +170,46 @@ public class VolumeBean extends BaseBean<Volume>{
 		return null;
 	}
 	
+	public void carregarFluxosCadastro(){
+		/*
+		 * buscar volume 
+		 * buscar fluxos
+		 * setar fluxos no cadastro
+		 */
+		VolumeCadastroTO aux = repositorio.obterVolumePor(this.cadastro.getCdUnidadeOperacional(), TipoUnidadeOperacional.valueOf(tipoEstacao).getId());
+		try {
+			List<VolumeFluxoTO> fluxoSaida = fluxoRepositorio.obterFluxosPor(this.cadastro.getCodigo(), TipoFluxo.SAIDA);
+			System.out.println("tipo unidade: " + this.cadastro.getTipoUnidadeOperacional());
+			System.out.println("Codigo unidade: " + this.cadastro.getCdUnidadeOperacional());
+			System.out.println("Codigo: " + this.registro.getCodigo());
+			this.cadastro.getVolumeFluxo().clear();
+			for (VolumeFluxoTO volumeFluxoTO : fluxoSaida) {
+				volumeFluxoTO.setMacroMedidor(macroMedidorRepositorio.obterMacroMedidorTO(volumeFluxoTO.getIdMedidor()));	
+			}
+			
+		} catch (Exception e) {
+			logger.error(bundle.getText("erro_carregar_volume_saida"), e);
+			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume_saida"));
+		}
+
+		
+		
+	}
+	
 	public void carregarFluxoSaida(){
 		try {
-			 VolumeCadastroTO volumeAux = repositorio.obterVolumePor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getTipoUnidadeOperacional());
-			
+			List<VolumeFluxoTO> fluxoSaida = fluxoRepositorio.obterFluxosPor(this.cadastro.getCodigo(), TipoFluxo.SAIDA);
+			System.out.println("tipo unidade: " + this.cadastro.getTipoUnidadeOperacional());
+			System.out.println("Codigo unidade: " + this.cadastro.getCdUnidadeOperacional());
+			System.out.println("Codigo: " + this.registro.getCodigo());
 			this.cadastro.getVolumeFluxo().clear();
-			this.cadastro.setMedidores(volumeAux.getMedidores());
+			for (VolumeFluxoTO volumeFluxoTO : fluxoSaida) {
+				volumeFluxoTO.setMacroMedidor(macroMedidorRepositorio.obterMacroMedidorTO(volumeFluxoTO.getIdMedidor()));	
+			}
+			this.cadastro.setVolumesFluxo(fluxoSaida);
 		} catch (Exception e) {
-			logger.error(bundle.getText("erro_carregar_medidor"), e);
-			this.mostrarMensagemErro(bundle.getText("erro_carregar_medidor"));
+			logger.error(bundle.getText("erro_carregar_volume_saida"), e);
+			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume_saida"));
 		}
 	}
 	
