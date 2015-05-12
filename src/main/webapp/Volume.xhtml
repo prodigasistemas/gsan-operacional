@@ -161,7 +161,36 @@ xmlns:p="http://primefaces.org/ui">
 			</div>
 			
 			<div>
-				<h:dataTable var="volume" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.volumesFluxo}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+				<h:dataTable var="volume" id="tabelaFluxoEntrada" value="#{volumeBean.cadastro.volumeFluxosEntrada}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+					<f:facet name="header">#{m.medidor_entrada}</f:facet>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.medidor_entrada}" />
+						</f:facet>
+						<h:outputText value="#{volume.macroMedidor.identificadorLeitura}" styleClass="tabela_row"/>
+					</h:column>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.tipo_medicao}" />
+						</f:facet>
+						<h:outputText value="#{volume.macroMedidor.descricaoTipoMedicao}" styleClass="tabela_row"/>
+					</h:column>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.medicao}" />
+						</f:facet>
+						<p:inputText style="width: 80px" value="#{volume.volumeMedicao}" id="vazao" maxlength="10" disabled="#{volumeBean.desabilitaForm}"
+							required="true" requiredMessage="Valor da Medição de Entrada, deve ser informado." />
+					</h:column>
+				</h:dataTable>
+				  <!-- <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.registro.volumeSaida}"/> -->  
+			</div>
+			
+			<div>
+				<h:dataTable var="volume" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.volumeFluxosSaida}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
 					<f:facet name="header">#{m.medidor_saida}</f:facet>
 					
 					<h:column headerClass="tabela_column_header">
