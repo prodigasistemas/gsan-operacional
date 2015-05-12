@@ -138,21 +138,14 @@ public class VolumeBean extends BaseBean<Volume>{
 		try {
 			this.cadastro = repositorio.obterVolume(this.selecionadoLista.getId());
 			carregarFluxoSaida();
-			
+			carregarFluxoEntrada();
 		} catch (Exception e) {
 			logger.error(bundle.getText("erro_carregar_volume"), e);
 			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
 		}
 	}
-//	public void carregarMedidor(){
-//		try {
-//			List<MedidorUnidadeOperacional> medidores = medidorRepositorio.buscarPor(TipoUnidadeOperacional.valueOf(tipoEstacao).getId(), cadastro.getCdUnidadeOperacional());
-//		} catch (Exception e) {
-//			logger.error(bundle.getText("erro_carregar_volume"), e);
-//			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume"));
-//		}
-//	}
 	
+
 	public String cadastrar(){
 		try {
 			
@@ -189,6 +182,15 @@ public class VolumeBean extends BaseBean<Volume>{
 			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume_saida"));
 		}
 		
+	}
+	
+	private void carregarFluxoEntrada() {
+		try {
+			
+		} catch (Exception e) {
+			logger.error(bundle.getText("erro_carregar_volume_saida"), e);
+			this.mostrarMensagemErro(bundle.getText("erro_carregar_volume_saida"));
+		}
 	}
 	
 	public void carregarFluxoSaida(){
