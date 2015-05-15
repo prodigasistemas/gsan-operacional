@@ -85,7 +85,7 @@
 								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/HorasPendente" ajax="false" />
 							</p:submenu>
 							
-							<p:submenu label="Volume de Agua">
+							<p:submenu label="#{m.volume_agua}">
 								<p:menuitem value="EAB - #{m.estacao_agua_bruta}" outcome="/Volume" ajax="false">
 									<f:param name="tipoEstacao" value="EAB"/>
 								</p:menuitem>

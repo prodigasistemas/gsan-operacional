@@ -27,7 +27,7 @@ xmlns:p="http://primefaces.org/ui">
 			<tr>
 				<td class="caminho">#{m.voce_esta_aqui}:</td>
 				<td class="sessao"> Movimento </td>
-				<td class="sessao"> &raquo; Volume de Água </td>
+				<td class="sessao"> &raquo; #{m.volume_agua} </td>
 				<td class="pagina"> &raquo; #{volumeBean.tipoEstacao}</td>
 			</tr>
 		</table>
@@ -124,8 +124,7 @@ xmlns:p="http://primefaces.org/ui">
 						<f:selectItem itemLabel="Selecione" itemValue="" /> 
 			         	<f:selectItems value="#{volumeBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/> 
 			         
-			         	<p:ajax listener="#{volumeBean.carregarFluxosCadastro}" update="tabelaFluxoSaida" event="change"/>  
-			         
+			         	<p:ajax listener="#{volumeBean.carregarFluxosCadastro}" update="tabelaFluxoSaida, tabelaFluxoEntrada" event="change"/>
 		    		</p:selectOneMenu>
 				</div>
 				
@@ -137,9 +136,8 @@ xmlns:p="http://primefaces.org/ui">
 				</div>
 				
 				<div>
-					<h:outputLabel for="datahoramedicao" value="Data/Hora MediÃ§Ã£o *" />
-					<p:calendar value="#{volumeBean.cadastro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}"
-						showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medição, deve ser informado.">
+					<h:outputLabel for="datahoramedicao" value="#{m.data_hora_medicao} *" />
+					<p:calendar value="#{volumeBean.cadastro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}" showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medição, deve ser informado.">
 						 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" /> 
 					</p:calendar>
 				</div>
@@ -161,7 +159,7 @@ xmlns:p="http://primefaces.org/ui">
 			</div>
 			
 			<div>
-				<h:dataTable var="volume" id="tabelaFluxoEntrada" value="#{volumeBean.cadastro.volumeFluxosEntrada}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+				<h:dataTable var="volume" id="tabelaFluxoEntrada" value="#{volumeBean.cadastro.volumeFluxoEntrada}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
 					<f:facet name="header">#{m.medidor_entrada}</f:facet>
 					
 					<h:column headerClass="tabela_column_header">
@@ -186,11 +184,11 @@ xmlns:p="http://primefaces.org/ui">
 							required="true" requiredMessage="Valor da Medição de Entrada, deve ser informado." />
 					</h:column>
 				</h:dataTable>
-				  <!-- <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.registro.volumeSaida}"/> -->  
+					<h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.cadastro.volumeFluxoEntrada}"/>  
 			</div>
 			
 			<div>
-				<h:dataTable var="volume" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.volumeFluxosSaida}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+				<h:dataTable var="volume" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.volumeFluxoSaida}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
 					<f:facet name="header">#{m.medidor_saida}</f:facet>
 					
 					<h:column headerClass="tabela_column_header">
@@ -215,7 +213,7 @@ xmlns:p="http://primefaces.org/ui">
 							required="true" requiredMessage="Valor da MediÃ§Ã£o de SaÃ­da, deve ser informado." />
 					</h:column>
 				</h:dataTable>
-				  <!-- <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.registro.volumeSaida}"/> -->  
+				  <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.cadastro.volumeFluxoSaida}"/>   
 			</div>
 
 			
@@ -241,8 +239,9 @@ xmlns:p="http://primefaces.org/ui">
 					    monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 					};	
 				$("input[id*=referencia]").monthpicker(options);						
-		
-				$("input[id*=medicao]").setMask("simple-decimal-us");				
+				$("input[id*=medicao]").setMask("simple-decimal-us");	
+				$("input[id*=datahora]").setMask("39/19/2099\s29:59");
+				$("input[id*=referencia]").setMask("99/9999");
 				});
 		</script>
 		</h:form>
