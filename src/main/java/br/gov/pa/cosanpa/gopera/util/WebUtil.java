@@ -31,7 +31,6 @@ public class WebUtil {
 	private String[] campos = {"gerencia_regional","unidade_negocio","municipio","localidade","unidade_operacional"};
 
 	private Map<String, Entidade> descEntidades = new HashMap<String, Entidade>();
-	
 
 	public WebUtil() {
 		try{

@@ -26,6 +26,7 @@ import br.gov.model.operacao.UnidadeNegocioProxy;
 import br.gov.servicos.operacao.EeabRepositorio;
 import br.gov.servicos.operacao.EeabVolumeRepositorio;
 import br.gov.servicos.operacao.UnidadeConsumidoraRepositorio;
+import br.gov.servicos.operacao.to.EEABVolumeTO;
 
 @ManagedBean
 @SessionScoped
@@ -152,16 +153,15 @@ public class EeabVolumeBean extends BaseBean<EEABVolume> {
 				
 				public List<EEABVolume> load(int startingAt, int maxPerPage, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 					try {					
-						List<EEABVolume> listaLazy = fachada.obterListaLazy(startingAt, maxPerPage, filters);
+						List<EEABVolume> listaLazy = fachada.obterListaLazy(filters,maxPerPage,startingAt);
 						setRowCount(fachada.obterQtdRegistros(filters));
 						setPageSize(maxPerPage);						
-						return listaLazy;						
+						return listaLazy;					
 					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 					return null;
 				}
-				
 				
 				public Object getRowKey(EEABVolume consumo) {
 					return consumo.getCodigo();
