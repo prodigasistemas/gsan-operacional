@@ -2,6 +2,7 @@ package br.gov.pa.cosanpa.gopera.managedBean;
 
 import static br.gov.model.util.Utilitarios.converteAnoMesParaMesAno;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,6 +45,7 @@ public class RelatorioRedeInstaladaBean extends BaseMensagemBean {
 			}
     		
     		List<RedeInstaladaRelatorioTO> relatorio = relatorioRedeInstalada.consultarRedesInstaladas(to);
+    		BigDecimal redesCadastradasAnteriormente = relatorioRedeInstalada.carregarRedesCadastradasAnteriores(to);
     		
     		if (relatorio.size() == 0){
 			    mostrarMensagemAviso(bundle.getText("erro_nao_existe_retorno_filtro"));
@@ -65,6 +67,7 @@ public class RelatorioRedeInstaladaBean extends BaseMensagemBean {
                         parametros.put("dataInicial", converteAnoMesParaMesAno(to.getReferenciaInicial()));
                         parametros.put("dataFinal", converteAnoMesParaMesAno(to.getReferenciaFinal()));
                         parametros.put("filtro", to.filtroSelecionado());
+                        parametros.put("redesCadastradasAnteriormente", redesCadastradasAnteriormente);
                         parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
                         
                         return parametros;
