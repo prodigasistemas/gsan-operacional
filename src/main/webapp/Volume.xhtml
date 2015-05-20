@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"  
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">   
+<ui:define name="centro">
+<f:view>
+	<f:metadata>
+		<f:viewParam name="tipoEstacao" value="#{volumeBean.tipoEstacao}"/>
+	</f:metadata>
+	 
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	</h:head>
+
+	<h:body>
+		<div class="geral">
+		<br />
+		<h:form id="form" prependId="true">
+		<h:inputHidden value="#{volumeBean.tipoEstacao}"/>
+		<p:messages autoUpdate="true" id="msg" />
+		<table>
+			<tr>
+				<td class="caminho">#{m.voce_esta_aqui}:</td>
+				<td class="sessao"> Movimento </td>
+				<td class="sessao"> &raquo; #{m.volume_agua} </td>
+				<td class="pagina"> &raquo; #{volumeBean.tipoEstacao}</td>
+			</tr>
+		</table>
+		</h:form>
+		 
+		<p:confirmDialog message="Confirmar a Exclusão do Registro?" appendToBody="true" header="Exclusão de Registro" severity="alert"	widgetVar="cd">
+			<p:commandButton value="#{m.sim}" actionListener="#{volumeBean.excluir}" update=":formConsulta" oncomplete="PF('cd').hide()"/>
+			<p:commandButton value="#{m.nao}" onclick="PF('cd').hide();" type="button" />
+		</p:confirmDialog>
+		 
+		<h:form id="formConsulta" prependId="false">
+		<p:panel rendered="#{volumeBean.visualizando}">
+			<p:dataTable var="var" id="tabela" value="#{volumeBean.listaVolume}" lazy="true" widgetVar="medidaTable" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+			  	
+			  	<p:column headerText="#{m.opcoes}" width="90" style="text-align:left">
+					<p:commandButton styleClass="imagemVisualizar" value="" title="#{m.consultar}" action="#{volumeBean.consultar}" ajax="false">
+						<f:setPropertyActionListener value="#{var}" target="#{volumeBean.selecionadoLista}" />
+					</p:commandButton>
+					<p:commandButton styleClass="imagemEditar" value="" title="#{m.alterar}" action="#{volumeBean.alterar}" ajax="false">
+						<f:setPropertyActionListener value="#{var}" target="#{volumeBean.selecionadoLista}" />
+					</p:commandButton>
+					<p:commandButton styleClass="imagemExcluir" value="" title="#{m.excluir}" update=":formConsulta" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{var.id}" target="#{volumeBean.pk}" />
+					</p:commandButton>
+				</p:column>
+					
+				<p:column filterBy="#{var.nomeEstacao}" headerText="#{volumeBean.tipoEstacao}" filterMatchMode="contains" style="text-align:left">
+					<h:outputText value="#{var.nomeEstacao}" />
+				</p:column>					
+		
+				<p:column filterBy="#{var.referencia}" styleClass="data" headerText="#{m.referencia}" filterMatchMode="contains" style="text-align:left">
+					<h:outputText value="#{var.referencia}">
+						<f:converter converterId="operacional.MesReferenciaConverter"/>
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			 
+			<p:column>
+				<p:commandButton value="Novo" action="#{volumeBean.novo}" update=":formCadastro,:formConsulta"/>
+			</p:column>
+			 
+			</p:panel>
+			<script type="text/javascript">
+				$(function(){
+					$(".data input").setMask('99/9999');
+					});
+			</script>		
+			
+		</h:form>
+		
+		 
+		<h:form id="formCadastro">
+		<p:panel id="pgrCadastro" rendered="#{!volumeBean.visualizando}">
+			<div class='campos_cadastro'>
+				<div>
+					<h:outputLabel for="regional" value="#{m.regional} *"/>
+					<p:selectOneMenu id="regional" value="#{volumeBean.cadastro.cdRegional}" disabled="#{volumeBean.confirmando or volumeBean.editando or volumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Regional, deve ser informado.">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+						    <f:selectItems value="#{volumeBean.regionais}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					         <p:ajax update="unidadenegocio, municipio, localidade, estacao" event="change" />  
+				    </p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="unidadenegocio" value="#{m.unidade_negocio} *" />
+				    <p:selectOneMenu id="unidadenegocio" value="#{volumeBean.cadastro.cdUnidadeNegocio}" disabled="#{volumeBean.confirmando or volumeBean.editando or volumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Unidade de Negócio, deve ser informado.">
+				    		<f:selectItem itemLabel="Selecione" itemValue="" />
+					        <f:selectItems value="#{volumeBean.unidadesNegocio}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					        <p:ajax update="municipio, localidade, estacao" event="change" />  
+				    </p:selectOneMenu> 
+				</div>
+				
+				<div>
+					<h:outputLabel for="municipio" value="#{m.municipio} *" />
+				    <p:selectOneMenu id="municipio" value="#{volumeBean.cadastro.cdMunicipio}" disabled="#{volumeBean.confirmando or volumeBean.editando or volumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Município, deve ser informado." >
+				    		<f:selectItem itemLabel="Selecione" itemValue="" />
+					        <f:selectItems value="#{volumeBean.municipios}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					        <p:ajax update="localidade, estacao" event="change" />  
+				    </p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="localidade" value="#{m.localidade} *" />
+				    <p:selectOneMenu id="localidade" value="#{volumeBean.cadastro.cdLocalidade}" disabled="#{volumeBean.confirmando or volumeBean.editando or volumeBean.desabilitaForm}" effect="fade" required="true" requiredMessage="Localidade, deve ser informado." >
+				    		<f:selectItem itemLabel="Selecione" itemValue="" />
+					        <f:selectItems value="#{volumeBean.localidades}" var="x" itemLabel="#{x.nome}" itemValue="#{x.codigo}"/>
+					        <p:ajax update="estacao" event="change" />  
+				    </p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="estacao" value="#{volumeBean.tipoEstacao} *"/>
+					<p:selectOneMenu id="estacao" value="#{volumeBean.cadastro.cdUnidadeOperacional}" converter="selectOneConverter" effect="fade" disabled="#{volumeBean.desabilitaForm or volumeBean.editando}" required="true" requiredMessage="#{volumeBean.tipoEstacao}, deve ser informado.">
+						<f:selectItem itemLabel="Selecione" itemValue="" /> 
+			         	<f:selectItems value="#{volumeBean.estacoesOperacionais}" var="estacao" itemLabel="#{estacao.nome}" itemValue="#{estacao.pk.id}"/> 
+			         
+			         	<p:ajax listener="#{volumeBean.carregarFluxosCadastro}" update="tabelaFluxoSaida, tabelaFluxoEntrada" event="change"/>
+		    		</p:selectOneMenu>
+				</div>
+				
+				<div>
+					<h:outputLabel for="referencia" value="#{m.referencia} *"/>
+					<p:inputText value="#{volumeBean.cadastro.referencia}" id="referencia" style="width: 80px" disabled="#{volumeBean.desabilitaForm or volumeBean.editando}" size="8" required="true" requiredMessage="#{m.referencia_obrigatoria}">
+						<f:converter converterId="operacional.MesReferenciaConverter"/>
+					</p:inputText>				
+				</div>
+				
+				<div>
+					<h:outputLabel for="datahoramedicao" value="#{m.data_hora_medicao} *" />
+					<p:calendar value="#{volumeBean.cadastro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}" showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medi��o, deve ser informado.">
+						 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" /> 
+					</p:calendar>
+				</div>
+
+				<div>
+					<h:outputLabel for="estimado" value="Valor Estimado *" />
+					<p:selectOneMenu id="estimado" value="#{volumeBean.cadastro.estimado}" effect="fade" disabled="#{volumeBean.desabilitaForm}" required="true" requiredMessage="Estimativa, deve ser informada.">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItem itemLabel="SIM" itemValue="true" />
+						<f:selectItem itemLabel="NÃO" itemValue="false" />
+					</p:selectOneMenu>
+				</div>
+
+				<div>
+					<h:outputLabel for="volume" value="Volume" />
+					<p:inputText style="width: 80px !important;" value="#{volumeBean.cadastro.volume}" id="volume" maxlength="10" disabled="#{volumeBean.desabilitaForm}" />
+				</div>
+			
+			</div>
+			
+			<div>
+				<h:dataTable var="volume" id="tabelaFluxoEntrada" value="#{volumeBean.cadastro.volumeFluxoEntrada}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+					<f:facet name="header">#{m.medidor_entrada}</f:facet>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.medidor_entrada}" />
+						</f:facet>
+						<h:outputText value="#{volume.macroMedidor.identificadorLeitura}" styleClass="tabela_row"/>
+					</h:column>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.tipo_medicao}" />
+						</f:facet>
+						<h:outputText value="#{volume.macroMedidor.descricaoTipoMedicao}" styleClass="tabela_row"/>
+					</h:column>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.medicao}" />
+						</f:facet>
+						<p:inputText style="width: 80px" value="#{volume.volumeMedicao}" id="vazao" maxlength="10" disabled="#{volumeBean.desabilitaForm}"
+							required="true" requiredMessage="Valor da Medi��o de Entrada, deve ser informado." />
+					</h:column>
+				</h:dataTable>
+					<h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.cadastro.volumeFluxoEntrada}"/>  
+			</div>
+			
+			<div>
+				<h:dataTable var="volume" id="tabelaFluxoSaida" value="#{volumeBean.cadastro.volumeFluxoSaida}" editable="true" styleClass="tabela_app" headerClass="tabela_header">
+					<f:facet name="header">#{m.medidor_saida}</f:facet>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.medidor_saida}" />
+						</f:facet>
+						<h:outputText value="#{volume.macroMedidor.identificadorLeitura}" styleClass="tabela_row"/>
+					</h:column>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.tipo_medicao}" />
+						</f:facet>
+						<h:outputText value="#{volume.macroMedidor.descricaoTipoMedicao}" styleClass="tabela_row"/>
+					</h:column>
+					
+					<h:column headerClass="tabela_column_header">
+						<f:facet name="header">
+							<h:outputText value="#{m.medicao}" />
+						</f:facet>
+						<p:inputText style="width: 80px" value="#{volume.volumeMedicao}" id="vazao" maxlength="10" disabled="#{volumeBean.desabilitaForm}"
+							required="true" requiredMessage="Valor da Medição de Saída, deve ser informado." />
+					</h:column>
+				</h:dataTable>
+				  <h:outputText value="#{m.nenhum_registro_encontrado}"  styleClass="tabela_row" rendered="#{empty volumeBean.cadastro.volumeFluxoSaida}"/>   
+			</div>
+
+			
+			<div class='observacoes'>
+				<h:outputLabel value="#{m.observacoes}" />
+				<h:inputTextarea value="#{volumeBean.cadastro.observacoes}" validatorMessage="#{m.erro_observacoes_excedem_255}" disabled="#{volumeBean.desabilitaForm}">
+					<f:validateLength maximum="255" />
+				</h:inputTextarea>
+			</div>
+			<div>
+				<p:commandButton value="Cadastrar" action="#{volumeBean.cadastrar}" rendered="#{volumeBean.cadastrando or volumeBean.editando}"
+					update="formCadastro" />
+				<p:commandButton value="Confirmar" action="#{volumeBean.confirmar}" rendered="#{volumeBean.confirmando}" update="formCadastro" />
+				<p:commandButton value="Cancelar" action="#{volumeBean.cancelar}" rendered="#{volumeBean.confirmando}" update="formCadastro" />
+				<p:commandButton value="Limpar" rendered="#{volumeBean.cadastrando}" type="reset" />
+				<p:commandButton process="@this" value="Voltar" action="#{volumeBean.voltar}" rendered="#{!volumeBean.confirmando}"
+					update=":formCadastro,:formConsulta" />
+			</div>
+		</p:panel>
+		<script type="text/javascript">
+			$(function(){
+				options = {
+					    monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+					};	
+				$("input[id*=referencia]").monthpicker(options);						
+				$("input[id*=medicao]").setMask("simple-decimal-us");	
+				$("input[id*=datahora]").setMask("39/19/2099\s29:59");
+				$("input[id*=referencia]").setMask("99/9999");
+				});
+		</script>
+		</h:form>
+		</div>
+	</h:body>
+</f:view>
+</ui:define>
+</ui:composition>
+</html>
