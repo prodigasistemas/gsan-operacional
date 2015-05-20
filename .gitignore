@@ -10,3 +10,6 @@ tests/bin/tests/DifMillis.class
 .metadata
 scripts/build/build_operacional_desenv.sh
 scripts/build/build_operacional_prod.sh
+.DS_Store
+**/.DS_Store
+scripts/.DS_Store
