@@ -4,7 +4,6 @@ import static br.gov.model.util.Utilitarios.formataData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
