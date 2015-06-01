@@ -3,40 +3,44 @@ package br.gov.pa.cosanpa.gopera.managedBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.gov.model.operacao.LancamentoPendente;
-import br.gov.servicos.operacao.ProxyOperacionalRepositorio;
+import br.gov.pa.cosanpa.gopera.servicos.VolumeBO;
+import br.gov.servicos.operacao.ParametroRepositorio;
 
 
-@SuppressWarnings("rawtypes")
-@SessionScoped
+@ViewScoped
 @ManagedBean
-public class VolumePendenteBean extends BaseBean{
+public class VolumePendenteBean extends BaseMensagemBean{
 
 	@EJB
-	private ProxyOperacionalRepositorio fachadaProxy;
+	private VolumeBO bo;
+	
+	@EJB
+	private ParametroRepositorio parametroRepositorio;
+	
 	protected List<LancamentoPendente> lista = new ArrayList<LancamentoPendente>();
 
-	
-	public List<LancamentoPendente> getLista() {
-		return lista;
-	}
 
+	@PostConstruct
+    public void init() {
+        carregaListaRegistros();
+    }
+	
 	private void carregaListaRegistros(){
 		try{
-			lista = fachadaProxy.getVolumePendenteUsuario(usuarioProxy,0);
+			lista = bo.obterVolumesPendentes();
 		} catch (Exception e) {
 			this.mostrarMensagemErro("Erro ao carregar Pendências do Usuário.");
 			e.printStackTrace();
 		}
 	}	
 	
-	public String iniciar() {
-		carregaListaRegistros();
-		return "VolumePendente.jsf";
+	public List<LancamentoPendente> getLista(){
+		return this.lista;
 	}
-	
 }
