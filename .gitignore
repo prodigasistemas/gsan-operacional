@@ -1,4 +1,6 @@
 target
+.classpath
+.settings
 .tern-project
 RemoteSystemsTempFiles/
 tests/bin/.gitignore

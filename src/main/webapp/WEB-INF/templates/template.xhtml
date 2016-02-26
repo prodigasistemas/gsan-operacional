@@ -50,7 +50,7 @@
 							</p:submenu>
 							<p:submenu label="#{m.energia_eletrica}">
 								<p:menuitem value="#{m.unidade_consumidora}" action="#{unidadeConsumidoraBean.iniciar}" ajax="false" />
-								<p:menuitem value="#{m.contrato_energia_eletrica}" action="#{contratoEnergiaBean.iniciar}" ajax="false" />
+								<p:menuitem value="#{m.contrato_energia_eletrica}" outcome="/ContratoEnergia" ajax="false" />
 							</p:submenu>
 							<p:submenu label="#{m.volume_agua}">
 								<p:menuitem value="Macro Medidor" action="#{macroMedidorBean.iniciar}" ajax="false" />
@@ -97,14 +97,6 @@
 								</p:menuitem>
 								<p:menuitem value="#{m.lancamentos_pendentes}" outcome="/VolumePendente" ajax="false" />
 							</p:submenu>
-							<!-- 
-							<p:submenu label="Volume de &Aacute;gua">
-								<p:menuitem value="EAB - Esta&ccedil;&atilde;o de &Aacute;gua Bruta" action="#{eeabVolumeBean.iniciar}" ajax="false" />
-								<p:menuitem value="ETA - Esta&ccedil;&atilde;o de Tratamento de &Aacute;gua" action="#{etaVolumeBean.iniciar}" ajax="false" />
-								<p:menuitem value="EAT - Esta&ccedil;&atilde;o de &Aacute;gua Tratada" action="#{eeatVolumeBean.iniciar}" ajax="false" />
-								<p:menuitem value="Lan&ccedil;amentos Pendentes" action="#{volumePendenteBean.iniciar}" ajax="false" />
-							</p:submenu>
-							 -->
 							<p:submenu label="Tratamento de Esgoto">
 								<p:menuitem value="ETE - Esta&ccedil;&atilde;o de Tratamento de Esgoto" action="#{eteVolumeBean.iniciar}" ajax="false" />
 							</p:submenu>
