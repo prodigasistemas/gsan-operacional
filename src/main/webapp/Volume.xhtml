@@ -137,9 +137,10 @@ xmlns:p="http://primefaces.org/ui">
 				
 				<div>
 					<h:outputLabel for="datahoramedicao" value="#{m.data_hora_medicao} *" />
-					<p:calendar value="#{volumeBean.cadastro.dataHoraMedicao}" id="datahoramedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}" showOn="button" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Data e Hora de Medição, deve ser informado.">
-						 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" /> 
+					<p:calendar value="#{volumeBean.cadastro.dataMedicao}" id="datamedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}" showOn="button" pattern="dd/MM/yyyy" required="true" requiredMessage="Data da medição deve ser informada.">
 					</p:calendar>
+					<p:calendar value="#{volumeBean.cadastro.horaMedicao}" id="horamedicao" locale="pt" disabled="#{volumeBean.desabilitaForm}" pattern="HH:mm" required="true" requiredMessage="Hora de Medição deve ser informada.">
+					</p:calendar>					
 				</div>
 
 				<div>
@@ -240,7 +241,8 @@ xmlns:p="http://primefaces.org/ui">
 					};	
 				$("input[id*=referencia]").monthpicker(options);						
 				$("input[id*=medicao]").setMask("simple-decimal-us");	
-				$("input[id*=datahora]").setMask("39/19/2099\s29:59");
+				$("input[id*=datamedicao]").setMask("date");
+				$("input[id*=horamedicao]").setMask("time");
 				$("input[id*=referencia]").setMask("99/9999");
 				});
 		</script>

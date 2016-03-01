@@ -3,6 +3,7 @@ package br.gov.pa.cosanpa.gopera.managedBean;
 import static br.gov.model.util.Utilitarios.converteParaDataComUltimoDiaMes;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -234,7 +235,15 @@ public class VolumeBean extends BaseBean<Volume>{
 		    registro.setReferencia(cadastro.getReferencia());
 		    registro.setTipoEstacao(TipoUnidadeOperacional.valueOf(tipoEstacao).getId());
 		    registro.setIdEstacao(cadastro.getCdUnidadeOperacional());
-		    registro.setDataHoraMedicao(cadastro.getDataHoraMedicao());	
+		    
+		    Calendar data = Calendar.getInstance();
+		    data.setTime(cadastro.getDataMedicao());
+		    Calendar hora = Calendar.getInstance();
+		    hora.setTime(cadastro.getHoraMedicao());
+		    data.set(Calendar.HOUR_OF_DAY, hora.get(Calendar.HOUR_OF_DAY));
+		    data.set(Calendar.MINUTE, hora.get(Calendar.MINUTE));
+		    registro.setDataHoraMedicao(data.getTime());
+		    
 		    registro.setEstimado(cadastro.getEstimado());
 		    registro.setTotalVolume(cadastro.getVolume());
 		    registro.setUltimaAlteracao(new Date());
