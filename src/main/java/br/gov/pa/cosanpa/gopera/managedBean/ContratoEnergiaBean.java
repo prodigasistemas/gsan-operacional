@@ -1,6 +1,5 @@
 package br.gov.pa.cosanpa.gopera.managedBean;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,38 +34,22 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 	@EJB
 	private UnidadeConsumidoraRepositorio fachadaUC;
 	
-	private List<UnidadeConsumidora> listaUnidadeConsumidora;
-	private ContratoEnergiaDemanda demanda;
-	
-	private String tensaoNominal;
-	private String tensaoContratada;
-	private String frequencia;
-	private String perdasTransformacao;
-	private String potenciaInstalada;
-	private Integer periodoInicial;
-	private Integer periodoFinal;
-	private String horarioPontaInicial;
-	private String horarioPontaFinal;
-	private String horarioReservadoInicial;
-	private String horarioReservadoFinal;
-	private String convencionalVerde;
-	private String demandaSecoPonta;
-	private String demandaSecoForaPonta;
-	private String demandaUmidoPonta;
-	private String demandaUmidoForaPonta;	
 	private UsuarioProxy usuarioProxy = (UsuarioProxy) session.getAttribute("usuarioProxy");
+
+	private List<UnidadeConsumidora> listaUnidadeConsumidora;
 	
     private ContratoEnergiaListagemTO selecionadoLista = new ContratoEnergiaListagemTO();
     
     private LazyDataModel<ContratoEnergiaListagemTO> listaContrato = null;
     
+    private ContratoEnergiaDemanda demanda = new ContratoEnergiaDemanda();
+    
     private void carregar(){
         try {
             this.registro = repositorio.obterContrato(this.selecionadoLista.getCodigo());
-            
         } catch (Exception e) {
-            logger.error(bundle.getText("erro_carregar_rede_instalada"), e);
-            this.mostrarMensagemErro(bundle.getText("erro_carregar_rede_instalada"));
+            logger.error(bundle.getText("erro_carregar_contrato_energia"), e);
+            this.mostrarMensagemErro(bundle.getText("erro_carregar_contrato_energia"));
         }
     }    
 	
@@ -134,18 +117,6 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 	}
 
 	public String novo() {
-		this.tensaoNominal = "0,00";
-		this.tensaoContratada = "0,00";
-		this.frequencia = "0,00";
-		this.perdasTransformacao = "0,00";
-		this.potenciaInstalada = "0,00";
-		this.periodoInicial = 0;
-		this.periodoFinal = 0;
-		this.demandaSecoPonta = "0";
-		this.demandaSecoForaPonta = "0";
-		this.demandaUmidoPonta = "0";
-		this.demandaUmidoForaPonta = "0";
-		this.convencionalVerde = "0";
 		this.registro = new ContratoEnergia();
 		return super.novo();
 	}
@@ -166,23 +137,12 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 		
 	public String confirmar() {
 		try {
-			SimpleDateFormat f24h = new SimpleDateFormat("HH:mm");  
-
-			registro.setHorarioPontaInicial(f24h.parse(this.getHorarioPontaInicial()));
-			registro.setHorarioPontaFinal(f24h.parse(this.getHorarioPontaFinal()));
-			registro.setHorarioReservadoInicial(f24h.parse(this.getHorarioReservadoInicial()));
-			registro.setHorarioReservadoFinal(f24h.parse(this.getHorarioReservadoFinal()));
-			
-			registro.setTensaoNominal(Double.parseDouble(tensaoNominal.replace(".", "").replace(",", ".")));
-			registro.setTensaoContratada(Double.parseDouble(tensaoContratada.replace(".", "").replace(",", ".")));
-			registro.setFrequencia(Double.parseDouble(frequencia.replace(".", "").replace(",", ".")));
-			registro.setPerdasTransformacao(Double.parseDouble(perdasTransformacao.replace(".", "").replace(",", ".")));
-			registro.setPotenciaInstalada(Double.parseDouble(potenciaInstalada.replace(".", "").replace(",", ".")));
 			registro.setUsuario(usuarioProxy.getCodigo());
 			registro.setUltimaAlteracao(new Date());
 			return super.confirmarLazy();
 		} catch (Exception e) {
 			this.mostrarMensagemErro("Erro ao Salvar");
+			logger.error("Erro ao salvar contrato de energia", e);
 		}
 		return null;
 	}
@@ -202,16 +162,8 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 	
 	public void incluirDemanda() {
 		try{
-			ContratoEnergiaDemanda cdemanda = new ContratoEnergiaDemanda();
-			cdemanda.setPeriodoInicial(periodoInicial);
-			cdemanda.setPeriodoFinal(periodoFinal);
-			cdemanda.setDemandaSecoPonta(Integer.parseInt(demandaSecoPonta.replace(",", "").replace(".", "")));
-			cdemanda.setDemandaSecoForaPonta(Integer.parseInt(demandaSecoForaPonta.replace(",", "").replace(".", "")));
-			cdemanda.setDemandaUmidoPonta(Integer.parseInt(demandaUmidoPonta.replace(",", "").replace(".", "")));
-			cdemanda.setDemandaUmidoForaPonta(Integer.parseInt(demandaUmidoForaPonta.replace(",", "").replace(".", "")));
-			cdemanda.setConvencionalVerde(Integer.parseInt(convencionalVerde.replace(",", "").replace(".", "")));
-			cdemanda.setContrato(this.registro);
-			this.registro.getDemanda().add(cdemanda);
+			this.registro.getDemandas().add(demanda);
+			demanda = new ContratoEnergiaDemanda();
 		} catch (Exception e) {
 			this.mostrarMensagemErro(bundle.getText("erro_incluir_demanda"));
 			logger.error(bundle.getText("erro_incluir_demanda"), e);
@@ -219,9 +171,9 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 	}	
 
 	public void excluirDemanda() {
-		for (ContratoEnergiaDemanda cdemanda : this.registro.getDemanda()) {
+		for (ContratoEnergiaDemanda cdemanda : this.registro.getDemandas()) {
 			if (cdemanda.getPeriodoInicial().equals(demanda.getPeriodoInicial()) && cdemanda.getPeriodoFinal().equals(demanda.getPeriodoFinal())) {
-				this.registro.getDemanda().remove(cdemanda);
+				this.registro.getDemandas().remove(cdemanda);
 				break;
 			}
 		}
@@ -229,9 +181,7 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
 
 	/**
 	 * GETTERS AND SETTERS
-	 * @return
 	 */
-	
 	public LazyDataModel<ContratoEnergiaListagemTO> getListaContrato() {
 		return listaContrato;
 	}
@@ -240,139 +190,11 @@ public class ContratoEnergiaBean extends BaseBean<ContratoEnergia> {
         this.selecionadoLista = selecionadoLista;
     }
 
-    public String getTensaoNominal() {
-		return tensaoNominal;
-	}
-
-	public void setTensaoNominal(String tensaoNominal) {
-		this.tensaoNominal = tensaoNominal;
-	}
-
-	public String getTensaoContratada() {
-		return tensaoContratada;
-	}
-
-	public void setTensaoContratada(String tensaoContratada) {
-		this.tensaoContratada = tensaoContratada;
-	}
-
-	public String getFrequencia() {
-		return frequencia;
-	}
-
-	public void setFrequencia(String frequencia) {
-		this.frequencia = frequencia;
-	}
-
-	public String getPerdasTransformacao() {
-		return perdasTransformacao;
-	}
-
-	public void setPerdasTransformacao(String perdasTransformacao) {
-		this.perdasTransformacao = perdasTransformacao;
-	}
-
-	public String getPotenciaInstalada() {
-		return potenciaInstalada;
-	}
-
-	public void setPotenciaInstalada(String potenciaInstalada) {
-		this.potenciaInstalada = potenciaInstalada;
-	}
-
-	public ContratoEnergiaDemanda getDemanda() {
-		return demanda;
-	}
-
-	public void setDemanda(ContratoEnergiaDemanda demanda) {
-		this.demanda = demanda;
-	}
-
-	public Integer getPeriodoInicial() {
-        return periodoInicial;
+    public ContratoEnergiaDemanda getDemanda() {
+        return demanda;
     }
 
-    public void setPeriodoInicial(Integer periodoInicial) {
-        this.periodoInicial = periodoInicial;
+    public void setDemanda(ContratoEnergiaDemanda demanda) {
+        this.demanda = demanda;
     }
-
-    public Integer getPeriodoFinal() {
-        return periodoFinal;
-    }
-
-    public void setPeriodoFinal(Integer periodoFinal) {
-        this.periodoFinal = periodoFinal;
-    }
-
-    public String getDemandaSecoPonta() {
-		return demandaSecoPonta;
-	}
-
-	public void setDemandaSecoPonta(String demandaSecoPonta) {
-		this.demandaSecoPonta = demandaSecoPonta;
-	}
-
-	public String getDemandaSecoForaPonta() {
-		return demandaSecoForaPonta;
-	}
-
-	public void setDemandaSecoForaPonta(String demandaSecoForaPonta) {
-		this.demandaSecoForaPonta = demandaSecoForaPonta;
-	}
-
-	public String getDemandaUmidoPonta() {
-		return demandaUmidoPonta;
-	}
-
-	public void setDemandaUmidoPonta(String demandaUmidoPonta) {
-		this.demandaUmidoPonta = demandaUmidoPonta;
-	}
-
-	public String getDemandaUmidoForaPonta() {
-		return demandaUmidoForaPonta;
-	}
-
-	public void setDemandaUmidoForaPonta(String demandaUmidoForaPonta) {
-		this.demandaUmidoForaPonta = demandaUmidoForaPonta;
-	}
-
-	public String getHorarioPontaInicial() {
-		return horarioPontaInicial;
-	}
-
-	public void setHorarioPontaInicial(String horarioPontaInicial) {
-		this.horarioPontaInicial = horarioPontaInicial;
-	}
-
-	public String getHorarioPontaFinal() {
-		return horarioPontaFinal;
-	}
-
-	public void setHorarioPontaFinal(String horarioPontaFinal) {
-		this.horarioPontaFinal = horarioPontaFinal;
-	}
-
-	public String getHorarioReservadoInicial() {
-		return horarioReservadoInicial;
-	}
-
-	public void setHorarioReservadoInicial(String horarioReservadoInicial) {
-		this.horarioReservadoInicial = horarioReservadoInicial;
-	}
-
-	public String getHorarioReservadoFinal() {
-		return horarioReservadoFinal;
-	}
-
-	public void setHorarioReservadoFinal(String horarioReservadoFinal) {
-		this.horarioReservadoFinal = horarioReservadoFinal;
-	}
-
-	public String getConvencionalVerde() {
-		return convencionalVerde;
-	}
-
-	public void setConvencionalVerde(String convencionalVerde) {
-		this.convencionalVerde = convencionalVerde;
-	}
 }

@@ -197,34 +197,52 @@ xmlns:p="http://primefaces.org/ui">
 							</p:row>
 							<p:row>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.tensaoNominal}" id="tensaonominal" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Tensão Nominal, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.tensaoNominal}" id="tensaonominal" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Tensão Nominal, deve ser informado.">
+										<f:convertNumber pattern="#0.00"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.tensaoContratada}" id="tensaocontratada" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Tensão Contratada, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.tensaoContratada}" id="tensaocontratada" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Tensão Contratada, deve ser informado.">
+										<f:convertNumber pattern="#0.00"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
 									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.subGrupoTarifario}" id="subgrupotarifario" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Sub-Grupo Tarifário, deve ser informado."/>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.frequencia}" id="frequencia" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Frequência, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.frequencia}" id="frequencia" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Frequência, deve ser informado.">
+										<f:convertNumber pattern="#0.00"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.perdasTransformacao}" id="perdastransformação" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Perdas de Transformação, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.perdasTransformacao}" id="perdastransformação" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Perdas de Transformação, deve ser informado.">
+										<f:convertNumber pattern="#0.00"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.potenciaInstalada}" id="potenciainstalada" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Potência Instalada, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.potenciaInstalada}" id="potenciainstalada" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Potência Instalada, deve ser informado.">
+										<f:convertNumber pattern="#0.00"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.horarioPontaInicial}" id="horariopontaini" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário de Ponta Inicial, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.horarioPontaInicial}" id="horariopontaini" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário de Ponta Inicial, deve ser informado.">
+										<f:converter converterId="operacional.HorarioConverter"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.horarioPontaFinal}" id="horariopontafim" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário de Ponta Final, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.horarioPontaFinal}" id="horariopontafim" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário de Ponta Final, deve ser informado.">
+										<f:converter converterId="operacional.HorarioConverter"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.horarioReservadoInicial}" id="horarioreservadoini" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário Reservado Inicial, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.horarioReservadoInicial}" id="horarioreservadoini" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário Reservado Inicial, deve ser informado.">
+										<f:converter converterId="operacional.HorarioConverter"/>
+									</p:inputText>
 								</p:column>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.horarioReservadoFinal}" id="horarioreservadofim" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário Reservado Final, deve ser informado."/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.registro.horarioReservadoFinal}" id="horarioreservadofim" maxlength="5" disabled="#{contratoEnergiaBean.desabilitaForm}" required="true" requiredMessage="Horário Reservado Final, deve ser informado.">
+										<f:converter converterId="operacional.HorarioConverter"/>
+									</p:inputText>
 								</p:column>		
 							</p:row>
 						</p:panelGrid>
@@ -286,47 +304,47 @@ xmlns:p="http://primefaces.org/ui">
 									<h:outputLabel for="periodofinal" value="Período Final *"/>
 								</p:column>				
 								<p:column style="text-align:left">
-									<h:outputLabel for="demandasecoponta" value="Ponta (Kw)*" />
+									<h:outputLabel for="demandasecoponta" value="Ponta (Kw)" />
 								</p:column>
 								<p:column style="text-align:left">
-									<h:outputLabel for="demandasecoforaponta" value="Fora da Ponta (Kw)*" />
+									<h:outputLabel for="demandasecoforaponta" value="Fora da Ponta (Kw)" />
 								</p:column>
 								<p:column style="text-align:left">
-									<h:outputLabel for="demandaumidoponta" value="Ponta (Kw)*" />
+									<h:outputLabel for="demandaumidoponta" value="Ponta (Kw)" />
 								</p:column>
 								<p:column style="text-align:left">
-									<h:outputLabel for="demandaumidoforaponta" value="Fora da Ponta (Kw)*" />
+									<h:outputLabel for="demandaumidoforaponta" value="Fora da Ponta (Kw)" />
 								</p:column>
 								<p:column style="text-align:left">
-									<h:outputLabel for="convencionalverde" value="#{m.convencional_verde} *"/>
+									<h:outputLabel for="convencionalverde" value="#{m.convencional_verde}"/>
 								</p:column>					
 								<p:column></p:column>
 							</p:row>
 							<p:row>
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.periodoInicial}" id="periodoinicial" maxlength="10" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Data Inicial, deve ser informado.">
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.periodoInicial}" id="periodoinicial" maxlength="10" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Data Inicial, deve ser informado.">
 										<f:converter converterId="operacional.MesReferenciaConverter"/>
 									</p:inputText>
 						        </p:column>
 						        <p:column>
-						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.periodoFinal}" id="periodofinal" maxlength="10" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Data Final, deve ser informado.">
+						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.periodoFinal}" id="periodofinal" maxlength="10" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Data Final, deve ser informado.">
 						            	<f:converter converterId="operacional.MesReferenciaConverter"/>
 						            </p:inputText>
 					             </p:column>				
 						        <p:column>
-						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demandaSecoPonta}" id="demandasecoponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Demanda Período Seco na Ponta, deve ser informado."/>
+						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.demandaSecoPonta}" id="demandasecoponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}"/>
 					             </p:column>
 						        <p:column>
-						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demandaSecoForaPonta}" id="demandasecoforaponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Demanda Período Seco Fora da Ponta, deve ser informado."/>
+						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.demandaSecoForaPonta}" id="demandasecoforaponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}"/>
 					             </p:column>		             
 						        <p:column>
-						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demandaUmidoPonta}" id="demandaumidoponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Demanda Período Úmido na Ponta, deve ser informado."/>
+						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.demandaUmidoPonta}" id="demandaumidoponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}"/>
 					             </p:column>		             
 						        <p:column>
-						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demandaUmidoForaPonta}" id="demandaumidoforaponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="Demanda Período Úmido fora da Ponta, deve ser informado."/>
+						            <p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.demandaUmidoForaPonta}" id="demandaumidoforaponta" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}"/>
 					             </p:column>		             
 								<p:column>
-									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.convencionalVerde}" id="convencionalverde" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}" required="false" requiredMessage="#{m.required_valor_consumo_convencional}"/>
+									<p:inputText style="width: 80px !important;" value="#{contratoEnergiaBean.demanda.convencionalVerde}" id="convencionalverde" maxlength="6" disabled="#{contratoEnergiaBean.desabilitaForm}"/>
 						        </p:column>					
 								<p:column>
 									<p:commandButton value="Incluir Demanda" action="#{contratoEnergiaBean.incluirDemanda}" rendered="#{contratoEnergiaBean.cadastrando or contratoEnergiaBean.editando}" update="formCadastro"/>
@@ -338,7 +356,7 @@ xmlns:p="http://primefaces.org/ui">
 				</p:row>	
 				<p:row>
 					<p:column colspan="2">
-						<p:dataTable var="var" id="tabela" value="#{contratoEnergiaBean.registro.demanda}" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
+						<p:dataTable var="var" id="tabela" value="#{contratoEnergiaBean.registro.demandas}" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" editable="false" emptyMessage="Nenhum Registro Encontrado">
 					        <f:facet name="header">  
 					            Período de Faturamento / Demanda Contratada
 					        </f:facet> 			
@@ -415,10 +433,10 @@ xmlns:p="http://primefaces.org/ui">
 						    monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 						};	
 					
-					$("input[id*=tensao]").setMask("decimal");				
-					$("input[id*=frequencia]").setMask("decimal");
-					$("input[id*=perdas]").setMask("decimal");
-					$("input[id*=potencia]").setMask("decimal");
+					$("input[id*=tensao]").setMask("simple-decimal-us");				
+					$("input[id*=frequencia]").setMask("simple-decimal-us");
+					$("input[id*=perdas]").setMask("simple-decimal-us");
+					$("input[id*=potencia]").setMask("simple-decimal-us");
 					$("input[id*=demanda]").setMask("integer");
 					$("input[id*=horario]").setMask("time");
 					$("input[id*=data]").setMask("99/99/9999");
