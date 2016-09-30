@@ -15,6 +15,11 @@
 						$(".ui-selectonemenu-panel").hide();
 					});
 			});
+
+		function redirecionaParaOPortal(){
+			window.location = "http://portalgsan.cosanpa.pa.gov.br";
+			return;
+		}
 	</script>
 	</h:head>
 	<h:body>
@@ -31,6 +36,7 @@
 			<div class="main-menu">
 				<h:form id="formMenu">
 					<p:menubar rendered="#{usuarioBean.usuarioProxy.logado}">
+						<p:menuitem value="Portal Gsan" label="Portal Gsan" onclick="redirecionaParaOPortal()" />
 						<p:submenu label="Cadastro" rendered="#{usuarioBean.usuarioProxy.administrador}">
 							<p:submenu label="#{m.unidade_operacional}">
 								<p:menuitem value="#{m.eab} - #{m.estacao_agua_bruta}" action="#{eeabBean.iniciar}" ajax="false" />
